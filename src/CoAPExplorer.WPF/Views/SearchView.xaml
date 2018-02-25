@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="CoAPExplorer.WPF.Views.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoAPExplorer.WPF.Views"
+             xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="900"
+             Background="{StaticResource MaterialDesignBackground}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Padding="16" Grid.Row="0">
+            <DockPanel>
+                <ListBox SelectionMode="Multiple" DockPanel.Dock="Right">
+                    <ListBoxItem x:Name="FilterOptionsToggle" ToolTip="Show/Hide Filter Options" IsSelected="False">
+                        <materialDesign:PackIcon Kind="FilterVariant" />
+                    </ListBoxItem>
+                </ListBox>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 8 0">
+                    <Button Style="{DynamicResource MaterialDesignToolButton}">
+                        <materialDesign:PackIcon Margin="6,0,6,0" Kind="ArrowRight" />
+                    </Button>
+                    <Button Style="{DynamicResource MaterialDesignToolButton}">
+                        <materialDesign:PackIcon Margin="6,0,6,0" Kind="Close" />
+                    </Button>
+                </StackPanel>
+                <materialDesign:PackIcon Margin="8 12 8 0" Kind="Magnify" />
+                <TextBox Style="{StaticResource MaterialDesignTextBox}">/.well-known/core</TextBox>
+            </DockPanel>
+        </materialDesign:ColorZone>
+        <materialDesign:DrawerHost Grid.Row="1" Grid.RowSpan="2" IsTopDrawerOpen="{Binding ElementName=FilterOptionsToggle, Path=IsSelected}">
+            <controls:DeviceListView x:Name="DeviceList" DataContext="{Binding .}" />
+            <materialDesign:DrawerHost.TopDrawerContent>
+                <StackPanel Orientation="Vertical" Margin="8">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="0,0,8,0" VerticalAlignment="Center">Search Scope</TextBlock>
+                            <ComboBox HorizontalAlignment="Left">
+                                <ComboBoxItem Content="Local Area Network" IsSelected="True" />
+                            </ComboBox>
+                        </StackPanel>
+                    </DockPanel>
+                    <TextBlock Margin="0,8,0,8" Opacity=".54"
+                               Style="{StaticResource MaterialDesignSubheadingTextBlock}">
+                        Filters
+                    </TextBlock>
+                    <ListView>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:FilterOption />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <controls:FilterOption /> <!--TODO: Support a (blank) option that will trigger a Add Command when interacted with-->
+                </StackPanel>
+            </materialDesign:DrawerHost.TopDrawerContent>
+        </materialDesign:DrawerHost>
+    </Grid>
+</UserControl>

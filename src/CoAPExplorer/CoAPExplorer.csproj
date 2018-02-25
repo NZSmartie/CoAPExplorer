@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json.Cbor" Version="0.3.4-alpha" />
+    <PackageReference Include="NZSmartie.CoAPNet" Version="0.5.1" />
+    <PackageReference Include="NZSmartie.CoAPNet.Udp" Version="0.5.1" />
+    <PackageReference Include="ReactiveUI" Version="8.0.0-alpha0117" />
+  </ItemGroup>
+
+</Project>
