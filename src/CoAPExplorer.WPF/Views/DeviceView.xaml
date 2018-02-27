@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="CoAPExplorer.WPF.Views.DeviceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoAPExplorer.WPF.Views"
+             xmlns:mockViewModels="clr-namespace:CoAPExplorer.WPF.MockViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
+             xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+             mc:Ignorable="d" 
+             d:DesignHeight="441" d:DesignWidth="690"
+             d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceViewModel, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Padding="8" Grid.Row="0">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 8 0">
+                    <Button Style="{DynamicResource MaterialDesignToolButton}"
+                            x:Name="GoButton">
+                        <materialDesign:PackIcon Margin="6,0,6,0" Kind="ArrowRight" />
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignToolButton}" 
+                            x:Name="StopButton">
+                        <materialDesign:PackIcon Width="24" Height="24" Kind="CloseCircle" />
+                    </Button>
+                </StackPanel>
+                <materialDesign:PackIcon Margin="8 0 8 6" Kind="Raspberrypi" VerticalAlignment="Bottom"
+                                         Foreground="{Binding ElementName=SearchUrl, Path=BorderBrush}"/>
+                <ComboBox IsEditable="True" x:Name="SearchUrl" SelectedIndex="0">
+                    <ComboBoxItem>/.well-known/core</ComboBoxItem>
+                </ComboBox>
+            </DockPanel>
+        </materialDesign:ColorZone>
+        <TabControl Grid.Row="1">
+            <TabItem Header="REQUEST">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <materialDesign:ColorZone Padding="8 0 0 0" Grid.Row="0">
+                        <DockPanel>
+
+                            <TextBox x:Name="PhoneTextBox" Width="80" Text="1234"
+                                     Margin="4 0 4 0" VerticalAlignment="Center"
+                                     materialDesign:HintAssist.Hint="Message ID"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <ComboBox SelectedIndex="1" Margin="4 0 4 0" materialDesign:HintAssist.Hint="Code"
+                              materialDesign:HintAssist.HintOpacity=".26" HorizontalAlignment="Left" Width="70"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                <ComboBoxItem>EMPTY</ComboBoxItem>
+                                <ComboBoxItem>GET</ComboBoxItem>
+                                <ComboBoxItem>POST</ComboBoxItem>
+                                <ComboBoxItem>PUT</ComboBoxItem>
+                                <ComboBoxItem>DELETE</ComboBoxItem>
+                                <ComboBoxItem>OBSERVE</ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox Width="180" IsEditable="True" SelectedIndex="2" Margin="4 0 4 0"
+                                  materialDesign:HintAssist.Hint="Content Type"
+                                  materialDesign:HintAssist.HintOpacity=".26"
+                                   HorizontalAlignment="Left"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                                <ComboBoxItem>(none)</ComboBoxItem>
+                                <ComboBoxItem>0 - text/plain; charset=UTF-8</ComboBoxItem>
+                                <ComboBoxItem>40 - application/link-format</ComboBoxItem>
+                            </ComboBox>
+                            <ToolBar ToolBarTray.IsLocked="True" DockPanel.Dock="Right"
+                                     VerticalAlignment="Center" HorizontalAlignment="Right"
+                                     Style="{StaticResource MaterialDesignToolBar}"
+                                     Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Background}">
+                                <Button>
+                                    <materialDesign:PackIcon Kind="Autorenew" />
+                                </Button>
+                                <ListBox SelectionMode="Multiple">
+                                    <ListBoxItem x:Name="MoreOptionsToggle" IsSelected="True"
+                                        Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Background}">
+                                        <materialDesign:PackIcon Kind="MenuDown" />
+                                    </ListBoxItem>
+                                </ListBox>
+                            </ToolBar>
+                        </DockPanel>
+                    </materialDesign:ColorZone>
+                    <materialDesign:DrawerHost Grid.Row="1"
+                                   IsTopDrawerOpen="{Binding ElementName=MoreOptionsToggle, Path=IsSelected}">
+                        <materialDesign:DrawerHost.TopDrawerContent>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock>TODO: add options here and advanced settings</TextBlock>
+                                <Separator/>
+                                <TextBlock Margin="0,8,0,8" Opacity=".54"
+                                           Style="{StaticResource MaterialDesignSubheadingTextBlock}">Advanced</TextBlock>
+                                <CheckBox IsThreeState="False">Auto-Increment Message ID</CheckBox>
+                            </StackPanel>
+                        </materialDesign:DrawerHost.TopDrawerContent>
+                        <TabControl>
+                            <TabItem Header="RAW">
+                                <TextBox AcceptsReturn="True" TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"
+                                     VerticalContentAlignment="Top">
+                                    Somethign somethign dark side?
+                                </TextBox>
+                            </TabItem>
+                            <TabItem Header="FORMATTED" IsEnabled="False">
+                                <TextBox AcceptsReturn="True" TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"
+                                     VerticalContentAlignment="Top">
+                                    Somethign somethign dark side?
+                                </TextBox>
+                            </TabItem>
+                            <TabItem Header="BINARY" IsEnabled="False">
+                            </TabItem>
+                        </TabControl>
+                    </materialDesign:DrawerHost>
+                </Grid>
+            </TabItem>
+            <TabItem Header="RESPONSE">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Material Design</TextBlock>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

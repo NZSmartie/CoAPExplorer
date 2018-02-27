@@ -10,22 +10,30 @@ namespace CoAPExplorer.ViewModels
 {
     public class DeviceViewModel : ReactiveObject, IRoutableViewModel
     {
-        private readonly CoapEndpoint _endpoint;
-
         private string _urlPathSegment;
-        public string UrlPathSegment => _urlPathSegment ?? (_urlPathSegment = _endpoint.BaseUri.ToString());
+
+        public string UrlPathSegment => _urlPathSegment ?? (_urlPathSegment = Endpoint.BaseUri.ToString());
 
         public Device Device { get; }
 
         public IScreen HostScreen { get; private set; }
 
-        public DeviceViewModel(CoapEndpoint endpoint, Device device = null, IScreen hostScreen = null)
-        {
-            _endpoint = endpoint;
-            HostScreen = hostScreen ?? Locator.Current.GetService<IScreen>()
-                ?? throw new InvalidOperationException($"Could not locate a {nameof(IScreen)} service");
+        public ICoapEndpoint Endpoint => Device.Endpoint;
 
+        public string Name => Device.Name;
+
+        public string Address => Device.Address;
+
+        public DateTime LastSeen => Device.LastSeen;
+
+        public ReactiveCommand OpenCommand { get; }
+
+        public DeviceViewModel(Device device = null, IScreen hostScreen = null)
+        {
+            HostScreen = hostScreen;
             Device = device ?? new Device();
+
+            OpenCommand = ReactiveCommand.Create(() => hostScreen.Router.Navigate.Execute(this).Subscribe());
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CoAPExplorer.Models;
+using CoAPExplorer.ViewModels;
 using ReactiveUI;
 
 namespace CoAPExplorer.WPF.Controls
@@ -25,11 +26,11 @@ namespace CoAPExplorer.WPF.Controls
     public partial class DeviceListView : UserControl
     {
         public static readonly DependencyProperty DevicesProperty = DependencyProperty.Register(
-            "Devices", typeof(ObservableCollection<Device>), typeof(DeviceListView), new PropertyMetadata(default(List<Device>)));
+            "Devices", typeof(ObservableCollection<DeviceViewModel>), typeof(DeviceListView), new PropertyMetadata(default(List<DeviceViewModel>)));
 
-        public ObservableCollection<Device> Devices
+        public ObservableCollection<DeviceViewModel> Devices
         {
-            get => (ObservableCollection<Device>)GetValue(DevicesProperty);
+            get => (ObservableCollection<DeviceViewModel>)GetValue(DevicesProperty);
             set => SetValue(DevicesProperty, value);
         }
 

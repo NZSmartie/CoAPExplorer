@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoAPExplorer.WPF.Controls"
+             xmlns:viewModels="clr-namespace:CoAPExplorer.ViewModels;assembly=CoAPExplorer"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mockViewModels="clr-namespace:CoAPExplorer.WPF.MockViewModels"
              xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
              mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="804.441"
-             d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceListMock, IsDesignTimeCreatable=True}"
-             Background="{StaticResource MaterialDesignBackground}">
+             d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceListMock, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <converters:RelativeDateTimeConverter x:Key="RelativeDateTimeConverter"/>
     </UserControl.Resources>
@@ -27,7 +27,7 @@
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:DeviceViewModel}">
                         <materialDesign:Card Width="200" Margin="2">
                             <Grid >
                                 <Grid.RowDefinitions>
@@ -43,19 +43,16 @@
                                     <materialDesign:PackIcon Kind="Star" />
                                 </ToggleButton>
                                 <StackPanel Grid.Row="1" Margin="8,24,8,0">
-                                    <TextBlock FontWeight="Bold" Text="{Binding Name}"/>
+                                    <TextBlock FontWeight="Bold" Text="{Binding Name, Mode=OneWay}"/>
                                     <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
-                                Address: <Run Text="{Binding Address}"/><LineBreak/>
-                                Last Seen: <Run Text="{Binding LastSeen, Converter={StaticResource RelativeDateTimeConverter}}"/>
+                                Address: <Run Text="{Binding Address, Mode=OneWay}"/><LineBreak/>
+                                Last Seen: <Run Text="{Binding LastSeen, Converter={StaticResource RelativeDateTimeConverter}, Mode=OneWay}"/>
                                     </TextBlock>
                                 </StackPanel>
-                                <StackPanel
-                            Grid.Row="2"
-                            Margin="8"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
+                                <StackPanel Grid.Row="2" Margin="8" HorizontalAlignment="Right" Orientation="Horizontal">
                                     <Button Width="30" Padding="2,0,2,0" materialDesign:RippleAssist.IsCentered="True"
-                                            Style="{StaticResource MaterialDesignToolButton}">
+                                            Style="{StaticResource MaterialDesignToolButton}"
+                                            Command="{Binding  OpenCommand}" Margin="0,8,0,-8">
                                         <materialDesign:PackIcon Kind="OpenInApp" />
                                     </Button>
                                     <materialDesign:PopupBox Padding="2,0,2,0" Style="{DynamicResource MaterialDesignToolPopupBox}">

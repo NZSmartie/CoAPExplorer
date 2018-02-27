@@ -8,7 +8,7 @@ namespace CoAPExplorer.Models
     {
         public int Id { get; set; }
 
-        public ICoapEndpoint Endpoint { get; set; }
+        public ICoapEndpoint Endpoint { get; set; } = new CoapEndpoint();
 
         public string Name { get; set; } = string.Empty;
 

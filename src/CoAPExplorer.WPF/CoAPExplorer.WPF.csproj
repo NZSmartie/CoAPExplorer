@@ -63,6 +63,10 @@
     <Compile Include="Controls\DeviceListView.xaml.cs">
       <DependentUpon>DeviceListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MockViewModels\DeviceViewModel.cs" />
+    <Compile Include="Views\DeviceView.xaml.cs">
+      <DependentUpon>DeviceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
@@ -84,6 +88,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Controls\DeviceListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DeviceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -22,7 +22,7 @@ namespace CoAPExplorer.ViewModels
 
         public IScreen HostScreen { get; }
 
-        public ObservableCollection<Device> Devices { get; }
+        public ObservableCollection<DeviceViewModel> Devices { get; }
 
         public List<RequestFilter> Filters { get; set; }
 
@@ -54,7 +54,7 @@ namespace CoAPExplorer.ViewModels
 
             _discoveryService = Locator.Current.GetService<DiscoveryService>();
 
-            Devices = new ObservableCollection<Device>();
+            Devices = new ObservableCollection<DeviceViewModel>();
 
             Filters = new List<RequestFilter>();
 
@@ -76,7 +76,7 @@ namespace CoAPExplorer.ViewModels
                                             .ToProperty(this, x => x.IsSearching, false)
                                             .DisposeWith(disposables);
 
-                SearchCommand.Subscribe(device => Devices.Add(device))
+                SearchCommand.Select(d => new DeviceViewModel(d, hostScreen)).Subscribe(device => Devices.Add(device))
                              .DisposeWith(disposables);
             });
         }
