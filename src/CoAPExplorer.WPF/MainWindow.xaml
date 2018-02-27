@@ -16,9 +16,11 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
+        x:Name="This"
         Title="MainWindow" Height="500.053" Width="851.838">
     <Window.Resources>
         <converters:CoapExplorerIconConverter x:Key="CoapExplorerIconConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
     <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
             <Grid>
@@ -32,29 +34,31 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid x:Name="NavigationPane" 
-                      MinWidth="212"
+                      MaxWidth="200"
                       Grid.Column="0"
                       Grid.Row="1"
                       d:DataContext="{d:DesignInstance Type=mockViewModels:NavigationViewModel, IsDesignTimeCreatable=True}">
                     <ListBox x:Name="NaigationList" SelectedIndex="0"
                              ItemsSource="{Binding NavigationItems}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="{Binding Path=Icon, Converter={StaticResource CoapExplorerIconConverter}}" 
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="{Binding Path=Icon, Converter={StaticResource CoapExplorerIconConverter}}" 
                                                              Width="32" Height="32" Padding="0" Margin="0"
                                                              Foreground="{DynamicResource PrimaryHueDarkBrush}"/>
-                                    <TextBlock Text="{Binding Name}" Margin="16 0 32 0" VerticalAlignment="Center" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                                <TextBlock Text="{Binding Name}" Margin="16 0 32 0" VerticalAlignment="Center"
+                                               Visibility="{Binding ElementName=This, Path=NavigationCollasped, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 </Grid>
                 <rxui:RoutedViewHost x:Name="ViewHost"
                                      Grid.Column="1"
                                      Grid.Row="1" 
                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <Label HorizontalAlignment="Center" VerticalAlignment="Center">🤷‍</Label>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
+                               Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
                 </rxui:RoutedViewHost>
             <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" 
                                      x:Name="MainSnackbar"

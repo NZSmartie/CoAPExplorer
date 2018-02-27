@@ -18,7 +18,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled">
-            
+
             <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ItemsSource="{Binding Devices}">
                 <ListBox.ItemsPanel>
@@ -28,9 +28,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <materialDesign:Card
-                    Width="200"
-                    Margin="4,4,0,0">
+                        <materialDesign:Card Width="200" Margin="2">
                             <Grid >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="140" />
@@ -56,14 +54,11 @@
                             Margin="8"
                             HorizontalAlignment="Right"
                             Orientation="Horizontal">
-                                    <Button
-                                Width="30"
-                                Padding="2,0,2,0"
-                                materialDesign:RippleAssist.IsCentered="True"
-                                Style="{StaticResource MaterialDesignToolButton}">
-                                        <materialDesign:PackIcon Kind="OpenInNew" />
+                                    <Button Width="30" Padding="2,0,2,0" materialDesign:RippleAssist.IsCentered="True"
+                                            Style="{StaticResource MaterialDesignToolButton}">
+                                        <materialDesign:PackIcon Kind="OpenInApp" />
                                     </Button>
-                                    <materialDesign:PopupBox Padding="2,0,2,0" Style="{StaticResource MaterialDesignToolPopupBox}">
+                                    <materialDesign:PopupBox Padding="2,0,2,0" Style="{DynamicResource MaterialDesignToolPopupBox}">
                                         <StackPanel>
                                             <Button Content="More" />
                                             <Button Content="Options" />

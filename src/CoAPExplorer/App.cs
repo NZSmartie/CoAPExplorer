@@ -4,6 +4,7 @@ using System.Text;
 using CoAPExplorer.Extensions;
 using CoAPExplorer.Services;
 using CoAPExplorer.ViewModels;
+using CoAPNet;
 using CoAPNet.Udp;
 using ReactiveUI;
 using Splat;
@@ -14,9 +15,12 @@ namespace CoAPExplorer
     {
         public IMutableDependencyResolver Services { get; }
 
-        public App()
+        public string DataPath { get; }
+
+        public App(string dataPath)
         {
             Services = Locator.CurrentMutable;
+            DataPath = dataPath;
 
 #if DEBUG
             // Debug logging
@@ -32,6 +36,9 @@ namespace CoAPExplorer
             Services
                 .RegisterLogger<CoapUdpTransportFactory>()
                 .RegisterConstant(new Navigation());
+
+            Services.Register<DiscoveryService>(() => new DiscoveryService());
+
 
         }
     }

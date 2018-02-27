@@ -17,6 +17,15 @@ namespace CoAPExplorer.WPF
     /// </summary>
     public partial class MainWindow : Window, IScreen
     {
+        public static readonly DependencyProperty NavigationCollapsedProperty = DependencyProperty.Register(
+            nameof(NavigationCollasped), typeof(bool), typeof(MainWindow), new PropertyMetadata(true));
+
+        public bool NavigationCollasped
+        {
+            get => (bool)GetValue(NavigationCollapsedProperty);
+            set => SetValue(NavigationCollapsedProperty, value);
+        }
+
         public RoutingState Router { get; set; }
 
         private readonly Navigation _navigation;
@@ -45,6 +54,7 @@ namespace CoAPExplorer.WPF
             Observable.Return(Unit.Default)
                       .InvokeCommand(selected.Command)
                       .Dispose();
+            NavigationCollasped = false;
         }
     }
 }

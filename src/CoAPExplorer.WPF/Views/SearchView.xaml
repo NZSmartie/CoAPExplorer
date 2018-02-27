@@ -26,21 +26,27 @@
                     </ListBoxItem>
                 </ListBox>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 8 0">
-                    <Button Style="{DynamicResource MaterialDesignToolButton}">
+                    <Button Style="{DynamicResource MaterialDesignToolButton}"
+                            x:Name="GoButton">
                         <materialDesign:PackIcon Margin="6,0,6,0" Kind="ArrowRight" />
                     </Button>
-                    <Button Style="{DynamicResource MaterialDesignToolButton}">
-                        <materialDesign:PackIcon Margin="6,0,6,0" Kind="Close" />
+                    <Button Style="{StaticResource MaterialDesignToolButton}" 
+                            x:Name="StopButton">
+                        <materialDesign:PackIcon Width="24" Height="24" Kind="CloseCircle" />
                     </Button>
                 </StackPanel>
                 <materialDesign:PackIcon Margin="8 12 8 0" Kind="Magnify" />
-                <TextBox Style="{StaticResource MaterialDesignTextBox}">/.well-known/core</TextBox>
+                <TextBox x:Name="SearchUrl" 
+                         Style="{StaticResource MaterialDesignTextBox}">/.well-known/core</TextBox>
             </DockPanel>
         </materialDesign:ColorZone>
         <materialDesign:DrawerHost Grid.Row="1" Grid.RowSpan="2" IsTopDrawerOpen="{Binding ElementName=FilterOptionsToggle, Path=IsSelected}">
-            <controls:DeviceListView x:Name="DeviceList" DataContext="{Binding .}" />
+            <Grid>
+                <controls:DeviceListView x:Name="DeviceList" />
+                <ProgressBar x:Name="SearchProgress" Height="3" IsIndeterminate="True" VerticalAlignment="Top" />
+            </Grid>
             <materialDesign:DrawerHost.TopDrawerContent>
-                <StackPanel Orientation="Vertical" Margin="8">
+                <StackPanel x:Name="FilterPanel" Orientation="Vertical" Margin="8" IsEnabled="False">
                     <DockPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="0,0,8,0" VerticalAlignment="Center">Search Scope</TextBlock>

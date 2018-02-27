@@ -29,13 +29,15 @@ namespace CoAPExplorer.WPF.Controls
 
         public ObservableCollection<Device> Devices
         {
-            get => (ObservableCollection<Device>) GetValue(DevicesProperty);
+            get => (ObservableCollection<Device>)GetValue(DevicesProperty);
             set => SetValue(DevicesProperty, value);
-        }   
+        }
 
         public DeviceListView()
         {
             InitializeComponent();
+
+            DataContext = this;
         }
     }
 }

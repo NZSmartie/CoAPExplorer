@@ -8,21 +8,20 @@ namespace CoAPExplorer.WPF.Converters
 {
     public class RelativeDateTimeConverter : IValueConverter
     {
-        private readonly Dictionary<long, string> _thresholds = new Dictionary<long, string>();
+        private const int _minute = 60;
+        private const int _hour = 60 * _minute;
+        private const int _day = 24 * _hour;
 
-        public RelativeDateTimeConverter()
+        private readonly Dictionary<long, string> _thresholds = new Dictionary<long, string>()
         {
-            const int minute = 60;
-            const int hour = 60 * minute;
-            const int day = 24 * hour;
-            _thresholds.Add(60, "{0} seconds ago");
-            _thresholds.Add(minute * 2, "a minute ago");
-            _thresholds.Add(45 * minute, "{0} minutes ago");
-            _thresholds.Add(120 * minute, "an hour ago");
-            _thresholds.Add(day, "{0} hours ago");
-            _thresholds.Add(day * 2, "yesterday");
-            _thresholds.Add(day * 30, "{0} days ago");
-        }
+            { _minute, "just now" },
+            { _minute * 2, "a minute ago" },
+            { 45 * _minute, "{0} minutes ago" },
+            { 120 * _minute, "an hour ago" },
+            { _day, "{0} hours ago" },
+            { _day* 2, "yesterday" },
+            { _day* 30, "{0} days ago" },
+        };
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
