@@ -24,6 +24,8 @@ namespace CoAPExplorer.WPF.Converters
                         return PackIconKind.Magnify;
                     case CoapExplorerIcon.Favouriate:
                         return PackIconKind.Star;
+                    case CoapExplorerIcon.Recent:
+                        return PackIconKind.History;
                     default:
 #if DEBUG
                         return PackIconKind.EmoticonPoop;

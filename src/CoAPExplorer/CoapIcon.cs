@@ -5,6 +5,7 @@
         None,
         Settings,
         Search,
-        Favouriate
+        Favouriate,
+        Recent
     }
 }

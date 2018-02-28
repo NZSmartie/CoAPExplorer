@@ -11,7 +11,7 @@ namespace CoAPExplorer.Services
     {
         public NavigationViewModel ViewModel { get; }
 
-        public static IScreen HostScreen { get; set; }
+        public IScreen HostScreen { get; set; }
 
         public Navigation()
         {
@@ -20,6 +20,7 @@ namespace CoAPExplorer.Services
                 NavigationItems = new ReactiveUI.ReactiveList<Models.NavigationItem>
                 {
                     new NavigationItem {Name = "Favourites", Icon = CoapExplorerIcon.Favouriate},
+                    new NavigationItem {Name = "Recent", Icon = CoapExplorerIcon.Recent},
                     new NavigationItem {
                         Name = "Search",
                         Icon = CoapExplorerIcon.Search,
