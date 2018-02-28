@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 
@@ -15,38 +16,54 @@ namespace CoAPExplorer.WPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IScreen
+    public partial class MainWindow : Window, IViewFor<HomeViewModel>
     {
-        public static readonly DependencyProperty NavigationCollapsedProperty = DependencyProperty.Register(
-            nameof(NavigationCollasped), typeof(bool), typeof(MainWindow), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsNavigationFocusedProperty = DependencyProperty.Register(
+            nameof(IsNavigationFocused), typeof(bool), typeof(MainWindow), new PropertyMetadata(true));
 
-        public bool NavigationCollasped
+        public static readonly DependencyProperty PageTitleProperty = DependencyProperty.Register(
+            nameof(PageTitle), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
+
+        public bool IsNavigationFocused
         {
-            get => (bool)GetValue(NavigationCollapsedProperty);
-            set => SetValue(NavigationCollapsedProperty, value);
+            get => (bool)GetValue(IsNavigationFocusedProperty);
+            set => SetValue(IsNavigationFocusedProperty, value);
         }
 
-        public RoutingState Router { get; set; }
+        public string PageTitle
+        {
+            get => (string)GetValue(PageTitleProperty);
+            set => SetValue(PageTitleProperty, value);
+        }
 
-        private readonly Navigation _navigation;
+        object IViewFor.ViewModel { get => ViewModel; set => ViewModel = value as HomeViewModel; }
+        public HomeViewModel ViewModel { get; set; }
 
         public MainWindow()
         {
-            _navigation = App.CoapExplorer.Services.GetService<Navigation>();
-            Router = new RoutingState();
-            // TODO: Set Favourites? or last viewed?
-            Router.NavigateAndReset
-                .Execute(new SearchViewModel(this))
-                .Subscribe();
+            ViewModel = new HomeViewModel();
 
             InitializeComponent();
 
-            ViewHost.Router = Router;
-
-            NavigationPane.DataContext = _navigation.ViewModel;
-
             NaigationList.SelectionChanged += NavigationChanged;
+
+            this.WhenActivated(disposables =>
+            {
+                this.Bind(ViewModel, vm => vm.IsNavigationFocused, v => v.IsNavigationFocused)
+                    .DisposeWith(disposables);
+
+                this.Bind(ViewModel, vm => vm.PageTitle, v => v.PageTitle)
+                    .DisposeWith(disposables);
+
+                this.OneWayBind(ViewModel, vm => vm.Router, v => v.ViewHost.Router)
+                    .DisposeWith(disposables);
+
+                this.OneWayBind(ViewModel, vm => vm.Navigation, v => v.NavigationPane.DataContext)
+                    .DisposeWith(disposables);
+            });
         }
+
+
 
         private void NavigationChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
@@ -54,7 +71,8 @@ namespace CoAPExplorer.WPF
             Observable.Return(Unit.Default)
                       .InvokeCommand(selected.Command)
                       .Dispose();
-            NavigationCollasped = false;
+
+            IsNavigationFocused = false;
         }
     }
 }

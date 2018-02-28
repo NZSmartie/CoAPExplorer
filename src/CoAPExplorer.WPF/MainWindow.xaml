@@ -23,8 +23,8 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
     <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-            <Grid>
-                <Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -33,12 +33,36 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="NavigationPane" 
-                      MaxWidth="200"
+            <materialDesign:ColorZone Grid.Row="0" Grid.ColumnSpan="2"
+                                      Mode="PrimaryDark">
+                <StackPanel Orientation="Horizontal">
+                    <DockPanel>
+                        <DockPanel.Style>
+                            <Style TargetType="DockPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=This, Path=IsNavigationFocused}" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource MaterialDesignLightBackground}"/>
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource MaterialDesignLightForeground}"/>
+                                        <Setter Property="Width" Value="{Binding ElementName=NavigationPane, Path=ActualWidth}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DockPanel.Style>
+                        <ToggleButton x:Name="NavigationToggle" HorizontalAlignment="Right" 
+                                      DockPanel.Dock="Right"  Margin="8" 
+                                      IsChecked="{Binding ElementName=This, Path=IsNavigationFocused}"
+                                      Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+                    </DockPanel>
+                    <TextBlock Margin="16,0,0,0" VerticalAlignment="Center"
+                               Text="{Binding Path=PageTitle, ElementName=This, FallbackValue=MainWindow}"/>
+                </StackPanel>
+            </materialDesign:ColorZone>
+            <Grid x:Name="NavigationPane"
+                      MaxWidth="250"
                       Grid.Column="0"
                       Grid.Row="1"
                       d:DataContext="{d:DesignInstance Type=mockViewModels:NavigationViewModel, IsDesignTimeCreatable=True}">
-                    <ListBox x:Name="NaigationList" SelectedIndex="0"
+                <ListBox x:Name="NaigationList" SelectedIndex="0"
                              ItemsSource="{Binding NavigationItems}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -46,26 +70,26 @@
                                 <materialDesign:PackIcon Kind="{Binding Path=Icon, Converter={StaticResource CoapExplorerIconConverter}}" 
                                                              Width="32" Height="32" Padding="0" Margin="0"
                                                              Foreground="{DynamicResource PrimaryHueDarkBrush}"/>
-                                <TextBlock Text="{Binding Name}" Margin="16 0 32 0" VerticalAlignment="Center"
-                                               Visibility="{Binding ElementName=This, Path=NavigationCollasped, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <TextBlock Text="{Binding Name}" Margin="16 0 32 0" VerticalAlignment="Center" MinWidth="120"
+                                               Visibility="{Binding ElementName=This, Path=IsNavigationFocused, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                </Grid>
-                <rxui:RoutedViewHost x:Name="ViewHost"
+            </Grid>
+            <rxui:RoutedViewHost x:Name="ViewHost" 
                                      Grid.Column="1"
                                      Grid.Row="1" 
                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
                                Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
-                </rxui:RoutedViewHost>
+            </rxui:RoutedViewHost>
             <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" 
                                      x:Name="MainSnackbar"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
                                      Grid.Row="1"
                                      Margin="114,0,115,0" />
-            </Grid>
+        </Grid>
     </materialDesign:DialogHost>
 </Window>
