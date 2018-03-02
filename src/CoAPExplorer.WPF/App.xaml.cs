@@ -48,6 +48,7 @@ namespace CoAPExplorer.WPF
             _coapExplorer.Services.Register<IViewFor<SearchViewModel>>(() => new SearchView());
             _coapExplorer.Services.Register<IViewFor<DeviceViewModel>>(() => new DeviceView());
             _coapExplorer.Services.Register<IViewFor<NavigationViewModel>>(() => new NavigationView());
+            _coapExplorer.Services.Register<IViewFor<DeviceNavigationViewModel>>(() => new DeviceNavigationView());
 
 
             //_coapExplorer.Services

@@ -8,7 +8,7 @@ using Splat;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class DeviceViewModel : ReactiveObject, IRoutableViewModel
+    public class DeviceViewModel : ReactiveObject, IRoutableViewModel, ISupportsNavigatation
     {
         private string _urlPathSegment;
 
@@ -28,10 +28,14 @@ namespace CoAPExplorer.ViewModels
 
         public ReactiveCommand OpenCommand { get; }
 
+        public INavigationViewModel Navigation { get; }
+
         public DeviceViewModel(Device device = null, IScreen hostScreen = null)
         {
             HostScreen = hostScreen;
             Device = device ?? new Device();
+
+            Navigation = new DeviceNavigationViewModel(this);
 
             OpenCommand = ReactiveCommand.Create(() => hostScreen.Router.Navigate.Execute(this).Subscribe());
         }

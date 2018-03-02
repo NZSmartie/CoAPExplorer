@@ -63,7 +63,11 @@
     <Compile Include="Controls\DeviceListView.xaml.cs">
       <DependentUpon>DeviceListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MockViewModels\DeviceNavigationViewModel.cs" />
     <Compile Include="MockViewModels\DeviceViewModel.cs" />
+    <Compile Include="Views\DeviceNavigationView.xaml.cs">
+      <DependentUpon>DeviceNavigationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DeviceView.xaml.cs">
       <DependentUpon>DeviceView.xaml</DependentUpon>
     </Compile>
@@ -94,6 +98,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Controls\DeviceListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DeviceNavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
