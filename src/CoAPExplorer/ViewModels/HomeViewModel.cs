@@ -12,42 +12,59 @@ using CoAPExplorer.Models;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class HomeViewModel : ReactiveObject, IScreen, ISupportsActivation
+    public class HomeViewModel : ReactiveObject, IScreen, IRoutableViewModel, ISupportsActivation, ISupportsNavigatation
     {
         private ObservableAsPropertyHelper<string> _pageTitle;
         public string PageTitle => _pageTitle.Value;
 
-        private bool _isNavigationFocused = false;
+        private bool _isNavigationFocused = true;
 
         public bool IsNavigationFocused {
             get => _isNavigationFocused;
             set => this.RaiseAndSetIfChanged(ref _isNavigationFocused, value);
         }
 
-        public RoutingState Router { get; }
+        public RoutingState Router { get; } = new RoutingState();
 
         private readonly Navigation _navigation;
-        public NavigationViewModel Navigation => _navigation.ViewModel;
+
+        public INavigationViewModel Navigation => _navigation.ViewModel;
 
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
-        public HomeViewModel()
+        public ObservableAsPropertyHelper<string> _urlPathSegment;
+        public string UrlPathSegment => _urlPathSegment.Value;
+
+        public IScreen HostScreen { get; } 
+
+        public HomeViewModel(IScreen hostScreen)
         {
-            Router = new RoutingState();
+            HostScreen = hostScreen;
 
             _navigation = Locator.Current.GetService<Navigation>();
             _navigation.HostScreen = this;
-            
+
+            _urlPathSegment = ObservableAsPropertyHelper<string>.Default();
+
             // TODO: Set Favourites? or last viewed?
             Router.NavigateAndReset
-                .Execute(new SearchViewModel(this))
+                .Execute(new SearchViewModel(hostScreen))
                 .Subscribe();
 
             this.WhenActivated((CompositeDisposable disposables) =>
             {
                 _pageTitle = Router.CurrentViewModel
                       .Select(rvm => rvm.UrlPathSegment)
-                      .ToProperty(this, vm => vm.PageTitle, "")
+                      .ToProperty(this, vm => vm.PageTitle)
+                      .DisposeWith(disposables);
+
+                _urlPathSegment = Router.CurrentViewModel
+                      .Select(rvm => rvm.UrlPathSegment)
+                      .ToProperty(this, vm => vm.UrlPathSegment)
+                      .DisposeWith(disposables);
+
+                Router.Changing
+                      .Subscribe(_ => IsNavigationFocused = false)
                       .DisposeWith(disposables);
             });
         }

@@ -8,6 +8,7 @@
         xmlns:mockViewModels="clr-namespace:CoAPExplorer.WPF.MockViewModels"
         xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
         xmlns:rxui="clr-namespace:ReactiveUI;assembly=ReactiveUI.Wpf"
+        xmlns:views="clr-namespace:CoAPExplorer.WPF.Views"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="12"
@@ -40,49 +41,65 @@
                         <DockPanel.Style>
                             <Style TargetType="DockPanel">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=This, Path=IsNavigationFocused}" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource MaterialDesignLightBackground}"/>
-                                        <Setter Property="TextElement.Foreground" Value="{StaticResource MaterialDesignLightForeground}"/>
+                                    <DataTrigger Binding="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}" Value="True">
+                                        <!--<Setter Property="Background" Value="{StaticResource MaterialDesignLightBackground}"/>
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource MaterialDesignLightForeground}"/>-->
                                         <Setter Property="Width" Value="{Binding ElementName=NavigationPane, Path=ActualWidth}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </DockPanel.Style>
-                        <ToggleButton x:Name="NavigationToggle" HorizontalAlignment="Right" 
-                                      DockPanel.Dock="Right"  Margin="8" 
-                                      IsChecked="{Binding ElementName=This, Path=IsNavigationFocused}"
-                                      Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+                        <ToggleButton x:Name="NavigationToggle" HorizontalAlignment="Left" 
+                                      DockPanel.Dock="Right"  Margin="8" Panel.ZIndex="1000000000"
+                                      IsChecked="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}">
+                            <ToggleButton.Style>
+                                <Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignHamburgerToggleButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Value="True">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
                     </DockPanel>
                     <TextBlock Margin="16,0,0,0" VerticalAlignment="Center"
                                Text="{Binding Path=PageTitle, ElementName=This, FallbackValue=MainWindow}"/>
                 </StackPanel>
             </materialDesign:ColorZone>
-            <Grid x:Name="NavigationPane"
-                      MaxWidth="250"
-                      Grid.Column="0"
-                      Grid.Row="1"
-                      d:DataContext="{d:DesignInstance Type=mockViewModels:NavigationViewModel, IsDesignTimeCreatable=True}">
-                <ListBox x:Name="NaigationList" SelectedIndex="0"
-                             ItemsSource="{Binding NavigationItems}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="{Binding Path=Icon, Converter={StaticResource CoapExplorerIconConverter}}" 
-                                                             Width="32" Height="32" Padding="0" Margin="0"
-                                                             Foreground="{DynamicResource PrimaryHueDarkBrush}"/>
-                                <TextBlock Text="{Binding Name}" Margin="16 0 32 0" VerticalAlignment="Center" MinWidth="120"
-                                               Visibility="{Binding ElementName=This, Path=IsNavigationFocused, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+            <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+                <ContentPresenter x:Name="NavigationPane" MaxWidth="250">
+                    <ContentPresenter.Style>
+                        <Style TargetType="ContentPresenter">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}" Value="False">
+                                    <Setter Property="Margin" Value="0 52 0 0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentPresenter.Style>
+                    <ContentPresenter.Content>
+                        <views:NavigationView d:DataContext="{d:DesignInstance Type=mockViewModels:NavigationViewModel, IsDesignTimeCreatable=True}"/>
+                    </ContentPresenter.Content>
+                </ContentPresenter>
+                <Button VerticalAlignment="Top" HorizontalAlignment="Right" Padding="16" Height="52"
+                        Style="{StaticResource MaterialDesignToolButton}"
+                        materialDesign:RippleAssist.ClipToBounds="True"
+                        Command="{Binding ElementName=This, Path=CollapseNavigation}"
+                        Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                        Visibility="{Binding ElementName=NavigationToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <materialDesign:PackIcon Kind="ChevronLeft" />
+                </Button>
+                <ToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8"
+                              IsChecked="{Binding ElementName=NavigationToggle, Path=IsChecked}"
+                              Visibility="{Binding ElementName=NavigationToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                              Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                              Style="{Binding ElementName=NavigationToggle, Path=Style}" />
             </Grid>
-            <rxui:RoutedViewHost x:Name="ViewHost" 
-                                     Grid.Column="1"
-                                     Grid.Row="1" 
-                                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <rxui:RoutedViewHost x:Name="ViewHost" Grid.Column="1" Grid.Row="1" 
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
-                               Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
+                           Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
             </rxui:RoutedViewHost>
             <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" 
                                      x:Name="MainSnackbar"

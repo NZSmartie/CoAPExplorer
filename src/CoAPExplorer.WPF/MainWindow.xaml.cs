@@ -1,13 +1,15 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
-
+using System.Windows.Data;
 using CoAPExplorer.Models;
 using CoAPExplorer.Services;
 using CoAPExplorer.ViewModels;
+using CoAPExplorer.WPF.Views;
 using ReactiveUI;
 using Splat;
 
@@ -16,13 +18,16 @@ namespace CoAPExplorer.WPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IViewFor<HomeViewModel>
+    public partial class MainWindow : Window, IScreen
     {
         public static readonly DependencyProperty IsNavigationFocusedProperty = DependencyProperty.Register(
             nameof(IsNavigationFocused), typeof(bool), typeof(MainWindow), new PropertyMetadata(true));
 
         public static readonly DependencyProperty PageTitleProperty = DependencyProperty.Register(
             nameof(PageTitle), typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
+
+        private static readonly DependencyProperty CollapseNavigationProperty = DependencyProperty.Register(
+            nameof(CollapseNavigation), typeof(System.Windows.Input.ICommand), typeof(MainWindow), new PropertyMetadata(null));
 
         public bool IsNavigationFocused
         {
@@ -36,43 +41,58 @@ namespace CoAPExplorer.WPF
             set => SetValue(PageTitleProperty, value);
         }
 
-        object IViewFor.ViewModel { get => ViewModel; set => ViewModel = value as HomeViewModel; }
-        public HomeViewModel ViewModel { get; set; }
+        protected readonly CompositeDisposable CompositeDisposables = new CompositeDisposable();
+
+        public RoutingState Router { get; } = new RoutingState();
+
+        private ReactiveCommand CollapseNavigation
+        {
+            get => (ReactiveCommand)GetValue(CollapseNavigationProperty);
+            set => SetValue(CollapseNavigationProperty, value);
+        }
 
         public MainWindow()
         {
-            ViewModel = new HomeViewModel();
+            CollapseNavigation = ReactiveCommand.Create(() => IsNavigationFocused = false, this.WhenAnyValue(vm => vm.IsNavigationFocused));
 
             InitializeComponent();
 
-            NaigationList.SelectionChanged += NavigationChanged;
+            ViewHost.Router = Router;
 
-            this.WhenActivated(disposables =>
+            Router.NavigateAndReset
+                  .Execute(new HomeViewModel(this))
+                  .Subscribe();
+
+            Router.CurrentViewModel
+                  .Subscribe(rvm =>
+                  {
+                      PageTitle = rvm.UrlPathSegment;
+
+                      if (rvm is ISupportsNavigatation nvm)
+                      {
+                          var view = ViewLocator.Current.ResolveView(nvm.Navigation);
+                          NavigationPane.Content = view;
+                          view.ViewModel = nvm.Navigation;
+
+                          ClearValue(IsNavigationFocusedProperty);
+                          SetBinding(IsNavigationFocusedProperty, new Binding("IsOpen") { Source = nvm.Navigation, Mode = BindingMode.TwoWay });
+                      }
+                  })
+                  .DisposeWith(CompositeDisposables);
+
+#if DEBUG
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
-                this.Bind(ViewModel, vm => vm.IsNavigationFocused, v => v.IsNavigationFocused)
-                    .DisposeWith(disposables);
-
-                this.Bind(ViewModel, vm => vm.PageTitle, v => v.PageTitle)
-                    .DisposeWith(disposables);
-
-                this.OneWayBind(ViewModel, vm => vm.Router, v => v.ViewHost.Router)
-                    .DisposeWith(disposables);
-
-                this.OneWayBind(ViewModel, vm => vm.Navigation, v => v.NavigationPane.DataContext)
-                    .DisposeWith(disposables);
-            });
+                IsNavigationFocused = true;
+            }
+#endif
         }
 
-
-
-        private void NavigationChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        protected override void OnDeactivated(EventArgs e)
         {
-            var selected = e.AddedItems[0] as NavigationItem;
-            Observable.Return(Unit.Default)
-                      .InvokeCommand(selected.Command)
-                      .Dispose();
+            base.OnDeactivated(e);
 
-            IsNavigationFocused = false;
+            CompositeDisposables.Dispose();
         }
     }
 }

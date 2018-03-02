@@ -44,8 +44,11 @@ namespace CoAPExplorer.WPF
             var databasePath = Path.Combine(applicationPath.FullName, DatabaseName);
 
             // Register our servies and Views
+            _coapExplorer.Services.Register<IViewFor<HomeViewModel>>(() => new HomeView());
             _coapExplorer.Services.Register<IViewFor<SearchViewModel>>(() => new SearchView());
             _coapExplorer.Services.Register<IViewFor<DeviceViewModel>>(() => new DeviceView());
+            _coapExplorer.Services.Register<IViewFor<NavigationViewModel>>(() => new NavigationView());
+
 
             //_coapExplorer.Services
             //    .RegisterConstant(new CoapContext(databasePath));
