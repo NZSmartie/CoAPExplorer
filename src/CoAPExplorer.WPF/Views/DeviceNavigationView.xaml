@@ -7,32 +7,54 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mockViewModels="clr-namespace:CoAPExplorer.WPF.MockViewModels"
              MinWidth="180"
-             mc:Ignorable="d" d:DesignHeight="459" d:DesignWidth="203"
+             mc:Ignorable="d" d:DesignHeight="459"
              d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceNavigationViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="160"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Visibility="{Binding Path=IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Grid Grid.Row="0" MinHeight="160" Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Image />
             <Rectangle Fill="{DynamicResource SecondaryAccentBrush}" />
-
-            <StackPanel Orientation="Vertical" Margin="16"  VerticalAlignment="Bottom">
-                <TextBlock Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                           Style="{StaticResource MaterialDesignBody2TextBlock}"
-                           Text="{Binding Name}"/>
-                <TextBlock Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                           Style="{StaticResource MaterialDesignBody1TextBlock}"
-                           Text="{Binding Address}"/>
-            </StackPanel>
         </Grid>
-        <ListBox Grid.Row="1">
-            
-        </ListBox>
-
+        <Grid Grid.Row="0" VerticalAlignment="Bottom">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsOpen}" Value="true">
+                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource PrimaryHueDarkForegroundBrush}"/>
+                            <Setter Property="Margin" Value="8 8 0 8" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsOpen}" Value="false">
+                            <Setter Property="Margin" Value="0" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <materialDesign:PackIcon VerticalAlignment="Center" Kind="Raspberrypi" Margin="8 8 16 8" />
+            <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}"
+                       Text="{Binding Name}"/>
+            <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"
+                       Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       Text="{Binding Address}"/>
+        </StackPanel>
+        </Grid>
+        <TreeView Grid.Row="1">
+            <TreeViewItem Header="Resources">
+                <TreeViewItem Header="Banana" />
+                <TreeViewItem Header="Peach" />
+                <TreeViewItem Header="Pear" />
+                <TreeViewItem Header="Strawberry" />
+            </TreeViewItem>
+        </TreeView>
     </Grid>
 </UserControl>

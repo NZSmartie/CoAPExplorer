@@ -16,6 +16,7 @@ using CoAPExplorer.Extensions;
 using CoAPExplorer.Services;
 using CoAPExplorer.ViewModels;
 using CoAPExplorer.WPF.Views;
+using CoAPExplorer.WPF.Dialogs;
 
 namespace CoAPExplorer.WPF
 {
@@ -45,10 +46,14 @@ namespace CoAPExplorer.WPF
 
             // Register our servies and Views
             _coapExplorer.Services.Register<IViewFor<HomeViewModel>>(() => new HomeView());
+            _coapExplorer.Services.Register<IViewFor<RecentDevicesViewModel>>(() => new RecentDevicesView());
             _coapExplorer.Services.Register<IViewFor<SearchViewModel>>(() => new SearchView());
             _coapExplorer.Services.Register<IViewFor<DeviceViewModel>>(() => new DeviceView());
             _coapExplorer.Services.Register<IViewFor<NavigationViewModel>>(() => new NavigationView());
             _coapExplorer.Services.Register<IViewFor<DeviceNavigationViewModel>>(() => new DeviceNavigationView());
+
+            // Dialogs
+            _coapExplorer.Services.Register<IViewFor<NewDeviceViewModel>>(() => new NewDeviceViewDialog());
 
 
             //_coapExplorer.Services

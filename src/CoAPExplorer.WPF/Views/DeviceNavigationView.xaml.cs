@@ -34,13 +34,7 @@ namespace CoAPExplorer.WPF.Views
 
         public DeviceNavigationView()
         {
-            InitializeComponent();
-
-            this.WhenActivated(disposables =>
-            {
-                this.Bind(ViewModel, vm => vm.IsOpen, v => v.IsOpen)
-                    .DisposeWith(disposables);
-            });
+            SetBinding(DataContextProperty, new Binding(nameof(ViewModel)) { Mode = BindingMode.OneWay });
         }
 
         public DeviceNavigationViewModel ViewModel { get; set; }
@@ -49,7 +43,5 @@ namespace CoAPExplorer.WPF.Views
             get => ViewModel;
             set => ViewModel = value as DeviceNavigationViewModel;
         }
-
-
     }
 }

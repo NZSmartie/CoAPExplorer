@@ -59,6 +59,9 @@
       <DependentUpon>FilterOption.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\RelativeDateTimeConverter.cs" />
+    <Compile Include="Dialogs\NewDeviceViewDialog.xaml.cs">
+      <DependentUpon>NewDeviceViewDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MockViewModels\DeviceListMock.cs" />
     <Compile Include="Controls\DeviceListView.xaml.cs">
       <DependentUpon>DeviceListView.xaml</DependentUpon>
@@ -77,10 +80,17 @@
     <Compile Include="Views\NavigationView.xaml.cs">
       <DependentUpon>NavigationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RecentDevicesView.xaml.cs">
+      <DependentUpon>RecentDevicesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\FilterOption.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\NewDeviceViewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,6 +124,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NavigationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RecentDevicesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

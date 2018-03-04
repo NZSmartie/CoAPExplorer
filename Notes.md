@@ -9,6 +9,8 @@
   - Save last search urls
 ---
 
+ - Investigate User Input Validation
+
 Create a App class that will be inherited by the Xamarin.Forms App class. 
  - sets up viewmodels and reactive views
  - other DI stuff

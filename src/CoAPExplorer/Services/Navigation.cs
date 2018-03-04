@@ -20,7 +20,13 @@ namespace CoAPExplorer.Services
                 NavigationItems = new ReactiveUI.ReactiveList<Models.NavigationItem>
                 {
                     new NavigationItem {Name = "Favourites", Icon = CoapExplorerIcon.Favouriate},
-                    new NavigationItem {Name = "Recent", Icon = CoapExplorerIcon.Recent},
+                    new NavigationItem {
+                        Name = "Recent",
+                        Icon = CoapExplorerIcon.Recent,
+                        Command = ReactiveCommand.Create(() => HostScreen?.Router.Navigate
+                                                                                 .Execute(new RecentDevicesViewModel(HostScreen))
+                                                                                 .Subscribe())
+                    },
                     new NavigationItem {
                         Name = "Search",
                         Icon = CoapExplorerIcon.Search,
