@@ -23,7 +23,18 @@ namespace CoAPExplorer.WPF.MockViewModels
                 LastSeen = DateTime.Now
             })
         {
-            
+            Message = new Message
+            {
+                Id = 1234,
+                Token = new byte[] { 0x01, 0x02, 0x03, 0x04 },
+
+                Url = "/some/resource",
+                Code = CoapMessageCode.Get,
+                //Type = CoapMessageType.Confirmable,
+
+                ContentFormat = CoAPNet.Options.ContentFormatType.ApplicationJson,
+                Payload = "{\"test\": 1234}"
+            };
         }
     }
 }

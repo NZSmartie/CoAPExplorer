@@ -36,9 +36,8 @@
                 </StackPanel>
                 <materialDesign:PackIcon Margin="8 0 8 6" Kind="Raspberrypi" VerticalAlignment="Bottom"
                                          Foreground="{Binding ElementName=SearchUrl, Path=BorderBrush}"/>
-                <ComboBox IsEditable="True" x:Name="SearchUrl" SelectedIndex="0">
-                    <ComboBoxItem>/.well-known/core</ComboBoxItem>
-                </ComboBox>
+                <ComboBox IsEditable="True" x:Name="Url" DisplayMemberPath="Url"
+                          SelectedItem="{Binding Message}" ItemsSource="{Binding RecentMessages}"/>
             </DockPanel>
         </materialDesign:ColorZone>
         <TabControl Grid.Row="1">
@@ -51,10 +50,11 @@
                     <materialDesign:ColorZone Padding="8 0 0 0" Grid.Row="0">
                         <DockPanel>
 
-                            <TextBox x:Name="PhoneTextBox" Width="80" Text="1234"
+                            <TextBox x:Name="PhoneTextBox" Width="80"
                                      Margin="4 0 4 0" VerticalAlignment="Center"
                                      materialDesign:HintAssist.Hint="Message ID"
-                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Text="{Binding Message.Id}"/>
                             <ComboBox SelectedIndex="1" Margin="4 0 4 0" materialDesign:HintAssist.Hint="Code"
                               materialDesign:HintAssist.HintOpacity=".26" HorizontalAlignment="Left" Width="70"
                               Style="{StaticResource MaterialDesignFloatingHintComboBox}">
@@ -87,7 +87,7 @@
                                     <materialDesign:PackIcon Kind="Autorenew" />
                                 </Button>
                                 <ListBox SelectionMode="Multiple">
-                                    <ListBoxItem x:Name="MoreOptionsToggle" IsSelected="True"
+                                    <ListBoxItem x:Name="MoreOptionsToggle"
                                         Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Background}">
                                         <materialDesign:PackIcon Kind="MenuDown" />
                                     </ListBoxItem>
@@ -109,19 +109,18 @@
                         <TabControl>
                             <TabItem Header="RAW">
                                 <TextBox AcceptsReturn="True" TextWrapping="Wrap"
-                                     VerticalScrollBarVisibility="Auto"
-                                     VerticalContentAlignment="Top">
-                                    Somethign somethign dark side?
-                                </TextBox>
+                                         VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"
+                                         Text="{Binding Message.Payload}"/>
                             </TabItem>
-                            <TabItem Header="FORMATTED" IsEnabled="False">
+                            <TabItem Header="FORMATTED">
                                 <TextBox AcceptsReturn="True" TextWrapping="Wrap"
                                      VerticalScrollBarVisibility="Auto"
                                      VerticalContentAlignment="Top">
-                                    Somethign somethign dark side?
+                                    TODO: Apply (coloured?) formatting to {Message.Payload}
                                 </TextBox>
                             </TabItem>
-                            <TabItem Header="BINARY" IsEnabled="False">
+                            <TabItem Header="BINARY">
+                                TODO: Use Converter to generate binary representation of Message.Payload
                             </TabItem>
                         </TabControl>
                     </materialDesign:DrawerHost>
