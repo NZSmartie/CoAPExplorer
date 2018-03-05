@@ -27,7 +27,6 @@ namespace CoAPExplorer.WPF.Views
 
                 ViewModel.AddDeviceCommand.Subscribe(ndvm =>
                                            {
-                                               System.Diagnostics.Debug.WriteLine("Opening Dialog window");
                                                var view = ViewLocator.Current.ResolveView(ndvm);
                                                view.ViewModel = ndvm;
 
@@ -37,8 +36,6 @@ namespace CoAPExplorer.WPF.Views
 
                 this.BindCommand(ViewModel, vm => vm.AddDeviceCommand, v => v.AddButton, nameof(AddButton.ToggleCheckedContentClick))
                     .DisposeWith(disposables);
-
-                AddButton.WhenAnyValue(a => a.IsPopupOpen).Subscribe(isOpen => System.Diagnostics.Debug.WriteLine($"popup is {isOpen}")).DisposeWith(disposables);
             });
         }
 
