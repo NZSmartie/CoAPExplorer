@@ -55,13 +55,12 @@
                                 <StackPanel Grid.Row="2" Margin="8" HorizontalAlignment="Right" Orientation="Horizontal">
                                     <Button Width="30" Padding="2,0,2,0" materialDesign:RippleAssist.IsCentered="True"
                                             Style="{StaticResource MaterialDesignToolButton}"
-                                            Command="{Binding  OpenCommand}" Margin="0,8,0,-8">
-                                        <materialDesign:PackIcon Kind="OpenInApp" />
+                                            Command="{Binding  OpenCommand}" Margin="0,8,0,8">
+                                        <materialDesign:PackIcon Kind="OpenInApp" Width="24" Height="24" />
                                     </Button>
                                     <materialDesign:PopupBox Padding="2,0,2,0" Style="{DynamicResource MaterialDesignToolPopupBox}">
                                         <StackPanel>
-                                            <Button Content="More" />
-                                            <Button Content="Options" />
+                                            <Button Content="Remove Device" IsEnabled="False" />
                                         </StackPanel>
                                     </materialDesign:PopupBox>
                                 </StackPanel>
