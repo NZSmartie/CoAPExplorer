@@ -22,6 +22,9 @@ namespace CoAPExplorer.WPF.Views
 
             this.WhenActivated(disposables =>
             {
+                this.OneWayBind(ViewModel, vm => vm.Devices, v => v.DeviceListView.Devices)
+                    .DisposeWith(disposables);
+
                 ViewModel.AddDeviceCommand.Subscribe(ndvm =>
                                            {
                                                System.Diagnostics.Debug.WriteLine("Opening Dialog window");

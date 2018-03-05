@@ -17,11 +17,42 @@ namespace CoAPExplorer.ViewModels
 
         public ICoapEndpoint Endpoint => Device.Endpoint;
 
-        public string Name => Device.Name;
+        public string Name {
+            get => Device.Name;
+            set
+            {
+                if (Device.Name == value)
+                    return;
+                Device.Name = value;
+                this.RaisePropertyChanged(nameof(Name));
+            }
+        }
 
-        public string Address => Device.Address;
+        public string Address=> Device.Address;
 
-        public DateTime LastSeen => Device.LastSeen;
+        public DateTime LastSeen
+        {
+            get => Device.LastSeen;
+            set
+            {
+                if (Device.LastSeen == value)
+                    return;
+                Device.LastSeen= value;
+                this.RaisePropertyChanged(nameof(LastSeen));
+            }
+        }
+
+        public bool IsFavourite
+        {
+            get => Device.IsFavourite;
+            set
+            {
+                if (Device.IsFavourite == value)
+                    return;
+                Device.IsFavourite = value;
+                this.RaisePropertyChanged(nameof(IsFavourite));
+            }
+        }
 
         private Message _message;
         public Message Message

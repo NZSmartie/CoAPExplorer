@@ -1,14 +1,29 @@
-﻿using CoAPNet;
+﻿using CoAPExplorer.Services;
+using CoAPNet;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
 namespace CoAPExplorer.Models
 {
     public class Device
     {
+        private ICoapEndpoint _endpoint;
+
+        [Key]
         public int Id { get; set; }
 
-        public ICoapEndpoint Endpoint { get; set; } = new CoapEndpoint();
+        [NotMapped]
+        public ICoapEndpoint Endpoint
+        {
+            get => _endpoint ?? (_endpoint = CoapEndpointFactory.GetEndpoint(Address, EndpointType));
+            set => _endpoint = value;
+        }
+
+        public EndpointType EndpointType { get; set; }
+
+        public bool IsFavourite { get; set; }
 
         public string Name { get; set; } = string.Empty;
 

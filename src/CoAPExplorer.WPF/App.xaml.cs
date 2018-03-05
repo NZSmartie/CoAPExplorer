@@ -9,9 +9,11 @@ using System.Windows;
 
 using CoAPNet;
 using CoAPNet.Udp;
+using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using Splat;
 
+using CoAPExplorer.Database;
 using CoAPExplorer.Extensions;
 using CoAPExplorer.Services;
 using CoAPExplorer.ViewModels;
@@ -26,6 +28,7 @@ namespace CoAPExplorer.WPF
     public partial class App : Application
     {
         private readonly CoAPExplorer.App _coapExplorer;
+        private readonly CoapExplorerContext _database;
 
         public static CoAPExplorer.App CoapExplorer => (Current as App)._coapExplorer;
 
@@ -38,13 +41,20 @@ namespace CoAPExplorer.WPF
             if (!applicationPath.Exists)
                 applicationPath.Create();
 
+
+
             // Shared application class that is used in other platforms.
             _coapExplorer = new CoAPExplorer.App(applicationPath.FullName);
 
             // TODO: Make this configurable? as to make this application portable?
             var databasePath = Path.Combine(applicationPath.FullName, DatabaseName);
+            _database = new CoapExplorerContext(databasePath);
+            _database.Database.Migrate();
 
-            // Register our servies and Views
+            // Register Services
+            _coapExplorer.Services.RegisterConstant(_database);
+
+            // Register Views
             _coapExplorer.Services.Register<IViewFor<HomeViewModel>>(() => new HomeView());
             _coapExplorer.Services.Register<IViewFor<RecentDevicesViewModel>>(() => new RecentDevicesView());
             _coapExplorer.Services.Register<IViewFor<SearchViewModel>>(() => new SearchView());
@@ -62,6 +72,7 @@ namespace CoAPExplorer.WPF
 
         protected override void OnExit(ExitEventArgs e)
         {
+            _database.Dispose();
             base.OnExit(e);
         }
     }

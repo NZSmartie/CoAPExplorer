@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using System.ComponentModel.DataAnnotations;
 
 using CoAPNet;
 using CoAPNet.Udp;
@@ -10,13 +9,6 @@ using System.Linq;
 
 namespace CoAPExplorer.Services
 {
-    public enum EndpointType
-    {
-        [Display(Name = "None")]
-        None,
-        [Display(Name = "UDP")]
-        Udp
-    }
 
     public class CoapEndpointFactory
     {
@@ -30,7 +22,7 @@ namespace CoAPExplorer.Services
         //    var endpoint = new IPEndPoint(Coap.MulticastIPv4)
         //}
 
-        public ICoapEndpoint GetEndpoint(string address, EndpointType type)
+        public static ICoapEndpoint GetEndpoint(string address, EndpointType type)
         {
             switch (type)
             {

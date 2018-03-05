@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <controls:DeviceListView d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceListMock, IsDesignTimeCreatable=True}" />
+        <controls:DeviceListView x:Name="DeviceListView" d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceListMock, IsDesignTimeCreatable=True}" />
         <materialDesign:PopupBox x:Name="AddButton"
                                  PlacementMode="TopAndAlignCentres" UnfurlOrientation="Vertical"
                                  Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}"

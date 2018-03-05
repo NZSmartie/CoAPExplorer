@@ -17,7 +17,6 @@ namespace CoAPExplorer.ViewModels
         private string _address;
         private IScreen _hostScreen;
         private EndpointType _selectedTransport;
-        private readonly CoapEndpointFactory _endpointFactory;
 
         public string Name { get => _name; set => this.RaiseAndSetIfChanged(ref _name, value); }
 
@@ -33,8 +32,6 @@ namespace CoAPExplorer.ViewModels
         {
             _hostScreen = hostScreen;
 
-            _endpointFactory = new CoapEndpointFactory();
-
             Transports.AddRange(Enum.GetValues(typeof(EndpointType))
                                     .Cast<EndpointType>()
                                     .Where(e => e != EndpointType.None)
@@ -42,12 +39,14 @@ namespace CoAPExplorer.ViewModels
 
             AddDeviceCommand = ReactiveCommand.Create(() =>
             {
+                // TODO: User Input Validation
+                // TODO: Can re add another devie with the same Endpoint address?
                 var deviceViewModel = new DeviceViewModel(
                     new Device
                     {
                         Name = Name,
                         Address = Address,
-                        Endpoint = _endpointFactory.GetEndpoint(Address, SelectedTransport),
+                        Endpoint = CoapEndpointFactory.GetEndpoint(Address, SelectedTransport),
                     });
                 _hostScreen.Router.Navigate
                                   .Execute(deviceViewModel)
