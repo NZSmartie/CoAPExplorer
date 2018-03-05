@@ -27,9 +27,6 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <StackPanel.InputBindings>
-                            <MouseBinding Gesture="LeftClick" Command="{Binding Command}" />
-                        </StackPanel.InputBindings>
                         <materialDesign:PackIcon Kind="{Binding Path=Icon, Converter={StaticResource CoapExplorerIconConverter}}" 
                                                  Width="32" Height="32" Padding="0" Margin="0"
                                                  Foreground="{DynamicResource PrimaryHueDarkBrush}"/>

@@ -49,6 +49,9 @@ namespace CoAPExplorer.WPF.Views
                 this.OneWayBind(ViewModel, vm => vm.NavigationItems, v => v.NaigationList.ItemsSource)
                     .DisposeWith(disposables);
 
+                this.Bind(ViewModel, vm => vm.SelectedNavigationItem, v => v.NaigationList.SelectedItem)
+                    .DisposeWith(disposables);
+
                 //Observable.FromEventPattern<SelectionChangedEventHandler, SelectionChangedEventArgs>(
                 //    h => NaigationList.SelectionChanged += h,
                 //    h => NaigationList.SelectionChanged -= h)
