@@ -35,12 +35,15 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <ToggleButton Grid.Row="0"
-                                              Margin="0,0,16,-20"
-                                              HorizontalAlignment="Right"
-                                              VerticalAlignment="Bottom"
-                                              Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}">
-                                    <materialDesign:PackIcon Kind="Star" />
+                                <ToggleButton Grid.Row="0" Margin="0,0,16,-20"
+                                              HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                              IsChecked="{Binding IsFavourite}"
+                                              Style="{StaticResource MaterialDesignActionLightToggleButton}"
+                                              Background="Transparent" Foreground="{DynamicResource SecondaryAccentBrush}">
+                                    <materialDesign:ToggleButtonAssist.OnContent>
+                                        <materialDesign:PackIcon Kind="Star" />
+                                    </materialDesign:ToggleButtonAssist.OnContent>
+                                    <materialDesign:PackIcon Kind="StarOutline" />
                                 </ToggleButton>
                                 <StackPanel Grid.Row="1" Margin="8,24,8,0">
                                     <TextBlock FontWeight="Bold" Text="{Binding Name, Mode=OneWay}"/>

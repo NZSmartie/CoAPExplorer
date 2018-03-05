@@ -22,7 +22,8 @@ namespace CoAPExplorer.WPF.MockViewModels
                 new DeviceViewModel(new Device{
                     Name = "Weather Station",
                     Address = "192.168.x.x",
-                    LastSeen = DateTime.Now.AddMinutes(-1)
+                    LastSeen = DateTime.Now.AddMinutes(-1),
+                    IsFavourite = true,
                 }),
                 new DeviceViewModel(new Device{
                     Name = "Pet Food Station",
