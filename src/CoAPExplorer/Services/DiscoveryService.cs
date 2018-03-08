@@ -24,7 +24,7 @@ namespace CoAPExplorer.Services
 
         public DiscoveryService()
         {
-            _coapClient = new CoapClient(CoapEndpointFactory.GetLocalEndpoint());
+            _coapClient = new CoapClient(CoapEndpointFactory.GetLocalEndpoint(EndpointType.Udp));
             _dbContext = Locator.Current.GetService<CoapExplorerContext>();
 
             _discoverRequest = new CoapMessage()

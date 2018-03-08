@@ -12,9 +12,15 @@ namespace CoAPExplorer.Services
 
     public class CoapEndpointFactory
     {
-        public static ICoapEndpoint GetLocalEndpoint()
+        public static ICoapEndpoint GetLocalEndpoint(EndpointType type)
         {
-            return new CoapUdpEndPoint();
+            switch (type)
+            {
+                case EndpointType.Udp:
+                    return new CoapUdpEndPoint();
+            }
+
+            return new CoapEndpoint();
         }
 
         //public static ICoapEndpoint GetMulticastEndpoint()

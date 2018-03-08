@@ -12,6 +12,8 @@ namespace CoAPExplorer.Database
 
         public DbSet<Device> Devices { get; set; }
 
+        public DbSet<Message> RecentMessages { get; set; }
+
         public string DatabasePath => _databasePath;
 
         public CoapExplorerContext(DbContextOptions<CoapExplorerContext> options)

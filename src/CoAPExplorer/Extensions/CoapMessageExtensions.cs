@@ -14,8 +14,8 @@ namespace CoAPExplorer.Extensions
         {
             var coapMessage = new CoapMessage
             {
-                Id = message.Id,
-                Token = message.Token,
+                Id = message.MessageId,
+                Token = message.Token ?? new byte[] { },
                 Code = message.Code
             };
             coapMessage.SetUri(message.Url, UriComponents.PathAndQuery);
@@ -34,7 +34,7 @@ namespace CoAPExplorer.Extensions
 
             var message = new Message
             {
-                Id = coapMessage.Id,
+                MessageId = coapMessage.Id,
                 Token = coapMessage.Token,
                 Code = coapMessage.Code,
 

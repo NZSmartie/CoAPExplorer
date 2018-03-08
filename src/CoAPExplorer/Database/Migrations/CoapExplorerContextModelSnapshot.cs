@@ -39,6 +39,29 @@ namespace CoAPExplorer.Database.Migrations
 
                     b.ToTable("Devices");
                 });
+
+            modelBuilder.Entity("CoAPExplorer.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<byte[]>("Payload");
+
+                    b.Property<string>("Url");
+
+                    b.Property<string>("_dbCode")
+                        .HasColumnName("Code");
+
+                    b.Property<string>("_dbContentFormat")
+                        .HasColumnName("ContentFormat");
+
+                    b.Property<string>("_dbOptions")
+                        .HasColumnName("Options");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RecentMessages");
+                });
 #pragma warning restore 612, 618
         }
     }

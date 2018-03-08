@@ -18,9 +18,9 @@ namespace CoAPExplorer.Services
         private readonly CoapClient _coapClient;
         private readonly ICoapEndpoint _endpoint;
 
-        public CoapService()
+        public CoapService(EndpointType type)
         {
-            _endpoint = CoapEndpointFactory.GetLocalEndpoint();
+            _endpoint = CoapEndpointFactory.GetLocalEndpoint(type);
             _coapClient = new CoapClient(_endpoint);
         }
 

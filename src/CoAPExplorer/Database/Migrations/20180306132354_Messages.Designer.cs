@@ -12,9 +12,10 @@ using System;
 namespace CoAPExplorer.Database.Migrations
 {
     [DbContext(typeof(CoapExplorerContext))]
-    partial class CoapExplorerContextModelSnapshot : ModelSnapshot
+    [Migration("20180306132354_Messages")]
+    partial class Messages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
