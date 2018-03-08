@@ -1,4 +1,5 @@
 ﻿using CoAPExplorer.Models;
+using CoAPExplorer.Services;
 using CoAPNet;
 using System;
 using System.Collections.Generic;
@@ -11,21 +12,23 @@ namespace CoAPExplorer.WPF.MockViewModels
     public class DeviceViewModel : CoAPExplorer.ViewModels.DeviceViewModel
     {
         public DeviceViewModel()
-            :this(null)
+            : this(null)
         { }
 
         public DeviceViewModel(Device device)
-            :base(device ?? new Device
+            : base(device ?? new Device
             {
                 Name = "Some Device",
-                Endpoint = new CoapEndpoint(),
+                EndpointType = EndpointType.Udp,
+                Endpoint = CoapEndpointFactory.GetLocalEndpoint(EndpointType.Udp),
                 Address = "192.168.x.x",
-                LastSeen = DateTime.Now
+                LastSeen = DateTime.Now,
+                IsFavourite = false,
             })
         {
             Message = new Message
             {
-                Id = 1234,
+                MessageId = 1234,
                 Token = new byte[] { 0x01, 0x02, 0x03, 0x04 },
 
                 Url = "/some/resource",
@@ -33,7 +36,7 @@ namespace CoAPExplorer.WPF.MockViewModels
                 //Type = CoapMessageType.Confirmable,
 
                 ContentFormat = CoAPNet.Options.ContentFormatType.ApplicationJson,
-                Payload = "{\"test\": 1234}"
+                Payload = Encoding.UTF8.GetBytes("{\r\n\t\"test\": 1234, \r\n\t\"emoji\": \"🦆\", \r\n\t\"zero\": \0\r\n}")
             };
         }
     }

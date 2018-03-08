@@ -21,13 +21,17 @@ namespace CoAPExplorer.WPF.Views
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
             nameof(IsOpen), typeof(bool), typeof(NavigationView), new PropertyMetadata(true));
 
+        public static DependencyProperty ViewModelProperty = DependencyProperty.Register(
+            nameof(ViewModel), typeof(NavigationViewModel), typeof(NavigationView), new PropertyMetadata(null));
+
         public bool IsOpen
         {
             get => (bool)GetValue(IsOpenProperty);
             set => SetValue(IsOpenProperty, value);
         }
 
-        public NavigationViewModel ViewModel { get; set; }
+
+        public NavigationViewModel ViewModel { get => GetValue(ViewModelProperty) as NavigationViewModel; set => SetValue(ViewModelProperty, value); }
         object IViewFor.ViewModel { get => ViewModel; set => ViewModel = value as NavigationViewModel; }
 
         public NavigationView()

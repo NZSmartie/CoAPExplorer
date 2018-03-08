@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="MockViewModels\DeviceNavigationViewModel.cs" />
     <Compile Include="MockViewModels\DeviceViewModel.cs" />
+    <Compile Include="Consts.cs" />
     <Compile Include="Views\DeviceNavigationView.xaml.cs">
       <DependentUpon>DeviceNavigationView.xaml</DependentUpon>
     </Compile>
@@ -76,6 +77,9 @@
     </Compile>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MessageRequestView.xaml.cs">
+      <DependentUpon>MessageRequestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NavigationView.xaml.cs">
       <DependentUpon>NavigationView.xaml</DependentUpon>
@@ -120,6 +124,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MessageRequestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,6 +183,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
       <Version>2.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Events.WPF">
+      <Version>8.0.0-alpha0117</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.WPF">
       <Version>8.0.0-alpha0117</Version>

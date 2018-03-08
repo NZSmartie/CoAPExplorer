@@ -35,7 +35,8 @@ namespace CoAPExplorer.ViewModels
                 return new NewDeviceViewModel(HostScreen);
             });
 
-            Devices = new ObservableCollection<DeviceViewModel>(_dbContext.Devices.Select(d => new DeviceViewModel(d, hostScreen)));
+            var devices = _dbContext.Devices.ToList();
+            Devices = new ObservableCollection<DeviceViewModel>(devices.Select(d => new DeviceViewModel(d, hostScreen)));
         }
     }
 }
