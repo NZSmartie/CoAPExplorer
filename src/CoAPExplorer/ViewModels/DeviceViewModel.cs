@@ -150,7 +150,15 @@ namespace CoAPExplorer.ViewModels
             OpenCommand = ReactiveCommand.Create(() => hostScreen.Router.Navigate.Execute(this).Subscribe());
 
             SendCommand = ReactiveCommand.CreateFromObservable<Message, Message>(
-                message => CoapService.SendMessage(message, Device.Endpoint).TakeUntil(StopSendingCommand));
+                message =>
+                {
+                    var obs = CoapService.SendMessage(message, Device.Endpoint).TakeUntil(StopSendingCommand);
+
+                    if (MessageViewModel.AutoIncrement)
+                        MessageViewModel.MessageId++;
+
+                    return obs;
+                });
 
             StopSendingCommand = ReactiveCommand.Create(
                 () => { }, SendCommand.IsExecuting);

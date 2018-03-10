@@ -1,15 +1,19 @@
 ﻿<UserControl x:Class="CoAPExplorer.WPF.Views.MessageRequestView"
-                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                          xmlns:local="clr-namespace:CoAPExplorer.WPF.Views"             
-                          xmlns:rxui="http://reactiveui.net" 
-                          xmlns:viewModels="clr-namespace:CoAPExplorer.ViewModels;assembly=CoAPExplorer"
-                          xmlns:coapExplorer="clr-namespace:CoAPExplorer.WPF"
-                          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                          mc:Ignorable="d" 
-                          d:DesignHeight="391.525" d:DesignWidth="504.381">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoAPExplorer.WPF.Views"             
+             xmlns:rxui="http://reactiveui.net" 
+             xmlns:viewModels="clr-namespace:CoAPExplorer.ViewModels;assembly=CoAPExplorer"
+             xmlns:coapExplorer="clr-namespace:CoAPExplorer.WPF"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="391.525" d:DesignWidth="504.381">
+    <UserControl.Resources>
+        <converters:HextoAsciiConverter x:Key="HextoAsciiConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -48,8 +52,8 @@
                                      Style="{StaticResource MaterialDesignToolBar}"
                                      Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Background}">
                     <ListBox SelectionMode="Multiple">
-                        <ListBoxItem x:Name="MoreOptionsToggle"
-                                        Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Background}">
+                        <ListBoxItem x:Name="MoreOptionsToggle" IsSelected="true"
+                                     Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Background}">
                             <materialDesign:PackIcon Kind="MenuDown" />
                         </ListBoxItem>
                     </ListBox>
@@ -59,12 +63,19 @@
         <materialDesign:DrawerHost Grid.Row="1"
                                    IsTopDrawerOpen="{Binding ElementName=MoreOptionsToggle, Path=IsSelected}">
             <materialDesign:DrawerHost.TopDrawerContent>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock>TODO: add options here and advanced settings</TextBlock>
-                    <Separator/>
-                    <TextBlock Margin="0,8,0,8" Opacity=".54"
+                <StackPanel Orientation="Vertical" Margin="8">
+                    <StackPanel Orientation="Horizontal" Margin="0 4 0 4">
+                        <TextBox x:Name="MessageToken" materialDesign:HintAssist.Hint="Token"
+                                 Width="155" Margin="0 0 -24 0">01 02 03 04 05 06 07 08</TextBox>
+                        <Border VerticalAlignment="Bottom" Padding="4" MouseUp="MessageTokenRegen" Background="Transparent">
+                            <materialDesign:PackIcon Foreground="{Binding ElementName=MessageIdTextBox, Path=BorderBrush}" Kind="Autorenew"/>
+                        </Border>
+                    </StackPanel>
+                    <TextBlock Margin="0 4 0 4">TODO: add options here and advanced settings</TextBlock>
+                    <Separator Margin="0 4 0 4"/>
+                    <TextBlock Margin="0,4,0,4" Opacity=".54"
                                            Style="{StaticResource MaterialDesignSubheadingTextBlock}">Advanced</TextBlock>
-                    <CheckBox IsThreeState="False">Auto-Increment Message ID</CheckBox>
+                    <CheckBox x:Name="IncrementMessageIDCheckBox" IsThreeState="False">Increment Message ID</CheckBox>
                 </StackPanel>
             </materialDesign:DrawerHost.TopDrawerContent>
             <TabControl>

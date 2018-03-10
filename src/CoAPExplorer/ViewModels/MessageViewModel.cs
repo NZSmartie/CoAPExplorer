@@ -20,7 +20,14 @@ namespace CoAPExplorer.ViewModels
 {
     public class MessageViewModel : ReactiveObject, ISupportsActivation
     {
-        private Message _message;
+        private readonly Message _message;
+        private bool _isPayloadEscaped;
+        private string _payload;
+        private bool _autoIncrement = true;
+
+        public Message Message => _message;
+
+        public bool AutoIncrement { get => _autoIncrement; set => this.RaiseAndSetIfChanged(ref _autoIncrement ,value); }
 
         public int MessageId
         {
@@ -119,9 +126,6 @@ namespace CoAPExplorer.ViewModels
 
         public ReactiveCommand<bool, bool> EscapePayload { get; }
 
-        private bool _isPayloadEscaped;
-        private string _payload;
-
         public bool IsPayloadEscaped { get => _isPayloadEscaped; set => this.RaiseAndSetIfChanged(ref _isPayloadEscaped, value); }
 
         public string Payload { get => _payload; set => this.RaiseAndSetIfChanged(ref _payload, value); }
@@ -136,30 +140,30 @@ namespace CoAPExplorer.ViewModels
                 ? Encoding.UTF8.GetString(_message.Payload)
                 : string.Empty;
 
-            EscapePayload = ReactiveCommand.Create<bool,bool>(escape =>
-            {
-                if (IsPayloadEscaped && !escape)
-                {
-                    Payload = StringEscape.Unescape(Payload); ;
-                }
-                else if (!IsPayloadEscaped && escape)
-                {
-                    Payload = StringEscape.Escape(Payload); ;
-                }
+            EscapePayload = ReactiveCommand.Create<bool, bool>(escape =>
+             {
+                 if (IsPayloadEscaped && !escape)
+                 {
+                     Payload = StringEscape.Unescape(Payload); ;
+                 }
+                 else if (!IsPayloadEscaped && escape)
+                 {
+                     Payload = StringEscape.Escape(Payload); ;
+                 }
 
-                var changed = IsPayloadEscaped ^ escape;
-                IsPayloadEscaped = escape;
+                 var changed = IsPayloadEscaped ^ escape;
+                 IsPayloadEscaped = escape;
 
-                return changed;
-            });
+                 return changed;
+             });
 
             this.WhenActivated((CompositeDisposable disposables) =>
             {
                 this.WhenAnyValue(vm => vm.Payload, vm => vm.IsPayloadEscaped)
-                    .TakeLastBuffer(TimeSpan.FromMilliseconds(300), RxApp.MainThreadScheduler)
+                    .Sample(TimeSpan.FromMilliseconds(300), RxApp.MainThreadScheduler)
                     .Subscribe(l =>
                     {
-                        (var payload, var isEscaped) = l.Last();
+                        (var payload, var isEscaped) = l;
 
                         if (isEscaped)
                             payload = StringEscape.Unescape(payload);
