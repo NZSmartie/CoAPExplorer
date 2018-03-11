@@ -16,6 +16,7 @@
                           d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:CoapMessageCodeToStringConverter x:Key="CoapMessageCodeToStringConverter"/>
     </UserControl.Resources>
 
     <Grid>
@@ -31,15 +32,24 @@
                 </Button>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 8 0">
                     <Button x:Name="SendButton" Style="{DynamicResource MaterialDesignToolButton}">
-                        <materialDesign:PackIcon Margin="6,0,6,0" Kind="ArrowRight" />
+                        <materialDesign:PackIcon Width="24" Height="24" Kind="ArrowRight" />
                     </Button>
                     <Button x:Name="StopButton" Style="{StaticResource MaterialDesignToolButton}">
                         <materialDesign:PackIcon Width="24" Height="24" Kind="CloseCircle" />
                     </Button>
                 </StackPanel>
-                <ComboBox IsEditable="True" x:Name="Url" DisplayMemberPath="Url"
+                <ComboBox IsEditable="True" x:Name="Url" TextSearch.TextPath="Url"
                           materialDesign:HintAssist.Hint="URL"
-                          SelectedItem="{Binding Message}" ItemsSource="{Binding RecentMessages}"/>
+                          SelectedItem="{Binding Message}" ItemsSource="{Binding RecentMessages}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Padding="4" Content="{Binding Url}"/>
+                                <Label Padding="4" IsEnabled="False" Content="{Binding Code, Converter={StaticResource CoapMessageCodeToStringConverter}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </DockPanel>
         </materialDesign:ColorZone>
         <TabControl Grid.Row="1">

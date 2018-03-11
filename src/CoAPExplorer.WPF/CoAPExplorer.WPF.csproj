@@ -58,6 +58,7 @@
     <Compile Include="Controls\FilterOption.xaml.cs">
       <DependentUpon>FilterOption.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CoapMessageCodeToStringConverter.cs" />
     <Compile Include="Converters\HextoAsciiConverter.cs" />
     <Compile Include="Converters\RelativeDateTimeConverter.cs" />
     <Compile Include="Dialogs\NewDeviceViewDialog.xaml.cs">
