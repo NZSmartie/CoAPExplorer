@@ -16,12 +16,16 @@ namespace CoAPExplorer.Extensions
             {
                 Id = message.MessageId,
                 Token = message.Token ?? new byte[] { },
-                Code = message.Code
+                Code = message.Code,
+                Type = CoapMessageType.Confirmable,
             };
             coapMessage.SetUri(message.Url, UriComponents.PathAndQuery);
 
-            if (message.Code.IsRequest())
+            if ((message.Code?.IsRequest() ?? false) && message.ContentFormat != null)
+            {
                 coapMessage.Options.Add(new CoAPNet.Options.ContentFormat(message.ContentFormat));
+                coapMessage.Payload = message.Payload;
+            }
 
             return coapMessage;
         }
@@ -41,6 +45,7 @@ namespace CoAPExplorer.Extensions
                 ContentFormat = contentTypeOption?.MediaType,
 
                 Url = coapMessage.GetUri().GetComponents(UriComponents.PathAndQuery, UriFormat.UriEscaped),
+                Payload = coapMessage.Payload,
             };
 
             message.Options = new ObservableCollection<CoapOption>(
