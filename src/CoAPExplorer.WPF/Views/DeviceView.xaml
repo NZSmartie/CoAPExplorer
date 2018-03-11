@@ -25,6 +25,10 @@
         </Grid.RowDefinitions>
         <materialDesign:ColorZone Padding="8" Grid.Row="0">
             <DockPanel>
+                <Button x:Name="DuplicateMessageButton" ToolTipService.ToolTip="Duplicate Message"
+                        Style="{StaticResource MaterialDesignToolButton}">
+                    <materialDesign:PackIcon Width="24" Height="24" Kind="ContentDuplicate" />
+                </Button>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 8 0">
                     <Button x:Name="SendButton" Style="{DynamicResource MaterialDesignToolButton}">
                         <materialDesign:PackIcon Margin="6,0,6,0" Kind="ArrowRight" />

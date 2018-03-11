@@ -50,6 +50,10 @@ namespace CoAPExplorer.WPF.Views
                 this.BindCommand(ViewModel, vm => vm.StopSendingCommand, v => v.StopButton)
                     .DisposeWith(disposables);
 
+                this.BindCommand(ViewModel, vm=> vm.DuplicateMessageCommand, v => v.DuplicateMessageButton,
+                        ViewModel.WhenAnyValue(vm => vm.Message))
+                    .DisposeWith(disposables);
+
                 this.OneWayBind(ViewModel,
                         vm => vm.IsSending,
                         v => v.StopButton.Visibility,

@@ -53,7 +53,7 @@ namespace CoAPExplorer.Models
         [Column(nameof(Code))]
         public string _dbCode
         {
-            get => $"{Code.Class}.{Code.Detail}";
+            get => Code?.ToString() ?? "0.00";
             set
             {
                 var p = value.Split('.');
@@ -64,9 +64,15 @@ namespace CoAPExplorer.Models
         [Column(nameof(ContentFormat))]
         public string _dbContentFormat
         {
-            get => ContentFormat.ToString();
+            get => ContentFormat?.ToString();
             set
             {
+                if (value == null)
+                {
+                    ContentFormat = null;
+                    return;
+                }
+
                 var p = value.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
                 ContentFormat = new ContentFormatType(int.Parse(p[0]), p[1]);
             }

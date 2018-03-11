@@ -6,6 +6,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CoAPExplorer.Database;
 using CoAPExplorer.Models;
 using CoAPExplorer.Services;
@@ -85,8 +86,19 @@ namespace CoAPExplorer.ViewModels
         public MessageViewModel MessageViewModel { get => _messageViewModel; set => this.RaiseAndSetIfChanged(ref _messageViewModel, value); }
 
         private ObservableCollection<Message> _recentMessages;
-        public ObservableCollection<Message> RecentMessages 
-            => _recentMessages ?? (_recentMessages = new ObservableCollection<Message>(_dbContext?.RecentMessages ?? Enumerable.Empty<Message>()));
+        public ObservableCollection<Message> RecentMessages
+        {
+            get
+            {
+                if (_recentMessages != null)
+                    return _recentMessages;
+
+                _recentMessages = new ObservableCollection<Message>(_dbContext?.RecentMessages ?? Enumerable.Empty<Message>());
+                _recentMessages.CollectionChanged += RecentMessagesChanged;
+
+                return _recentMessages;
+            }
+        }
 
         public ReactiveCommand OpenCommand { get; }
 
@@ -96,6 +108,8 @@ namespace CoAPExplorer.ViewModels
         public ReactiveCommand<Message, Message> SendCommand { get; }
 
         public ReactiveCommand<Unit, Unit> StopSendingCommand { get; }
+
+        public ReactiveCommand<Message, Message> DuplicateMessageCommand { get; }
 
 
         private CoapService _coapService;
@@ -136,6 +150,9 @@ namespace CoAPExplorer.ViewModels
                 {
                     var obs = CoapService.SendMessage(message, Device.Endpoint).TakeUntil(StopSendingCommand);
 
+                    // Fire and forget
+                    Task.Run(async () => await _dbContext?.SaveChangesAsync());
+
                     if (MessageViewModel.AutoIncrement)
                         MessageViewModel.MessageId++;
 
@@ -144,6 +161,13 @@ namespace CoAPExplorer.ViewModels
 
             StopSendingCommand = ReactiveCommand.Create(
                 () => { }, SendCommand.IsExecuting);
+
+            DuplicateMessageCommand = ReactiveCommand.Create<Message, Message>(message =>
+            {
+                var newMessage = message.Clone();
+                Message = newMessage;
+                return newMessage;
+            });
 
             this.WhenActivated((CompositeDisposable disposables) =>
             {
@@ -163,6 +187,18 @@ namespace CoAPExplorer.ViewModels
 
         }
 
+        private async void RecentMessagesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (_dbContext == null)
+                return;
 
+            // Break awaiy from the main trhead incase any db operation blocks
+            await Task.Yield();
+
+            if (e.NewItems != null)
+                await _dbContext.RecentMessages.AddRangeAsync(e.NewItems.Cast<Message>().Where(m => m.Id == 0 && !string.IsNullOrWhiteSpace(m.Url)));
+            
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
