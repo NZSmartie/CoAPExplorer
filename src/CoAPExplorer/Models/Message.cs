@@ -111,5 +111,19 @@ namespace CoAPExplorer.Models
         {
             return this.ToCoapMessage().ToString();
         }
+
+        public Message Clone()
+        {
+            return new Message
+            {
+                MessageId = MessageId,
+                Token = Token?.Clone() as byte[],
+                Url = Url?.Clone() as string,
+                Code = Code,
+                ContentFormat = ContentFormat,
+                Options = new List<CoapOption>(Options),
+                Payload = Payload?.Clone() as byte[],
+            };
+        }
     }
 }

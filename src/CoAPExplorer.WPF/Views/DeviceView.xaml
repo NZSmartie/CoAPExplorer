@@ -42,8 +42,8 @@
             <TabItem Header="REQUEST">
                 <local:MessageRequestView x:Name="MessageRequest" />
             </TabItem>
-            <TabItem Header="RESPONSE">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">TODO: design a response view</TextBlock>
+            <TabItem x:Name="ReponseTab" Header="RESPONSE">
+                <local:MessageResponseView x:Name="MessageResponse" />
             </TabItem>
         </TabControl>
     </Grid>

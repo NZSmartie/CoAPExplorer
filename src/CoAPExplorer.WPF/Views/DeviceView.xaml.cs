@@ -37,7 +37,8 @@ namespace CoAPExplorer.WPF.Views
 
             this.WhenActivated(disposables =>
             {
-                this.Bind(ViewModel, vm => vm.Message, v => v.Url.SelectedItem)
+                this.Bind(ViewModel, vm => vm.Message, v => v.Url.SelectedItem,
+                        this.WhenAnyValue(v => v.Url.SelectedItem).Where(i => i != null))
                     .DisposeWith(disposables);
 
                 this.OneWayBind(ViewModel, vm => vm.RecentMessages, v => v.Url.ItemsSource)
@@ -63,7 +64,34 @@ namespace CoAPExplorer.WPF.Views
 
                 this.Bind(ViewModel, vm => vm.MessageViewModel, v => v.MessageRequest.ViewModel)
                     .DisposeWith(disposables);
+
+                ViewModel.SendCommand
+                         .Subscribe(response =>
+                         {
+                             MessageResponse.ViewModel = new MessageViewModel(response);
+                             ReponseTab.Focus();
+                         })
+                         .DisposeWith(disposables);
+
+                Url.Events().KeyUp.Where(k => k.Key == Key.Enter).Select(k => { k.Handled = true; return false; })
+                    .Merge(Url.Events().LostKeyboardFocus.Select(_ => false))
+                    .Subscribe(_ => CreateMessage());
+
             });
+        }
+
+        private void CreateMessage()
+        {
+            if (ViewModel == null)
+                return;
+
+            if(Url.SelectedItem == null)
+            {
+                var message = ViewModel.Message.Clone();
+                message.Url = Url.Text;
+
+                ViewModel.Message = message;
+            }
         }
 
         public static DependencyProperty ViewModelProperty = DependencyProperty.Register(

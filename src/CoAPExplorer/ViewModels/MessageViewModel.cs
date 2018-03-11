@@ -57,9 +57,10 @@ namespace CoAPExplorer.ViewModels
 
         public CoapMessageCode Code
         {
-            get => _message.Code; set
+            get => _message.Code;
+            set
             {
-                if (_message.Code == Code)
+                if (_message.Code == value)
                     return;
                 _message.Code = value;
                 this.RaisePropertyChanged(nameof(Code));

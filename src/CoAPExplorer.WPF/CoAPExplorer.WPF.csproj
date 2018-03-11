@@ -79,6 +79,9 @@
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MessageResponseView.xaml.cs">
+      <DependentUpon>MessageResponseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MessageRequestView.xaml.cs">
       <DependentUpon>MessageRequestView.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,10 @@
     <Page Include="Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MessageResponseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MessageRequestView.xaml">
       <SubType>Designer</SubType>
