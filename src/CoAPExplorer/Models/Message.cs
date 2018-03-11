@@ -40,14 +40,13 @@ namespace CoAPExplorer.Models
         [NotMapped]
         public CoapMessageCode Code { get; set; } = CoapMessageCode.None;
 
-
         public string Url { get; set; } = string.Empty;
 
         [NotMapped]
         public IList<CoapOption> Options { get; set; } = new List<CoapOption>();
 
         [NotMapped]
-        public ContentFormatType ContentFormat { get; set; } = ContentFormatType.TextPlain;
+        public ContentFormatType ContentFormat { get; set; } = null;
 
         public byte[] Payload { get; set; }
 
