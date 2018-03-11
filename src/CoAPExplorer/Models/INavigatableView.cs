@@ -13,5 +13,7 @@ namespace CoAPExplorer.Models
     public interface ISupportsNavigatation
     {
         INavigationViewModel Navigation { get; }
+
+        string UrlPathSegment { get; }
     }
 }

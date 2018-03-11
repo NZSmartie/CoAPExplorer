@@ -72,13 +72,12 @@ namespace CoAPExplorer.WPF.Views
 
         #region IViewFor Boilerplate
 
-        object IViewFor.ViewModel
-        {
-            get => ViewModel;
-            set => ViewModel = value as SearchViewModel;
-        }
+        public readonly static DependencyProperty ViewModelProperty = DependencyProperty.Register(
+            nameof(ViewModel), typeof(SearchViewModel), typeof(SearchView), new PropertyMetadata(null));
 
-        public SearchViewModel ViewModel { get; set; }
+        object IViewFor.ViewModel { get => ViewModel; set => ViewModel = value as SearchViewModel; }
+
+        public SearchViewModel ViewModel { get => (SearchViewModel)GetValue(ViewModelProperty); set => SetValue(ViewModelProperty, value); }
 
         #endregion
     }

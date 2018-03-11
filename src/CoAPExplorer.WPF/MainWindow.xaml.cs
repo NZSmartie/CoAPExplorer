@@ -29,6 +29,9 @@ namespace CoAPExplorer.WPF
         private static readonly DependencyProperty CollapseNavigationProperty = DependencyProperty.Register(
             nameof(CollapseNavigation), typeof(System.Windows.Input.ICommand), typeof(MainWindow), new PropertyMetadata(null));
 
+        private static readonly DependencyProperty ToggleNavigationCommandProperty = DependencyProperty.Register(
+            nameof(ToggleNavigationCommand), typeof(System.Windows.Input.ICommand), typeof(MainWindow), new PropertyMetadata(null));
+
         public bool IsNavigationFocused
         {
             get => (bool)GetValue(IsNavigationFocusedProperty);
@@ -51,9 +54,24 @@ namespace CoAPExplorer.WPF
             set => SetValue(CollapseNavigationProperty, value);
         }
 
+        private ReactiveCommand ToggleNavigationCommand
+        {
+            get => (ReactiveCommand)GetValue(ToggleNavigationCommandProperty);
+            set => SetValue(ToggleNavigationCommandProperty, value);
+        }
+
         public MainWindow()
         {
             CollapseNavigation = ReactiveCommand.Create(() => IsNavigationFocused = false, this.WhenAnyValue(vm => vm.IsNavigationFocused));
+
+            ToggleNavigationCommand = ReactiveCommand.Create<bool>(isOpen =>
+            {
+                Router.NavigateBack.CanExecute.FirstAsync().Select(canNavigateBack =>
+                {
+                    var command = canNavigateBack ? Router.NavigateBack : CollapseNavigation;
+                    return Observable.Return(Unit.Default).InvokeCommand(command);
+                }).Subscribe();
+            });
 
             InitializeComponent();
 
@@ -66,7 +84,7 @@ namespace CoAPExplorer.WPF
             Router.CurrentViewModel
                   .Subscribe(rvm =>
                   {
-                      PageTitle = rvm.UrlPathSegment;
+                      ClearValue(PageTitleProperty);
 
                       if (rvm is ISupportsNavigatation nvm)
                       {
@@ -75,10 +93,20 @@ namespace CoAPExplorer.WPF
                           view.ViewModel = nvm.Navigation;
 
                           ClearValue(IsNavigationFocusedProperty);
-                          SetBinding(IsNavigationFocusedProperty, new Binding("IsOpen") { Source = nvm.Navigation, Mode = BindingMode.TwoWay });
+                          SetBinding(IsNavigationFocusedProperty, new Binding(nameof(nvm.Navigation.IsOpen)) { Source = nvm.Navigation, Mode = BindingMode.TwoWay });
+
+                          ClearValue(PageTitleProperty);
+                          SetBinding(PageTitleProperty, new Binding(nameof(nvm.UrlPathSegment)) { Source = nvm, Mode = BindingMode.OneWay });
                       }
+                      else
+                      {
+                          PageTitle = rvm.UrlPathSegment;
+                      }
+
                   })
                   .DisposeWith(CompositeDisposables);
+
+            //NavigationDrawerToggleButton
 
 #if DEBUG
             if (DesignerProperties.GetIsInDesignMode(this))

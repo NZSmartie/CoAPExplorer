@@ -14,9 +14,6 @@ namespace CoAPExplorer.ViewModels
 {
     public class HomeViewModel : ReactiveObject, IScreen, IRoutableViewModel, ISupportsActivation, ISupportsNavigatation
     {
-        private ObservableAsPropertyHelper<string> _pageTitle;
-        public string PageTitle => _pageTitle.Value;
-
         private bool _isNavigationFocused = true;
 
         public bool IsNavigationFocused {
@@ -42,7 +39,8 @@ namespace CoAPExplorer.ViewModels
             HostScreen = hostScreen;
 
             _navigation = Locator.Current.GetService<Navigation>();
-            _navigation.HostScreen = this;
+            _navigation.HostScreen = HostScreen; // MasterDetail view
+            _navigation.HomeView = this; // Well, this
 
             _urlPathSegment = ObservableAsPropertyHelper<string>.Default();
 
@@ -53,11 +51,6 @@ namespace CoAPExplorer.ViewModels
 
             this.WhenActivated((CompositeDisposable disposables) =>
             {
-                _pageTitle = Router.CurrentViewModel
-                      .Select(rvm => rvm.UrlPathSegment)
-                      .ToProperty(this, vm => vm.PageTitle)
-                      .DisposeWith(disposables);
-
                 _urlPathSegment = Router.CurrentViewModel
                       .Select(rvm => rvm.UrlPathSegment)
                       .ToProperty(this, vm => vm.UrlPathSegment)

@@ -23,7 +23,7 @@ namespace CoAPExplorer.ViewModels
 
         public IScreen HostScreen { get; }
 
-        public RecentDevicesViewModel(IScreen hostScreen)
+        public RecentDevicesViewModel(IScreen hostScreen = null)
         {
             _dbContext = Locator.Current.GetService<CoapExplorerContext>();
 
@@ -36,7 +36,7 @@ namespace CoAPExplorer.ViewModels
             });
 
             var devices = _dbContext.Devices.ToList();
-            Devices = new ObservableCollection<DeviceViewModel>(devices.Select(d => new DeviceViewModel(d, hostScreen)));
+            Devices = new ObservableCollection<DeviceViewModel>(devices.Select(d => new DeviceViewModel(d, HostScreen)));
         }
     }
 }

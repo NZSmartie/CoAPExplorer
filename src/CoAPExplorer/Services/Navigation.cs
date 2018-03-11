@@ -13,6 +13,8 @@ namespace CoAPExplorer.Services
 
         public IScreen HostScreen { get; set; }
 
+        public HomeViewModel HomeView { get; set; }
+
         public Navigation()
         {
             ViewModel = new NavigationViewModel
@@ -22,14 +24,14 @@ namespace CoAPExplorer.Services
                     new NavigationItem {
                         Name = "Recent",
                         Icon = CoapExplorerIcon.Recent,
-                        Command = ReactiveCommand.Create(() => HostScreen?.Router.Navigate
+                        Command = ReactiveCommand.Create(() => HomeView?.Router.Navigate
                                                                                  .Execute(new RecentDevicesViewModel(HostScreen))
                                                                                  .Subscribe())
                     },
                     new NavigationItem {
                         Name = "Search",
                         Icon = CoapExplorerIcon.Search,
-                        Command = ReactiveCommand.Create(() => HostScreen?.Router.Navigate
+                        Command = ReactiveCommand.Create(() => HomeView?.Router.Navigate
                                                                                  .Execute(new SearchViewModel(HostScreen))
                                                                                  .Subscribe())
                     },

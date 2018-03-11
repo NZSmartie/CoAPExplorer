@@ -36,33 +36,8 @@
             </Grid.RowDefinitions>
             <materialDesign:ColorZone Grid.Row="0" Grid.ColumnSpan="2"
                                       Mode="PrimaryDark">
-                <StackPanel Orientation="Horizontal">
-                    <DockPanel>
-                        <DockPanel.Style>
-                            <Style TargetType="DockPanel">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}" Value="True">
-                                        <!--<Setter Property="Background" Value="{StaticResource MaterialDesignLightBackground}"/>
-                                        <Setter Property="TextElement.Foreground" Value="{StaticResource MaterialDesignLightForeground}"/>-->
-                                        <Setter Property="Width" Value="{Binding ElementName=NavigationPane, Path=ActualWidth}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DockPanel.Style>
-                        <ToggleButton x:Name="NavigationToggle" HorizontalAlignment="Left" 
-                                      DockPanel.Dock="Right"  Margin="8" Panel.ZIndex="1000000000"
-                                      IsChecked="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}">
-                            <ToggleButton.Style>
-                                <Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignHamburgerToggleButton}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Value="True">
-                                            <Setter Property="Visibility" Value="Hidden"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ToggleButton.Style>
-                        </ToggleButton>
-                    </DockPanel>
+                <StackPanel Orientation="Horizontal" Height="52">
+                    <Border Width="{Binding ElementName=NavigationPane, Path=ActualWidth}"/>
                     <TextBlock Margin="16,0,0,0" VerticalAlignment="Center"
                                Text="{Binding Path=PageTitle, ElementName=This, FallbackValue=MainWindow}"/>
                 </StackPanel>
@@ -90,11 +65,15 @@
                         Visibility="{Binding ElementName=NavigationToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <materialDesign:PackIcon Kind="ChevronLeft" />
                 </Button>
-                <ToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8"
-                              IsChecked="{Binding ElementName=NavigationToggle, Path=IsChecked}"
-                              Visibility="{Binding ElementName=NavigationToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
-                              Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
-                              Style="{Binding ElementName=NavigationToggle, Path=Style}" />
+                <ToggleButton x:Name="NavigationToggle" HorizontalAlignment="Left" VerticalAlignment="Top"
+                              Margin="8" IsChecked="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}"
+                              Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                              Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"/>
+                <!--Do I really want an invisible button overlaying the Navigation Drawer's toggle button just to capture the navigate back command?-->
+                <Button x:Name="NavigationDrawerButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" 
+                        Background="Transparent" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" materialDesign:RippleAssist.ClipToBounds="False"
+                        Command="{Binding ElementName=This, Path=ToggleNavigationCommand}" CommandParameter="{Binding ElementName=NavigationToggle, Path=IsChecked}"
+                        Visibility="{Binding ElementName=NavigationToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </Grid>
             <rxui:RoutedViewHost x:Name="ViewHost" Grid.Column="1" Grid.Row="1" 
                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

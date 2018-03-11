@@ -26,7 +26,7 @@ namespace CoAPExplorer.WPF.Views
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
             nameof(IsOpen), typeof(bool), typeof(DeviceNavigationView), new PropertyMetadata(true));
 
-        public static DependencyProperty ViewModelProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             nameof(ViewModel), typeof(DeviceNavigationViewModel), typeof(DeviceNavigationView), new PropertyMetadata(null));
 
         public DeviceNavigationViewModel ViewModel { get => GetValue(ViewModelProperty) as DeviceNavigationViewModel; set => SetValue(ViewModelProperty, value); }
@@ -40,6 +40,8 @@ namespace CoAPExplorer.WPF.Views
 
         public DeviceNavigationView()
         {
+            InitializeComponent();
+
             SetBinding(DataContextProperty, new Binding(nameof(ViewModel)) { Mode = BindingMode.OneWay });
         }
     }
