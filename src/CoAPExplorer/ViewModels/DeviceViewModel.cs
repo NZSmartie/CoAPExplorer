@@ -66,7 +66,7 @@ namespace CoAPExplorer.ViewModels
         private Message _message;
         public Message Message
         {
-            get => _message;
+            get => _message ?? (_message = RecentMessages.FirstOrDefault() ?? new Message());
             set
             {
                 if (_message == value)
@@ -84,7 +84,9 @@ namespace CoAPExplorer.ViewModels
         public MessageViewModel _messageViewModel;
         public MessageViewModel MessageViewModel { get => _messageViewModel; set => this.RaiseAndSetIfChanged(ref _messageViewModel, value); }
 
-        public ObservableCollection<Message> RecentMessages { get; } = new ObservableCollection<Message>();
+        private ObservableCollection<Message> _recentMessages;
+        public ObservableCollection<Message> RecentMessages 
+            => _recentMessages ?? (_recentMessages = new ObservableCollection<Message>(_dbContext?.RecentMessages ?? Enumerable.Empty<Message>()));
 
         public ReactiveCommand OpenCommand { get; }
 
@@ -124,26 +126,6 @@ namespace CoAPExplorer.ViewModels
 
             HostScreen = hostScreen;
             Device = device ?? new Device();
-
-            RecentMessages = new ObservableCollection<Message>(_dbContext?.RecentMessages ?? Enumerable.Empty<Message>());
-
-            Message = RecentMessages.FirstOrDefault()
-#if DEBUG 
-                ?? new Message
-                {
-                    MessageId = 1234,
-                    Token = new byte[] { 0x01, 0x02, 0x03, 0x04 },
-
-                    Url = "/some/resource",
-                    Code = CoapMessageCode.Get,
-                    //Type = CoapMessageType.Confirmable,
-
-                    ContentFormat = CoAPNet.Options.ContentFormatType.ApplicationJson,
-                    Payload = Encoding.UTF8.GetBytes("{\r\n\t\"test\": 1234, \r\n\t\"emoji\": \"🦆\", \r\n\t\"zero\": \0\r\n}")
-                };
-#else
-                ?? new Message();
-#endif
 
             Navigation = new DeviceNavigationViewModel(this);
 
