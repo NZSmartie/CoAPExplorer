@@ -26,7 +26,8 @@
                          materialDesign:HintAssist.Hint="Message ID"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          Text="{Binding Message.Id}"/>
-                <Border VerticalAlignment="Bottom" Margin="0 8" Padding="4" MouseUp="PackIcon_MouseUp" Background="Transparent">
+                <Border VerticalAlignment="Bottom" Margin="0 8" Padding="4" MouseUp="PackIcon_MouseUp" Background="Transparent" Cursor="Hand"
+                        ToolTipService.ToolTip="Randomise Message ID">
                     <materialDesign:PackIcon Foreground="{Binding ElementName=MessageIdTextBox, Path=BorderBrush}" Kind="Autorenew"/>
                 </Border>
                 <ComboBox x:Name="MessageCodeComboBox" Margin="4 0 4 0" Width="100"
