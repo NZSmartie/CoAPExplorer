@@ -73,9 +73,9 @@ namespace CoAPExplorer.WPF.Views
                          })
                          .DisposeWith(disposables);
 
-                Url.Events().KeyUp.Where(k => k.Key == Key.Enter).Select(k => { k.Handled = true; return false; })
-                    .Merge(Url.Events().LostKeyboardFocus.Select(_ => false))
-                    .Subscribe(_ => CreateMessage());
+                Observable.Merge(Url.Events().KeyUp.Where(k => k.Key == Key.Enter).Select(_ => false),
+                                 Url.Events().LostKeyboardFocus.Select(_ => false))
+                          .Subscribe(_ => CreateMessage());
 
             });
         }
@@ -85,7 +85,7 @@ namespace CoAPExplorer.WPF.Views
             if (ViewModel == null)
                 return;
 
-            if(Url.SelectedItem == null)
+            if (Url.SelectedItem == null)
             {
                 var message = ViewModel.Message.Clone();
                 message.Url = Url.Text;
