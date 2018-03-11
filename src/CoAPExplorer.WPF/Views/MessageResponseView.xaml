@@ -53,8 +53,8 @@
             <materialDesign:DrawerHost.TopDrawerContent>
                 <StackPanel Orientation="Vertical" Margin="8">
                     <StackPanel Orientation="Horizontal" Margin="0 4 0 4">
-                        <TextBox x:Name="MessageToken" materialDesign:HintAssist.Hint="Token" IsReadOnly="True"
-                                 Width="155" Margin="0 0 -24 0">01 02 03 04 05 06 07 08</TextBox>
+                        <TextBox x:Name="MessageToken" materialDesign:HintAssist.Hint="Token" IsReadOnly="True" Width="155" Margin="0 0 -24 0"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
                     </StackPanel>
                 </StackPanel>
             </materialDesign:DrawerHost.TopDrawerContent>
