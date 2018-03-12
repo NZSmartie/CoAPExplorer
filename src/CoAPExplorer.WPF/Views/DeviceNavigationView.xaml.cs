@@ -42,7 +42,11 @@ namespace CoAPExplorer.WPF.Views
         {
             InitializeComponent();
 
-            SetBinding(DataContextProperty, new Binding(nameof(ViewModel)) { Mode = BindingMode.OneWay });
+            //SetBinding(DataContextProperty, new Binding(nameof(ViewModel)) { Mode = BindingMode.OneWay });
+            this.WhenActivated(disposables =>
+            {
+                this.WhenAnyValue(t => t.ViewModel).Subscribe(NewViewModel => DataContext = NewViewModel).DisposeWith(disposables);
+            });
         }
     }
 }
