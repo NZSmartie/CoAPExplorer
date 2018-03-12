@@ -1,6 +1,7 @@
 ﻿using CoAPExplorer.Services;
 using CoAPNet;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace CoAPExplorer.Models
             get => _endpoint ?? (_endpoint = CoapEndpointFactory.GetEndpoint(Address, EndpointType));
             set => _endpoint = value;
         }
+
+        public List<DeviceResource> KnownResources { get; set; }
+         = new List<DeviceResource>();
 
         public EndpointType EndpointType { get; set; }
 
