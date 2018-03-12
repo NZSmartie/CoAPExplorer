@@ -14,13 +14,6 @@ namespace CoAPExplorer.ViewModels
 {
     public class HomeViewModel : ReactiveObject, IScreen, IRoutableViewModel, ISupportsActivation, ISupportsNavigatation
     {
-        private bool _isNavigationFocused = true;
-
-        public bool IsNavigationFocused {
-            get => _isNavigationFocused;
-            set => this.RaiseAndSetIfChanged(ref _isNavigationFocused, value);
-        }
-
         public RoutingState Router { get; } = new RoutingState();
 
         private readonly Navigation _navigation;
@@ -52,12 +45,12 @@ namespace CoAPExplorer.ViewModels
             this.WhenActivated((CompositeDisposable disposables) =>
             {
                 _urlPathSegment = Router.CurrentViewModel
-                      .Select(rvm => rvm.UrlPathSegment)
+                      .Select(rvm => rvm?.UrlPathSegment)
                       .ToProperty(this, vm => vm.UrlPathSegment)
                       .DisposeWith(disposables);
 
-                Router.Changing
-                      .Subscribe(_ => IsNavigationFocused = false)
+                Router.CurrentViewModel
+                      .Subscribe(rvm => Navigation.IsOpen = rvm == null)
                       .DisposeWith(disposables);
             });
         }

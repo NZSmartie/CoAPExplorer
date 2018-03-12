@@ -22,13 +22,14 @@ namespace CoAPExplorer.ViewModels
             get => _selectedNavigationItem;
             set
             {
-                if (_selectedNavigationItem == value)
-                    return;
-                _selectedNavigationItem = value;
-                this.RaisePropertyChanged(nameof(SelectedNavigationItem));
+                //if (_selectedNavigationItem == value)
+                //    return;
+                _selectedNavigationItem = null;
 
-                if(value.Command != null)
+                if(value?.Command != null)
                     Observable.Return(Unit.Default).InvokeCommand(value.Command);
+
+                this.RaisePropertyChanged(nameof(SelectedNavigationItem));
             }
         }
     }
