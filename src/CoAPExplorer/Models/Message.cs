@@ -64,7 +64,7 @@ namespace CoAPExplorer.Models
         [Column(nameof(ContentFormat))]
         public string _dbContentFormat
         {
-            get => ContentFormat?.ToString();
+            get => ContentFormat != null ? $"{ContentFormat.Value} - {ContentFormat}" : null;
             set
             {
                 if (value == null)
