@@ -80,11 +80,12 @@ namespace CoAPExplorer.Services
                                     Address = recv.Endpoint.ToString(),
                                     Name = "(unnamed)"
                                 };
-                                _dbContext.Devices.Add(device);
+                                await _dbContext.Devices.AddAsync(device);
                             }
 
                             device.LastSeen = DateTime.Now;
-                            _dbContext.SaveChanges();
+
+                            await _dbContext.SaveChangesAsync();
 
                             observer.OnNext(device);
                         }
