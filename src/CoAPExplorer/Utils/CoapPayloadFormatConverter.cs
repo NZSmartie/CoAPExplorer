@@ -1,4 +1,6 @@
-﻿using CoAPNet.Options;
+﻿using CoAPExplorer.Models;
+using CoAPNet.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -34,8 +36,16 @@ namespace CoAPExplorer.Utils
             if (string.IsNullOrEmpty(payload) || contentFormat == null)
                 return null;
 
+            try
+            {
+
             if (contentFormat.Value == ContentFormatType.ApplicationJson.Value)
                 return Encoding.UTF8.GetBytes(JToken.Parse(payload).ToString());
+            }
+            catch (JsonReaderException ex)
+            {
+                throw new FormattedTextException(ex.Message, ex.LineNumber, ex.LinePosition, ex);
+            }
 
             return null;
         }

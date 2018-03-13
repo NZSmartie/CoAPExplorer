@@ -22,6 +22,7 @@ using CoAPExplorer.WPF.Converters;
 using System.Text.RegularExpressions;
 using CoAPNet.Options;
 using CoAPExplorer.WPF.Services;
+using ICSharpCode.AvalonEdit.Document;
 
 namespace CoAPExplorer.WPF.Views
 {
@@ -35,10 +36,18 @@ namespace CoAPExplorer.WPF.Views
         private CompositeDisposable _viewModelDisposables;
 
         private static readonly HextoAsciiConverter _hextoAsciiConverter = new HextoAsciiConverter();
+        private readonly AvalonEditTextMarkerService _formattedTextMarkerService;
 
         public MessageRequestView()
         {
             InitializeComponent();
+
+            _formattedTextMarkerService = new AvalonEditTextMarkerService(FormattedTextEditor);
+
+            var textView = FormattedTextEditor.TextArea.TextView;
+            textView.BackgroundRenderers.Add(_formattedTextMarkerService);
+            textView.LineTransformers.Add(_formattedTextMarkerService);
+            textView.Services.AddService(typeof(AvalonEditTextMarkerService), _formattedTextMarkerService);
 
             this.WhenActivated(disposables =>
             {
@@ -47,6 +56,8 @@ namespace CoAPExplorer.WPF.Views
                     {
                         _viewModelDisposables?.Dispose();
                         _viewModelDisposables = new CompositeDisposable();
+
+                        _formattedTextMarkerService.Clear();
 
                         if (NewViewModel == null)
                             return;
@@ -95,6 +106,28 @@ namespace CoAPExplorer.WPF.Views
                                     .Select(cf => CoapFormatHighlightingManager.Default.GetDefinition(cf))
                                     .Subscribe(d => FormattedTextEditor.SyntaxHighlighting = d)
                                     .DisposeWith(_viewModelDisposables);
+
+                        var formattedTextMarkers = NewViewModel.FormattedPayloadErrors.CreateDerivedCollection(ex =>
+                                    {
+                                        var marker = AvalonEditTextMarkerService.TextMarker.Create(FormattedTextEditor, ex.Offset, ex.Line);
+                                        marker.ToolTip = ex.Message;
+                                        marker.MarkerColor = ((TryFindResource("SecondaryAccentBrush") as SolidColorBrush)?.Color) ?? Colors.Magenta;
+                                        return marker;
+                                    })
+                                    .DisposeWith(_viewModelDisposables);
+
+                        formattedTextMarkers.ItemsAdded
+                                            .Subscribe(m => _formattedTextMarkerService.Add(m))
+                                            .DisposeWith(_viewModelDisposables);
+
+                        formattedTextMarkers.ShouldReset
+                                            .Subscribe(_ =>
+                                            {
+                                                _formattedTextMarkerService.Clear();
+                                                foreach (var m in formattedTextMarkers)
+                                                    _formattedTextMarkerService.Add(m);
+                                            })
+                                            .DisposeWith(_viewModelDisposables);
 
                         //PayloadHexEditor
                     })

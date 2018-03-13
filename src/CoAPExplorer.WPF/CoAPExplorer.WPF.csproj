@@ -71,6 +71,7 @@
     <Compile Include="MockViewModels\DeviceNavigationViewModel.cs" />
     <Compile Include="MockViewModels\DeviceViewModel.cs" />
     <Compile Include="Consts.cs" />
+    <Compile Include="Services\AvalonEditTextMarkerService.cs" />
     <Compile Include="Services\CoapFormatHighlightManager.cs" />
     <Compile Include="Views\DeviceNavigationView.xaml.cs">
       <DependentUpon>DeviceNavigationView.xaml</DependentUpon>

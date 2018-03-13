@@ -142,6 +142,9 @@ namespace CoAPExplorer.ViewModels
 
         public string FormattedPayload { get => _formattedPayload; set => this.RaiseAndSetIfChanged(ref _formattedPayload, value); }
 
+        public ObservableCollection<FormattedTextException> FormattedPayloadErrors { get; }
+            = new ObservableCollection<FormattedTextException>();
+
         public ReactiveCommand<UpdatePayloadSource, Unit> UpdatePayloads { get; }
 
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
@@ -205,10 +208,18 @@ namespace CoAPExplorer.ViewModels
                     .Subscribe(t =>
                     {
                         (var payload, var contentFormat) = t;
-                        var bytes = CoapPayloadFormater.RemoveFormat(payload, contentFormat);
+                        try
+                        {
+                            FormattedPayloadErrors.Clear();
+                            var bytes = CoapPayloadFormater.RemoveFormat(payload, contentFormat);
 
-                        if (bytes != null)
-                            _message.Payload = bytes;
+                            if (bytes != null)
+                                _message.Payload = bytes;
+                        }
+                        catch (FormattedTextException ex)
+                        {
+                            FormattedPayloadErrors.Add(ex);
+                        }
                     })
                     .DisposeWith(disposables);
             });
