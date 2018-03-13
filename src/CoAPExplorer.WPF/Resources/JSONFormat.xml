@@ -3,12 +3,12 @@
 <!-- converted to AvalonEdit format by Siegfried Pammer in 2010 -->
 <!-- Reduced down to JSON for CoAPExplorer -->
 <SyntaxDefinition name="JSON" extensions=".json" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-  <Color name="Digits" foreground="DarkBlue" exampleText="3.14" />
-  <Color name="Comment" foreground="Green" exampleText="// comment" />
-  <Color name="String" foreground="Sienna" exampleText="var text = &quot;Hello, World!&quot;;" />
-  <Color name="Character" foreground="Sienna" exampleText="var char = 'a';" />
-  <Color name="Regex" foreground="Sienna" exampleText="/abc/m" />
-  <Color name="JavaScriptLiterals" foreground="Blue" exampleText="return false;" />
+  <Color name="Digits" foreground="#FF6A0080" exampleText="3.14" />
+  <Color name="Comment" foreground="#FF8BC34A" exampleText="// comment" />
+  <Color name="String" foreground="#FFE91E63" exampleText="var text = &quot;Hello, World!&quot;;" />
+  <Color name="Character" foreground="#FFE91E63" exampleText="var char = 'a';" />
+  <Color name="Regex" foreground="#FFFF9800" exampleText="/abc/m" />
+  <Color name="JavaScriptLiterals" foreground="#FFB0003A" exampleText="return false;" />
   <RuleSet ignoreCase="false">
     <Keywords color="JavaScriptLiterals">
       <Word>false</Word>
