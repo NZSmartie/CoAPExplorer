@@ -9,6 +9,7 @@
              xmlns:coapExplorer="clr-namespace:CoAPExplorer.WPF"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
+             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              mc:Ignorable="d" 
              d:DesignHeight="391.525" d:DesignWidth="504.381">
     <UserControl.Resources>
@@ -78,11 +79,7 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="FORMATTED">
-                    <TextBox AcceptsReturn="True" TextWrapping="Wrap"
-                                     VerticalScrollBarVisibility="Auto"
-                                     VerticalContentAlignment="Top">
-                        TODO: Apply (coloured?) formatting to {Message.Payload}
-                    </TextBox>
+                    <avalonEdit:TextEditor x:Name="FormattedTextEditor" IsReadOnly="True" />
                 </TabItem>
                 <TabItem Header="BINARY">
                     TODO: Hex View?

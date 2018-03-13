@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Runtime.Serialization;
@@ -23,11 +24,20 @@ namespace CoAPExplorer.ViewModels
         private readonly Message _message;
         private bool _isPayloadEscaped;
         private string _payload;
+        private string _formattedPayload;
         private bool _autoIncrement = true;
 
         public Message Message => _message;
 
         public bool AutoIncrement { get => _autoIncrement; set => this.RaiseAndSetIfChanged(ref _autoIncrement ,value); }
+
+        public enum UpdatePayloadSource
+        {
+            Original,
+            Text,
+            Formatted,
+            Binary
+        }
 
         public int MessageId
         {
@@ -79,7 +89,6 @@ namespace CoAPExplorer.ViewModels
         }
 
         private ObservableCollection<CoapOption> _options;
-        private string _test;
 
         public ObservableCollection<CoapOption> Options
         {
@@ -131,16 +140,31 @@ namespace CoAPExplorer.ViewModels
 
         public string Payload { get => _payload; set => this.RaiseAndSetIfChanged(ref _payload, value); }
 
+        public string FormattedPayload { get => _formattedPayload; set => this.RaiseAndSetIfChanged(ref _formattedPayload, value); }
+
+        public ReactiveCommand<UpdatePayloadSource, Unit> UpdatePayloads { get; }
+
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
         public MessageViewModel(Message message = null)
         {
             _message = message ?? new Message();
 
-            Payload = _message.Payload != null
-                ? Encoding.UTF8.GetString(_message.Payload)
-                : string.Empty;
+            // Initial setup of Text and Formatted Text
+            UpdatePayloads = ReactiveCommand.Create<UpdatePayloadSource>(source =>
+            {
+               if (source != UpdatePayloadSource.Text)
+                   Payload = _message.Payload != null
+                       ? Encoding.UTF8.GetString(_message.Payload)
+                       : string.Empty;
 
+               if (source != UpdatePayloadSource.Formatted)
+                   FormattedPayload = _message.Payload != null
+                       ? CoapPayloadFormater.Format(_message.Payload, _message.ContentFormat)
+                       : null;
+            });
+
+            // Command to swap between Escapped and non-escapped payloads
             EscapePayload = ReactiveCommand.Create<bool, bool>(escape =>
              {
                  if (IsPayloadEscaped && !escape)
@@ -158,10 +182,13 @@ namespace CoAPExplorer.ViewModels
                  return changed;
              });
 
+            // Initial setup of Text and Formatted Text
+            Observable.Return(UpdatePayloadSource.Original).InvokeCommand(UpdatePayloads);
+
             this.WhenActivated((CompositeDisposable disposables) =>
             {
                 this.WhenAnyValue(vm => vm.Payload, vm => vm.IsPayloadEscaped)
-                    .Sample(TimeSpan.FromMilliseconds(300), RxApp.MainThreadScheduler)
+                    .Throttle(TimeSpan.FromMilliseconds(300), RxApp.MainThreadScheduler)
                     .Subscribe(l =>
                     {
                         (var payload, var isEscaped) = l;
@@ -170,6 +197,18 @@ namespace CoAPExplorer.ViewModels
                             payload = StringEscape.Unescape(payload);
 
                         _message.Payload = Encoding.UTF8.GetBytes(payload);
+                    })
+                    .DisposeWith(disposables);
+
+                this.WhenAnyValue(vm => vm.FormattedPayload, vm=>vm.ContentFormat)
+                    .Throttle(TimeSpan.FromMilliseconds(300), RxApp.MainThreadScheduler)
+                    .Subscribe(t =>
+                    {
+                        (var payload, var contentFormat) = t;
+                        var bytes = CoapPayloadFormater.RemoveFormat(payload, contentFormat);
+
+                        if (bytes != null)
+                            _message.Payload = bytes;
                     })
                     .DisposeWith(disposables);
             });

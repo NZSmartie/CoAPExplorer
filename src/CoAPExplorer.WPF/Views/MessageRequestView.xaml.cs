@@ -20,6 +20,8 @@ using CoAPExplorer.Models;
 using CoAPExplorer.ViewModels;
 using CoAPExplorer.WPF.Converters;
 using System.Text.RegularExpressions;
+using CoAPNet.Options;
+using CoAPExplorer.WPF.Services;
 
 namespace CoAPExplorer.WPF.Views
 {
@@ -70,9 +72,29 @@ namespace CoAPExplorer.WPF.Views
                         this.Bind(NewViewModel, vm => vm.Payload, v => v.MessageTextBox.Text)
                             .DisposeWith(_viewModelDisposables);
 
+                        MessageTextBox.Events()
+                                      .LostKeyboardFocus
+                                      .Select(_ => MessageViewModel.UpdatePayloadSource.Text)
+                                      .InvokeCommand(NewViewModel.UpdatePayloads)
+                                      .DisposeWith(_viewModelDisposables);
+
                         this.WhenAnyValue(v => v.DisplayUnicode.IsSelected)
                             .InvokeCommand(NewViewModel, vm => vm.EscapePayload)
                             .DisposeWith(_viewModelDisposables);
+
+                        this.Bind(NewViewModel, vm => vm.FormattedPayload, v=> v.FormattedTextEditor.Document.Text)
+                            .DisposeWith(_viewModelDisposables);
+
+                        FormattedTextEditor.Events()
+                                           .LostKeyboardFocus
+                                           .Select(_ => MessageViewModel.UpdatePayloadSource.Formatted)
+                                           .InvokeCommand(NewViewModel.UpdatePayloads)
+                                           .DisposeWith(_viewModelDisposables);
+
+                        NewViewModel.WhenAnyValue(vm => vm.ContentFormat)
+                                    .Select(cf => CoapFormatHighlightingManager.Default.GetDefinition(cf))
+                                    .Subscribe(d => FormattedTextEditor.SyntaxHighlighting = d)
+                                    .DisposeWith(_viewModelDisposables);
 
                         //PayloadHexEditor
                     })

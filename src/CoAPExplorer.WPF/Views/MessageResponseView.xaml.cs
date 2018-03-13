@@ -21,6 +21,7 @@ using CoAPExplorer.ViewModels;
 using CoAPExplorer.WPF.Converters;
 using System.Text.RegularExpressions;
 using System.Linq;
+using CoAPExplorer.WPF.Services;
 
 namespace CoAPExplorer.WPF.Views
 {
@@ -70,6 +71,14 @@ namespace CoAPExplorer.WPF.Views
                         this.WhenAnyValue(v => v.DisplayUnicode.IsSelected)
                             .InvokeCommand(NewViewModel, vm => vm.EscapePayload)
                             .DisposeWith(_viewModelDisposables);
+
+                        this.OneWayBind(NewViewModel, vm => vm.FormattedPayload, v => v.FormattedTextEditor.Text)
+                            .DisposeWith(_viewModelDisposables);
+
+                        NewViewModel.WhenAnyValue(vm => vm.ContentFormat)
+                                    .Select(cf => CoapFormatHighlightingManager.Default.GetDefinition(cf))
+                                    .Subscribe(d => FormattedTextEditor.SyntaxHighlighting = d)
+                                    .DisposeWith(_viewModelDisposables);
                     })
                     .DisposeWith(disposables);
             });
