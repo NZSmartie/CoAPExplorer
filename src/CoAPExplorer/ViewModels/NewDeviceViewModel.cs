@@ -8,6 +8,8 @@ using CoAPExplorer.Models;
 using CoAPExplorer.Services;
 using CoAPExplorer.Extensions;
 using ReactiveUI;
+using Splat;
+using CoAPExplorer.Database;
 
 namespace CoAPExplorer.ViewModels
 {
@@ -16,6 +18,7 @@ namespace CoAPExplorer.ViewModels
         private string _name;
         private string _address;
         private IScreen _hostScreen;
+        private readonly CoapExplorerContext _dbContext;
         private EndpointType _selectedTransport;
 
         public string Name { get => _name; set => this.RaiseAndSetIfChanged(ref _name, value); }
@@ -32,25 +35,35 @@ namespace CoAPExplorer.ViewModels
         {
             _hostScreen = hostScreen;
 
+            _dbContext = Locator.Current.GetService<CoapExplorerContext>();
+
             Transports.AddRange(Enum.GetValues(typeof(EndpointType))
                                     .Cast<EndpointType>()
                                     .Where(e => e != EndpointType.None)
                                     .Select(e => Tuple.Create(e, e.GetDisplayValue())));
 
-            AddDeviceCommand = ReactiveCommand.Create(() =>
+            AddDeviceCommand = ReactiveCommand.CreateFromTask(async () =>
             {
                 // TODO: User Input Validation
                 // TODO: Can re add another devie with the same Endpoint address?
-                var deviceViewModel = new DeviceViewModel(
-                    new Device
-                    {
-                        Name = Name,
-                        Address = Address,
-                        Endpoint = CoapEndpointFactory.GetEndpoint(Address, SelectedTransport),
-                    });
+
+                var device = new Device
+                {
+                    Name = Name,
+                    Address = Address,
+                    Endpoint = CoapEndpointFactory.GetEndpoint(Address, SelectedTransport),
+                    EndpointType = SelectedTransport
+                };
+
                 _hostScreen.Router.Navigate
-                                  .Execute(deviceViewModel)
+                                  .Execute(new DeviceViewModel(device))
                                   .Subscribe();
+
+                if (_dbContext != null)
+                {
+                    await _dbContext.Devices.AddAsync(device);
+                    await _dbContext.SaveChangesAsync();
+                }
             });
         }
     }
