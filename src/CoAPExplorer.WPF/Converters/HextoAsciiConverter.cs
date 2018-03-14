@@ -11,20 +11,26 @@ namespace CoAPExplorer.WPF.Converters
     public class HextoAsciiConverter : IValueConverter
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            => Convert((byte[])value, targetType, (int)parameter, culture);
+        {
+            if (!(value is IEnumerable<byte> bytes))
+                return string.Empty;
+
+            if (!(parameter is int maxBytes))
+                maxBytes = 8;
+
+            return Convert(value as byte[], targetType, maxBytes, culture);
+        }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => ConvertBack((string) value, targetType, (int)parameter, culture);
 
         public string Convert(byte[] value, Type targetType, int maxBytes, CultureInfo culture)
         {
-            if(!(value is IEnumerable<byte> bytes))
+            var length = Math.Min(maxBytes, value?.Length ?? 0);
+            if (length == 0)
                 return string.Empty;
 
             var sb = new StringBuilder();
-            var length = Math.Min(maxBytes, value.Length);
-            if (length == 0)
-                return "";
 
             sb.Append(string.Join(" ", value.Take(length - 1).Select(b => b.ToString("X2"))));
 
