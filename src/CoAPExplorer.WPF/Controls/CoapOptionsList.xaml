@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="CoAPExplorer.WPF.Controls.CoapOptionsList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoAPExplorer.WPF"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:coap="clr-namespace:CoAPNet;assembly=CoAPNet"
+             xmlns:coapOptions="clr-namespace:CoAPNet.Options;assembly=CoAPNet"
+             xmlns:mockViewModels="clr-namespace:CoAPExplorer.WPF.MockViewModels"
+             xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=mockViewModels:MockCoapOptionsList, IsDesignTimeCreatable=True}"
+             d:DesignHeight="1131.68" d:DesignWidth="475.847">
+    <UserControl.Resources>
+        <converters:CoapOptionTypeToNameConverter x:Key="CoapOptionTypeToNameConverter"/>
+        <converters:HextoAsciiConverter x:Key="HextoAsciiConverter"/>
+    </UserControl.Resources>
+    <DockPanel>
+        <Border DockPanel.Dock="Top" BorderBrush="{StaticResource MaterialDesignDivider}" BorderThickness="0 0 0 1">
+            <StackPanel Orientation="Horizontal" Background="{StaticResource MaterialDesignPaper}">
+                <Button x:Name="AddButton" Margin="8" Click="AddButton_Click"
+                        HorizontalAlignment="Right" ToolTipService.ToolTip="Add new CoAP Option to This Request"
+                        Style="{StaticResource MaterialDesignFlatAccentButton}">Add</Button>
+                <TextBlock VerticalAlignment="Center" Margin="8" Style="{StaticResource MaterialDesignSubheadingTextBlock}">CoAP Message Options</TextBlock>
+            </StackPanel>
+        </Border>
+        <DataGrid x:Name="OptionsListView" ItemsSource="{Binding Options}"
+                  AutoGenerateColumns="False" HeadersVisibility="None"  materialDesign:DataGridAssist.CellPadding="0">
+            <DataGrid.Resources>
+                <ResourceDictionary>
+                    <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource MaterialDesignDataGridRow}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox x:Name="OptionTypeComboBox" MinWidth="120" materialDesign:HintAssist.Hint="Option" Margin="8"
+                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                      ItemsSource="{x:Static local:Consts.CoapOptionTypes}" DisplayMemberPath="Item1"
+                                      SelectedValue="{Binding Path=., Converter={StaticResource CoapOptionTypeToNameConverter}, Mode=OneWay}" SelectedValuePath="Item1"
+                                      SelectionChanged="OptionTypeComboBox_SelectionChanged"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DataTemplate.Resources>
+                                <DataTemplate DataType="{x:Type coap:CoapEmptyOption}">
+                                    <TextBlock Margin="8 16" VerticalAlignment="Bottom">
+                                        <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">(empty)</Hyperlink>
+                                    </TextBlock>
+                                </DataTemplate>
+                                
+                                <DataTemplate DataType="{x:Type coap:CoapStringOption}">
+                                    <TextBox Text="{Binding Value}" materialDesign:HintAssist.Hint="String" MinWidth="140"
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="8"/>
+                                </DataTemplate>
+                                
+                                <DataTemplate DataType="{x:Type coap:CoapUintOption}">
+                                    <TextBox Text="{Binding Value}" materialDesign:HintAssist.Hint="Number"  MinWidth="140"
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="8"/>
+                                </DataTemplate>
+                                
+                                <DataTemplate DataType="{x:Type coap:CoapOpaqueOption}">
+                                    <TextBox materialDesign:HintAssist.Hint="Bytes" Width="155" Margin="8"  MinWidth="140"
+                                             Text="{Binding Value, Converter={StaticResource HextoAsciiConverter}, ConverterParameter=8, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                                </DataTemplate>
+                                
+                                <DataTemplate DataType="{x:Type coapOptions:ContentFormat}">
+                                    <ComboBox x:Name="ContentTypeComboBox" Width="180" IsEditable="True" Margin="8"
+                                              materialDesign:HintAssist.Hint="Content Type"
+                                              ItemsSource="{x:Static local:Consts.ContentTypes}" DisplayMemberPath="Item1"
+                                              SelectedValue="{Binding MediaType}" SelectedValuePath="Item2"
+                                              materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                </DataTemplate>
+
+                                <DataTemplate DataType="{x:Type coapOptions:Accept}">
+                                    <ComboBox x:Name="ContentTypeComboBox" Width="180" IsEditable="True" Margin="8"
+                                              materialDesign:HintAssist.Hint="Content Type"
+                                              ItemsSource="{x:Static local:Consts.ContentTypes}" DisplayMemberPath="Item1"
+                                              SelectedValue="{Binding MediaType}" SelectedValuePath="Item2"
+                                              materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type coapOptions:BlockBase}">
+                                    <StackPanel Orientation="Horizontal" Margin="4 8">
+                                        <TextBox Text="{Binding BlockNumber}" Width="60" Margin="4 0 4 0"
+                                             materialDesign:HintAssist.Hint="Number"
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                                        <ComboBox materialDesign:HintAssist.Hint="Block Size" Margin="4 0 4 1"
+                                                  ItemsSource="{x:Static local:Consts.CoapBlockSupportedSizes}"
+                                                  SelectedItem="{Binding BlockSize}"
+                                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                        <CheckBox Margin="4 8 4 0" IsChecked="{Binding IsMoreFollowing}">More</CheckBox>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataTemplate.Resources>
+                            <ContentPresenter HorizontalAlignment="Left" Content="{Binding .}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="DeleteButton" Width="48" Height="48" ToolTipService.ToolTip="Delete This Highlighted Option"
+                                    Style="{StaticResource MaterialDesignFlatAccentButton}" Click="DeleteButton_Click">
+                                <materialDesign:PackIcon Kind="Delete" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

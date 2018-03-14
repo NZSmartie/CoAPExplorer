@@ -1,4 +1,5 @@
-﻿using CoAPNet;
+﻿using CoAPExplorer.WPF.Converters;
+using CoAPNet;
 using CoAPNet.Options;
 using System;
 using System.Collections.Generic;
@@ -63,5 +64,29 @@ namespace CoAPExplorer.WPF
             .Select(cf => Tuple.Create($"{cf.Value} - {cf.Name}", cf))
             .Prepend(Tuple.Create("(none)", default(ContentFormatType)))
         );
+
+        public static IReadOnlyList<Tuple<string, Type>> CoapOptionTypes { get; } = new List<Tuple<string, Type>>
+        {
+                Tuple.Create("URI Host",typeof(UriHost)),
+                Tuple.Create("URI Port",typeof(UriPort)),
+                Tuple.Create("URI Path",typeof(UriPath)),
+                Tuple.Create("URI Query",typeof(UriQuery)),
+                Tuple.Create("Proxy URI",typeof(ProxyUri)),
+                Tuple.Create("Proxy Scheme",typeof(ProxyScheme)),
+                Tuple.Create("Location Path",typeof(LocationPath)),
+                Tuple.Create("Location Query",typeof(LocationQuery)),
+                Tuple.Create("Content Format",typeof(ContentFormat)),
+                Tuple.Create("Accept",typeof(Accept)),
+                Tuple.Create("Max Age",typeof(MaxAge)),
+                Tuple.Create("ETag",typeof(ETag)),
+                Tuple.Create("Size1",typeof(Size1)),
+                Tuple.Create("Size2",typeof(Size2)),
+                Tuple.Create("If Match",typeof(IfMatch)),
+                Tuple.Create("If None Match",typeof(IfNoneMatch)),
+                Tuple.Create("Block1",typeof(Block1)),
+                Tuple.Create("Block2",typeof(Block2)),
+        };
+
+        public static IReadOnlyList<int> CoapBlockSupportedSizes { get; } = CoAPNet.Options.BlockBase.SupportedBlockSizes;
     }
 }

@@ -55,10 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\CoapOptionsList.xaml.cs">
+      <DependentUpon>CoapOptionsList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FilterOption.xaml.cs">
       <DependentUpon>FilterOption.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\CoapMessageCodeToStringConverter.cs" />
+    <Compile Include="Converters\CoapOptionTypeToNameConverter.cs" />
     <Compile Include="Converters\HextoAsciiConverter.cs" />
     <Compile Include="Converters\RelativeDateTimeConverter.cs" />
     <Compile Include="Dialogs\NewDeviceViewDialog.xaml.cs">
@@ -71,6 +75,7 @@
     <Compile Include="MockViewModels\DeviceNavigationViewModel.cs" />
     <Compile Include="MockViewModels\DeviceViewModel.cs" />
     <Compile Include="Consts.cs" />
+    <Compile Include="MockViewModels\MockCoapOptionsList.cs" />
     <Compile Include="Services\AvalonEditTextMarkerService.cs" />
     <Compile Include="Services\CoapFormatHighlightManager.cs" />
     <Compile Include="Views\DeviceNavigationView.xaml.cs">
@@ -97,6 +102,10 @@
     <Compile Include="Views\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\CoapOptionsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\FilterOption.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -183,12 +192,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoAPExplorer\CoAPExplorer.csproj">
-      <Project>{a18bdc5c-947f-4acb-9413-f85e78d2704e}</Project>
-      <Name>CoAPExplorer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="AvalonEdit">
       <Version>5.0.4</Version>
     </PackageReference>
@@ -206,7 +209,15 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\JSONFormat.xml" />
+    <Resource Include="Resources\JSONFormat.xml">
+      <SubType>Designer</SubType>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoAPExplorer\CoAPExplorer.csproj">
+      <Project>{a18bdc5c-947f-4acb-9413-f85e78d2704e}</Project>
+      <Name>CoAPExplorer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

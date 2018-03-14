@@ -10,8 +10,9 @@
              xmlns:coapExplorer="clr-namespace:CoAPExplorer.WPF"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
+             xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="391.525" d:DesignWidth="504.381">
+             d:DesignHeight="391.525" d:DesignWidth="563.881">
     <UserControl.Resources>
         <converters:HextoAsciiConverter x:Key="HextoAsciiConverter"/>
     </UserControl.Resources>
@@ -50,22 +51,30 @@
                     </ComboBox.ItemsPanel>
                 </ComboBox>
                 <ToolBar ToolBarTray.IsLocked="True" DockPanel.Dock="Right"
-                                     VerticalAlignment="Center" HorizontalAlignment="Right"
-                                     Style="{StaticResource MaterialDesignToolBar}"
-                                     Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Background}">
+                         VerticalAlignment="Center" HorizontalAlignment="Right" 
+                         Style="{StaticResource MaterialDesignToolBar}"
+                         Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Background}">
                     <ListBox SelectionMode="Multiple">
-                        <ListBoxItem x:Name="MoreOptionsToggle" IsSelected="False"
+                            <ListBoxItem x:Name="MoreOptionsToggle" ToolTipService.ToolTip="Show Advanced Options"
                                      Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=materialDesign:ColorZone}, Path=Background}">
                             <materialDesign:PackIcon Kind="MenuDown" />
                         </ListBoxItem>
                     </ListBox>
+                    <StackPanel Orientation="Horizontal" ToolBar.OverflowMode="Always">
+                        <ToggleButton Style="{StaticResource MaterialDesignFlatToggleButton}" Margin="4 0 4 0"  Width="auto"
+                                      TextBlock.FontSize="13"
+                                      BorderBrush="Transparent" Background="Transparent"
+                                      IsChecked="{Binding ElementName=IncrementMessageIDCheckBox, Path=IsChecked}">Auto increment Message ID</ToggleButton>
+                        <ToggleButton x:Name="IncrementMessageIDCheckBox" IsThreeState="False" Margin="4 0 4 0"
+                                      ToolTipService.ToolTip="Auto Increment Message ID"/>
+                    </StackPanel>
                 </ToolBar>
             </DockPanel>
         </materialDesign:ColorZone>
         <materialDesign:DrawerHost Grid.Row="1"
                                    IsTopDrawerOpen="{Binding ElementName=MoreOptionsToggle, Path=IsSelected}">
             <materialDesign:DrawerHost.TopDrawerContent>
-                <StackPanel Orientation="Vertical" Margin="8">
+                <StackPanel Orientation="Vertical" Margin="8,0">
                     <StackPanel Orientation="Horizontal" Margin="0 4 0 4">
                         <TextBox x:Name="MessageToken" materialDesign:HintAssist.Hint="Token" Width="155" Margin="0 0 -24 0"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
@@ -73,11 +82,8 @@
                             <materialDesign:PackIcon Foreground="{Binding ElementName=MessageIdTextBox, Path=BorderBrush}" Kind="Autorenew"/>
                         </Border>
                     </StackPanel>
-                    <TextBlock Margin="0 4 0 4">TODO: add options here and advanced settings</TextBlock>
                     <Separator Margin="0 4 0 4"/>
-                    <TextBlock Margin="0,4,0,4" Opacity=".54"
-                                           Style="{StaticResource MaterialDesignSubheadingTextBlock}">Advanced</TextBlock>
-                    <CheckBox x:Name="IncrementMessageIDCheckBox" IsThreeState="False">Increment Message ID</CheckBox>
+                    <controls:CoapOptionsList x:Name="OptionsList"/>
                 </StackPanel>
             </materialDesign:DrawerHost.TopDrawerContent>
             <TabControl>
