@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F2D4903E-1237-405F-B41A-C94931BAECEE}"
 	ProjectSection(SolutionItems) = preProject
 		Notes.md = Notes.md
+		Readme.md = Readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{6E6E4765-D2A5-43F8-BD2C-669AF6DCC78D}"
@@ -21,6 +22,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9C82C172-B4A0-4C94-ADB3-ED7CB18C8439}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoAPExplorer.WPF.Tests", "Tests\CoAPExplorer.WPF.Tests\CoAPExplorer.WPF.Tests.csproj", "{A6D994B5-DC66-466D-A460-F5042EDA4D5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Media", "Media", "{C3297368-6E89-4E86-8386-79807CC31156}"
+	ProjectSection(SolutionItems) = preProject
+		Media\2018-03-15_11-37-33.gif = Media\2018-03-15_11-37-33.gif
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +59,7 @@ Global
 		{A18BDC5C-947F-4ACB-9413-F85E78D2704E} = {02E79D79-5DE2-4FD2-921B-643147B0FDA7}
 		{B1BD0B92-5936-4E98-B13E-CD5D5D239A04} = {6E6E4765-D2A5-43F8-BD2C-669AF6DCC78D}
 		{A6D994B5-DC66-466D-A460-F5042EDA4D5F} = {9C82C172-B4A0-4C94-ADB3-ED7CB18C8439}
+		{C3297368-6E89-4E86-8386-79807CC31156} = {F2D4903E-1237-405F-B41A-C94931BAECEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1A27755-63B4-411F-A681-40D8C089EBA6}

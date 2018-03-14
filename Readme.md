@@ -1,8 +1,16 @@
-# CoAP Explorer
+# CoAP Explorer 
+
+[![Build status](https://ci.appveyor.com/api/projects/status/njym61gix1mygnqg/branch/master?svg=true)](https://ci.appveyor.com/project/NZSmartie/coapexplorer/branch/master)
 
 Work in Progress App for interacting with CoAP devices. Soon to be cross platform, for now, is targeting Windows.
 
-Based on [ReactiveUI](https://github.com/reactiveui/ReactiveUI/), [Material Deisgn Toolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) and my very own [CoAP.Net](https://github.com/NZSmartie/CoAP.Net/)
+Thanks To:
+ - [ReactiveUI](https://github.com/reactiveui/ReactiveUI/) - Reactive Style UI
+ - [Material Deisgn Toolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) Google's Material Design for WIndows Presentation Framework
+ - [AvalonEdit](https://github.com/icsharpcode/AvalonEdit) - Text Highlighter for WPF
+ - [CoAP.Net](https://github.com/NZSmartie/CoAP.Net/) - My very own CoAP library
+
+Latest nightly builds for Windows can be downloaded straight from AppVeyor - https://ci.appveyor.com/project/NZSmartie/coapexplorer/build/artifacts
 
 ## Goals
 
@@ -15,4 +23,4 @@ Based on [ReactiveUI](https://github.com/reactiveui/ReactiveUI/), [Material Deis
 
 ## Screen Grabs
 
-![Device Discovery](Media/2018-03-09_03-21-42.gif)
+![Device Discovery](Media/2018-03-15_11-37-33.gif)
