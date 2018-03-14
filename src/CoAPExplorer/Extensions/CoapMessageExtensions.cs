@@ -27,6 +27,9 @@ namespace CoAPExplorer.Extensions
                 coapMessage.Payload = message.Payload;
             }
 
+            foreach (var option in message.Options)
+                coapMessage.Options.Add(option);
+
             return coapMessage;
         }
 

@@ -22,19 +22,21 @@ namespace CoAPExplorer.Database
             if (reader.TokenType != JsonToken.StartObject)
                 return null;
 
-            reader.Read();
-
             byte[] data = new byte[] { };
             int? number = 0;
 
+            reader.Read();
+
             while (reader.TokenType != JsonToken.EndObject)
             {
-
-                var name = reader.ReadAsString();
-                if (name == "n")
+                if (reader.Path.EndsWith(".n"))
                     number = reader.ReadAsInt32();
-                if (name == "d")
+                else if(reader.Path.EndsWith(".d"))
                     data = reader.ReadAsBytes();
+                else
+                    reader.Read();
+
+                reader.Read();
             }
 
             return _factory.Create(number.Value, data);

@@ -114,11 +114,11 @@ namespace CoAPExplorer.ViewModels
         {
             if (e.NewItems != null)
                 foreach (var item in e.NewItems.Cast<CoapOption>())
-                    _options.Add(item);
+                    _message.Options.Add(item);
 
             if (e.OldItems != null)
                 foreach (var item in e.OldItems.Cast<CoapOption>())
-                    _options.Remove(item);
+                    _message.Options.Remove(item);
         }
 
         public ContentFormatType ContentFormat
@@ -152,6 +152,8 @@ namespace CoAPExplorer.ViewModels
         public MessageViewModel(Message message = null)
         {
             _message = message ?? new Message();
+
+            Options = new ObservableCollection<CoapOption>(_message.Options);
 
             // Initial setup of Text and Formatted Text
             UpdatePayloads = ReactiveCommand.Create<UpdatePayloadSource>(source =>
