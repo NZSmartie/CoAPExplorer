@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -17,6 +18,8 @@ namespace CoAPExplorer.Models
     public class Message
     {
         private byte[] _token;
+        private byte[] _payload;
+        private Stream _payloadStream;
 
         [Key]
         public int Id { get; set; }
@@ -48,7 +51,28 @@ namespace CoAPExplorer.Models
         [NotMapped]
         public ContentFormatType ContentFormat { get; set; } = null;
 
-        public byte[] Payload { get; set; }
+        public byte[] Payload
+        {
+            get => _payload;
+            set
+            {
+                if (_payloadStream != null)
+                    throw new InvalidOperationException($"Please set {nameof(PayloadStream)} to null before assigning to {nameof(Payload)}");
+                _payload = value;
+            }
+        }
+
+        [NotMapped]
+        public Stream PayloadStream
+        {
+            get => _payloadStream;
+            set
+            {
+                if (_payload != null)
+                    throw new InvalidOperationException($"Please set {nameof(Payload)} to null before assigning to {nameof(PayloadStream)}");
+                _payloadStream = value;
+            }
+        }
 
         [Column(nameof(Code))]
         public string _dbCode

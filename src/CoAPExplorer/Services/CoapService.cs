@@ -10,6 +10,7 @@ using Splat;
 
 using CoAPExplorer.Extensions;
 using CoAPExplorer.Models;
+using System.IO;
 
 namespace CoAPExplorer.Services
 {
@@ -30,6 +31,7 @@ namespace CoAPExplorer.Services
                 return Observable.Empty<Message>();
 
             var coapMessage = message.ToCoapMessage();
+            var messageContext = coapMessage.CreateBlockWiseContext(_coapClient);
 
             return Observable.Create<Message>(observer =>
             {
@@ -38,11 +40,30 @@ namespace CoAPExplorer.Services
                 {
                     try
                     {
-                        var id = await _coapClient.SendAsync(coapMessage, endpoint, cts.Token);
+                        if (coapMessage.IsBlockWise())
+                        {
+                            using (var writer = new CoapBlockStreamWriter(messageContext, endpoint))
+                                await message.PayloadStream.CopyToAsync(writer, writer.BlockSize);
+                        }
+                        else
+                        {
+                            var id = await _coapClient.SendAsync(coapMessage, endpoint, cts.Token);
+                            messageContext = new CoapBlockWiseContext(_coapClient, coapMessage, await _coapClient.GetResponseAsync(id, cts.Token));
+                        }
 
-                        var response = await _coapClient.GetResponseAsync(id, cts.Token);
+                        var response = messageContext.Response.ToMessage();
 
-                        observer.OnNext(response.ToMessage());
+                        if (messageContext.Response.IsBlockWise())
+                        {
+                            var memoryStream = new MemoryStream();
+
+                            using (var reader = new CoapBlockStreamReader(messageContext, endpoint))
+                                reader.CopyTo(memoryStream);
+
+                            response.Payload = memoryStream.ToArray();
+                        }
+
+                        observer.OnNext(response);
 
                         observer.OnCompleted();
                     }
