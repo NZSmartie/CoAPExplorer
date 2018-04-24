@@ -39,7 +39,7 @@ namespace CoAPExplorer.ViewModels
 
             // TODO: Set Favourites? or last viewed?
             Router.NavigateAndReset
-                .Execute(new SearchViewModel(hostScreen))
+                .Execute(new RecentDevicesViewModel(hostScreen))
                 .Subscribe();
 
             this.WhenActivated((CompositeDisposable disposables) =>
