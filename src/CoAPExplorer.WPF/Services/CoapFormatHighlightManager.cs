@@ -23,6 +23,7 @@ namespace CoAPExplorer.WPF.Services
         public CoapFormatHighlightingManager()
         {
             Register(ContentFormatType.ApplicationJson, "/Resources/JSONFormat.xml");
+            Register(ContentFormatType.ApplicationLinkFormat, "/Resources/LinkFormat.xml");
         }
 
         public void Register(ContentFormatType contentFormat, string resourceName)

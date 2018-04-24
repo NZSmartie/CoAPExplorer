@@ -214,6 +214,7 @@
     <Resource Include="Resources\JSONFormat.xml">
       <SubType>Designer</SubType>
     </Resource>
+    <Resource Include="Resources\LinkFormat.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoAPExplorer\CoAPExplorer.csproj">

@@ -19,6 +19,10 @@ namespace CoAPExplorer.Utils
             {
                 if (contentFormat.Value == ContentFormatType.ApplicationJson.Value)
                     return JToken.Parse(Encoding.UTF8.GetString(payload)).ToString(Newtonsoft.Json.Formatting.Indented);
+
+                // TODO: Don't simply replace all commas with new line. Need to be context aware to ensure we're not splitting a link format in two.
+                if (contentFormat.Value == ContentFormatType.ApplicationLinkFormat.Value)
+                    return Encoding.UTF8.GetString(payload).Replace(",", ",\r\n");
             }
             catch(Exception ex)
             {
@@ -41,6 +45,9 @@ namespace CoAPExplorer.Utils
 
             if (contentFormat.Value == ContentFormatType.ApplicationJson.Value)
                 return Encoding.UTF8.GetBytes(JToken.Parse(payload).ToString());
+
+                if (contentFormat.Value == ContentFormatType.ApplicationLinkFormat.Value)
+                    return Encoding.UTF8.GetBytes(payload.Replace("\n,",",").Replace("\r",""));
             }
             catch (JsonReaderException ex)
             {

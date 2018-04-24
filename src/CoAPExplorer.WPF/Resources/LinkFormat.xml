@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<SyntaxDefinition name="LinkFormat" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <Color name="ResourceUri" foreground="#FFFF9800" exampleText="&lt;/some/resource&gt;" />
+  <Color name="Digits" foreground="#FF6A0080" exampleText="3.14" />
+  <Color name="String" foreground="#FFE91E63" exampleText="&quot;Hello, World!&quot;" />
+  <Color name="Literals" foreground="#FFB0003A" exampleText="en-nz" />
+  <Color name="Puncuation" />
+
+  <RuleSet>
+    <Span color="ResourceUri">
+      <Begin>&lt;</Begin>
+      <End>&gt;</End>
+    </Span>
+
+    <Span color="Puncuation">
+      <Begin>;</Begin>
+      <End>,</End>
+      <RuleSet>
+          
+        <Span color="String">
+          <Begin>"</Begin>
+          <End>"</End>
+          <RuleSet>
+            <Span begin="\\" end="." />
+          </RuleSet>
+        </Span>
+
+        <Rule color="Digits">
+          [0-9.]+
+        </Rule>
+      </RuleSet>
+    </Span>
+    
+  </RuleSet>
+</SyntaxDefinition>
