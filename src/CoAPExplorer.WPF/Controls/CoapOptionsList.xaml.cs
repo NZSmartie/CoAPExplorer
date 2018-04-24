@@ -25,10 +25,19 @@ namespace CoAPExplorer.WPF.Controls
         public static readonly DependencyProperty OptionsProperty = DependencyProperty.Register(
             nameof(Options), typeof(ObservableCollection<CoAPNet.CoapOption>), typeof(CoapOptionsList), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
+            nameof(IsReadOnly), typeof(bool), typeof(CoapOptionsList), new PropertyMetadata(false));
+
         public ObservableCollection<CoAPNet.CoapOption> Options
         {
             get => GetValue(OptionsProperty) as ObservableCollection<CoAPNet.CoapOption>;
             set => SetValue(OptionsProperty, value);
+        }
+
+        public bool IsReadOnly
+        {
+            get => (bool)GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
         }
 
         public CoapOptionsList()

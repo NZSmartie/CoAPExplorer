@@ -10,17 +10,22 @@
              xmlns:mockViewModels="clr-namespace:CoAPExplorer.WPF.MockViewModels"
              xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=mockViewModels:MockCoapOptionsList, IsDesignTimeCreatable=True}"
-             d:DesignHeight="1131.68" d:DesignWidth="475.847">
+             d:DesignHeight="1131.68" d:DesignWidth="475.847"
+             x:Name="This">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:CoapOptionTypeToNameConverter x:Key="CoapOptionTypeToNameConverter"/>
         <converters:HextoAsciiConverter x:Key="HextoAsciiConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="ReadOnlyToVisibilityConverter" WhenFalse="Visible" WhenTrue="Collapsed" />
+        <converters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
     </UserControl.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Top" BorderBrush="{StaticResource MaterialDesignDivider}" BorderThickness="0 0 0 1">
             <StackPanel Orientation="Horizontal" Background="{StaticResource MaterialDesignPaper}">
                 <Button x:Name="AddButton" Margin="8" Click="AddButton_Click"
                         HorizontalAlignment="Right" ToolTipService.ToolTip="Add new CoAP Option to This Request"
-                        Style="{StaticResource MaterialDesignFlatAccentButton}">Add</Button>
+                        Style="{StaticResource MaterialDesignFlatAccentButton}"
+                        Visibility="{Binding IsReadOnly, Converter={StaticResource ReadOnlyToVisibilityConverter}}">Add</Button>
                 <TextBlock VerticalAlignment="Center" Margin="8" Style="{StaticResource MaterialDesignSubheadingTextBlock}">CoAP Message Options</TextBlock>
             </StackPanel>
         </Border>
@@ -57,6 +62,8 @@
                             <ComboBox x:Name="OptionTypeComboBox" MinWidth="120" materialDesign:HintAssist.Hint="Option" Margin="8"
                                       Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       ItemsSource="{x:Static local:Consts.CoapOptionTypes}" DisplayMemberPath="Item1"
+                                      Focusable="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}"
+                                      IsHitTestVisible="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}"
                                       SelectedValue="{Binding Path=., Converter={StaticResource CoapOptionTypeToNameConverter}, Mode=OneWay}" SelectedValuePath="Item1"
                                       SelectionChanged="OptionTypeComboBox_SelectionChanged"/>
                         </DataTemplate>
@@ -74,17 +81,20 @@
                                 
                                 <DataTemplate DataType="{x:Type coap:CoapStringOption}">
                                     <TextBox Text="{Binding Value}" materialDesign:HintAssist.Hint="String" MinWidth="140"
+                                             IsReadOnly="{Binding IsReadOnly, ElementName=This}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="8"/>
                                 </DataTemplate>
                                 
                                 <DataTemplate DataType="{x:Type coap:CoapUintOption}">
                                     <TextBox Text="{Binding Value}" materialDesign:HintAssist.Hint="Number"  MinWidth="140"
+                                             IsReadOnly="{Binding IsReadOnly, ElementName=This}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="8"/>
                                 </DataTemplate>
                                 
                                 <DataTemplate DataType="{x:Type coap:CoapOpaqueOption}">
                                     <TextBox materialDesign:HintAssist.Hint="Bytes" Width="155" Margin="8"  MinWidth="140"
                                              Text="{Binding Value, Converter={StaticResource HextoAsciiConverter}, ConverterParameter=8, UpdateSourceTrigger=LostFocus}"
+                                             IsReadOnly="{Binding IsReadOnly, ElementName=This}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
                                 </DataTemplate>
                                 
@@ -93,6 +103,8 @@
                                               materialDesign:HintAssist.Hint="Content Type"
                                               ItemsSource="{x:Static local:Consts.ContentTypes}" DisplayMemberPath="Item1"
                                               SelectedValue="{Binding MediaType}" SelectedValuePath="Item2"
+                                              Focusable="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}"
+                                              IsHitTestVisible="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}"
                                               materialDesign:ComboBoxAssist.ShowSelectedItem="True"
                                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
                                 </DataTemplate>
@@ -101,6 +113,8 @@
                                     <ComboBox x:Name="ContentTypeComboBox" Width="180" IsEditable="True" Margin="8"
                                               materialDesign:HintAssist.Hint="Content Type"
                                               ItemsSource="{x:Static local:Consts.ContentTypes}" DisplayMemberPath="Item1"
+                                              Focusable="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}"
+                                              IsHitTestVisible="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}"
                                               SelectedValue="{Binding MediaType}" SelectedValuePath="Item2"
                                               materialDesign:ComboBoxAssist.ShowSelectedItem="True"
                                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
@@ -108,13 +122,18 @@
                                 <DataTemplate DataType="{x:Type coapOptions:BlockBase}">
                                     <StackPanel Orientation="Horizontal" Margin="4 8">
                                         <TextBox Text="{Binding BlockNumber}" Width="60" Margin="4 0 4 0"
+                                             IsReadOnly="{Binding IsReadOnly, ElementName=This}"
                                              materialDesign:HintAssist.Hint="Number"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
                                         <ComboBox materialDesign:HintAssist.Hint="Block Size" Margin="4 0 4 1"
                                                   ItemsSource="{x:Static local:Consts.CoapBlockSupportedSizes}"
                                                   SelectedItem="{Binding BlockSize}"
+                                                  Focusable="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}"
+                                                  IsHitTestVisible="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}"
                                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-                                        <CheckBox Margin="4 8 4 0" IsChecked="{Binding IsMoreFollowing}">More</CheckBox>
+                                        <CheckBox Margin="4 8 4 0" IsChecked="{Binding IsMoreFollowing}" 
+                                                  Focusable="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}"
+                                                  IsHitTestVisible="{Binding IsReadOnly, ElementName=This, Converter={StaticResource InvertBooleanConverter}}">More</CheckBox>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataTemplate.Resources>
@@ -126,6 +145,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button x:Name="DeleteButton" Width="48" Height="48" ToolTipService.ToolTip="Delete This Highlighted Option"
+                                    Visibility="{Binding IsReadOnly, ElementName=This, Converter={StaticResource ReadOnlyToVisibilityConverter}}"
                                     Style="{StaticResource MaterialDesignFlatAccentButton}" Click="DeleteButton_Click">
                                 <materialDesign:PackIcon Kind="Delete" />
                             </Button>

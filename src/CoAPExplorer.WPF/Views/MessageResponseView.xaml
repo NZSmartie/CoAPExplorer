@@ -10,6 +10,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="391.525" d:DesignWidth="504.381">
     <UserControl.Resources>
@@ -57,6 +58,7 @@
                         <TextBox x:Name="MessageToken" materialDesign:HintAssist.Hint="Token" IsReadOnly="True" Width="155" Margin="0 0 -24 0"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
                     </StackPanel>
+                    <controls:CoapOptionsList x:Name="OptionsList" IsReadOnly="True"/>
                 </StackPanel>
             </materialDesign:DrawerHost.TopDrawerContent>
             <TabControl>
