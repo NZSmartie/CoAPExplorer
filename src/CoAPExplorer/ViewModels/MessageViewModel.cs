@@ -23,8 +23,8 @@ namespace CoAPExplorer.ViewModels
     {
         private readonly Message _message;
         private bool _isPayloadEscaped;
-        private string _payload;
-        private string _formattedPayload;
+        private string _payload = string.Empty;
+        private string _formattedPayload = string.Empty;
         private bool _autoIncrement = true;
 
         public Message Message => _message;
@@ -166,7 +166,7 @@ namespace CoAPExplorer.ViewModels
                if (source != UpdatePayloadSource.Formatted)
                    FormattedPayload = _message.Payload != null
                        ? CoapPayloadFormater.Format(_message.Payload, _message.ContentFormat)
-                       : null;
+                       : string.Empty;
             });
 
             // Command to swap between Escapped and non-escapped payloads
@@ -205,7 +205,7 @@ namespace CoAPExplorer.ViewModels
                     })
                     .DisposeWith(disposables);
 
-                this.WhenAnyValue(vm => vm.FormattedPayload, vm=>vm.ContentFormat)
+                this.WhenAnyValue(vm => vm.FormattedPayload, vm => vm.ContentFormat)
                     .Throttle(TimeSpan.FromMilliseconds(300), RxApp.MainThreadScheduler)
                     .Subscribe(t =>
                     {
