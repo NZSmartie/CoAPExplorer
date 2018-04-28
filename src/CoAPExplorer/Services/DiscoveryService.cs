@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CoAPExplorer.Database;
+using CoAPNet.Options;
 
 namespace CoAPExplorer.Services
 {
@@ -85,6 +86,15 @@ namespace CoAPExplorer.Services
 
                             device.LastSeen = DateTime.Now;
 
+                            var contentForamt = recv.Message.Options.Get<ContentFormat>();
+                            if (recv.Message.Code.IsSuccess() && contentForamt != null && 
+                                contentForamt.MediaType == ContentFormatType.ApplicationLinkFormat)
+                            {
+                                device.KnownResources.Clear();
+                                foreach (var resource in GetResources(device, Encoding.UTF8.GetString(recv.Message.Payload)))
+                                    device.KnownResources.Add(resource);
+                            }
+
                             await _dbContext.SaveChangesAsync();
 
                             observer.OnNext(device);
@@ -95,13 +105,79 @@ namespace CoAPExplorer.Services
                     {
                         observer.OnCompleted();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         observer.OnError(ex);
                     }
                 });
                 return () => cts.Cancel();
             });
+        }
+
+        public IObservable<DeviceResource> DiscoverResources(Device device)
+        {
+            return Observable.Create<DeviceResource>(observer =>
+            {
+                var cts = new CancellationTokenSource();
+                var discoverRequest = new Message
+                {
+                    Url = "/.well-known/core",
+                    Code = CoapMessageCode.Get,
+                    Token = new byte[8],
+                };
+
+                // Assign a random token
+                new Random().NextBytes(discoverRequest.Token);
+
+                var coapService = new CoapService(device.EndpointType);
+
+                coapService
+                    .SendMessage(discoverRequest, device.Endpoint)
+                    .Subscribe(message =>
+                    {
+                        if (message.Code == CoapMessageCode.NotFound)
+                            return;
+
+                        if (!message.Code.IsSuccess())
+                        {
+                            observer.OnError(new CoapMessageFormatException(message.Payload != null ? Encoding.UTF8.GetString(message.Payload) : message.Code.ToString(), message.Code));
+                            return;
+                        }
+
+                        if (message.ContentFormat.Value != CoAPNet.Options.ContentFormatType.ApplicationLinkFormat.Value)
+                        {
+                            observer.OnError(new CoapMessageFormatException("Message is not applicaiton/link-format", message.Code));
+                            return;
+                        }
+
+                        Observable.ToObservable(GetResources(device, Encoding.UTF8.GetString(message.Payload))).Subscribe(observer);
+
+                    }, observer.OnError, observer.OnCompleted, cts.Token);
+
+                return () => cts.Cancel();
+            });
+        }
+
+        private IEnumerable<DeviceResource> GetResources(Device device, string payload)
+        {
+            var coreResources = CoreLinkFormat.Parse(payload);
+
+            foreach (var coreResource in coreResources)
+            {
+                var resource = new DeviceResource
+                {
+                    Device = device,
+                    Url = coreResource.UriReference.OriginalString,
+                };
+
+                if (!string.IsNullOrEmpty(coreResource.Title))
+                    resource.Name = coreResource.Title;
+
+                if (coreResource.SuggestedContentTypes.Count > 0)
+                    resource.ContentFormat = coreResource.SuggestedContentTypes[0];
+
+                yield return resource;
+            }
         }
     }
 }

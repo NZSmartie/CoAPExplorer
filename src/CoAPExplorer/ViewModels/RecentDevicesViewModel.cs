@@ -1,5 +1,6 @@
 ﻿using CoAPExplorer.Database;
 using CoAPExplorer.Models;
+using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using Splat;
 using System;
@@ -35,7 +36,7 @@ namespace CoAPExplorer.ViewModels
                 return new NewDeviceViewModel(HostScreen);
             });
 
-            var devices = _dbContext.Devices.ToList();
+            var devices = _dbContext.Devices.Include(x => x.KnownResources).ToList();
             Devices = new ObservableCollection<DeviceViewModel>(devices.Select(d => new DeviceViewModel(d, HostScreen)));
         }
     }

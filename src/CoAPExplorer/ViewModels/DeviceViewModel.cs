@@ -22,6 +22,8 @@ namespace CoAPExplorer.ViewModels
 
         public Device Device { get; }
 
+        public IReactiveDerivedList<DeviceResource> Resources { get; }
+
         private readonly CoapExplorerContext _dbContext;
 
         public ICoapEndpoint Endpoint => Device.Endpoint;
@@ -140,6 +142,8 @@ namespace CoAPExplorer.ViewModels
 
             HostScreen = hostScreen;
             Device = device ?? new Device();
+
+            Resources = Device.KnownResources.CreateDerivedCollection(x => x);
 
             Navigation = new DeviceNavigationViewModel(this);
 
