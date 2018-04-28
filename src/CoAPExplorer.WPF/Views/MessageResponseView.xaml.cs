@@ -62,7 +62,7 @@ namespace CoAPExplorer.WPF.Views
                             .DisposeWith(_viewModelDisposables);
 
                         this.OneWayBind(NewViewModel, vm => vm.ContentFormat, v => v.ContentTypeTextBox.Text,
-                                x => Consts.ContentTypes.Single(c => c.Item2 == x).Item1)
+                                x => Consts.ContentTypes.SingleOrDefault(c => c.Item2?.Value == x.Value)?.Item1 ?? $"{x.Value} - (unknown)")
                             .DisposeWith(_viewModelDisposables);
 
                         this.Bind(NewViewModel, vm => vm.Options, v => v.OptionsList.Options)
