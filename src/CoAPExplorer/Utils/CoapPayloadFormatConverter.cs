@@ -20,6 +20,9 @@ namespace CoAPExplorer.Utils
 
             try
             {
+                if (contentFormat.Value == ContentFormatType.TextPlain.Value)
+                    return Encoding.UTF8.GetString(payload);
+
                 if (contentFormat.Value == ContentFormatType.ApplicationJson.Value)
                     return JToken.Parse(Encoding.UTF8.GetString(payload)).ToString(Newtonsoft.Json.Formatting.Indented);
 
@@ -45,6 +48,9 @@ namespace CoAPExplorer.Utils
 
             try
             {
+
+                if (contentFormat.Value == ContentFormatType.TextPlain.Value)
+                    return Encoding.UTF8.GetBytes(payload);
 
             if (contentFormat.Value == ContentFormatType.ApplicationJson.Value)
                 return Encoding.UTF8.GetBytes(JToken.Parse(payload).ToString());
