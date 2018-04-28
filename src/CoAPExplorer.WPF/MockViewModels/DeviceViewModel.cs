@@ -24,6 +24,20 @@ namespace CoAPExplorer.WPF.MockViewModels
                 Address = "192.168.x.x",
                 LastSeen = DateTime.Now,
                 IsFavourite = false,
+                KnownResources = new System.Collections.ObjectModel.Collection<DeviceResource>
+                {
+                    new DeviceResource {Url = "/.well-known/core"},
+                    new DeviceResource {Url = "/doors"},
+                    new DeviceResource {Url = "/doors/garage"},
+                    new DeviceResource {Url = "/doors/entrance"},
+                    new DeviceResource {Url = "/lights"},
+                    new DeviceResource {Url = "/lights/desklamp"},
+                    new DeviceResource {Url = "/lights/lounge1"},
+                    new DeviceResource {Url = "/lights/lounge2"},
+                    new DeviceResource {Url = "/lights/lounge3"},
+                    new DeviceResource {Url = "/lights/lounge4"},
+                    new DeviceResource {Url = "/lights/lounge4"},
+                },
             })
         {
             Message = new Message

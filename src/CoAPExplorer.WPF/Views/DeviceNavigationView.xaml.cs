@@ -46,6 +46,15 @@ namespace CoAPExplorer.WPF.Views
             this.WhenActivated(disposables =>
             {
                 this.WhenAnyValue(t => t.ViewModel).Subscribe(NewViewModel => DataContext = NewViewModel).DisposeWith(disposables);
+
+                this.BindCommand(ViewModel, 
+                                 vm => vm.RefreshResourcesCommand, 
+                                 v => v.RefreshButton, 
+                                 vm => vm.Device)
+                    .DisposeWith(disposables);
+
+                this.OneWayBind(ViewModel, vm => vm.Resources, v => v.ResourceList.ItemsSource)
+                    .DisposeWith(disposables);
             });
         }
     }

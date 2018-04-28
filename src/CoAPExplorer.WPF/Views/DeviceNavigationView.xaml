@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoAPExplorer.WPF.Views"
+             xmlns:models="clr-namespace:CoAPExplorer.Models;assembly=CoAPExplorer"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mockViewModels="clr-namespace:CoAPExplorer.WPF.MockViewModels"
              MinWidth="180"
@@ -48,13 +49,31 @@
                        Text="{Binding Address}"/>
         </StackPanel>
         </Grid>
-        <TreeView Grid.Row="1">
-            <TreeViewItem Header="Resources">
-                <TreeViewItem Header="Banana" />
-                <TreeViewItem Header="Peach" />
-                <TreeViewItem Header="Pear" />
-                <TreeViewItem Header="Strawberry" />
-            </TreeViewItem>
-        </TreeView>
+        <ScrollViewer Grid.Row="1"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+            <Grid>
+                
+            <ListView x:Name="ResourceList" ItemsSource="{Binding DeviceResources}">
+                <ListView.Template>
+                    <ControlTemplate>
+                        <ItemsPresenter></ItemsPresenter>
+                    </ControlTemplate>
+                </ListView.Template>
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:DeviceResource}">
+                        <TextBlock Text="{Binding Url}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button VerticalAlignment="Top" HorizontalAlignment="Right"
+                    Padding="8 0" x:Name="RefreshButton"
+                    materialDesign:RippleAssist.ClipToBounds="True"
+                    ToolTipService.ToolTip="Refresh Resources"
+                    Style="{StaticResource MaterialDesignToolButton}">
+                <materialDesign:PackIcon Kind="Refresh"/>
+            </Button>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>
