@@ -129,7 +129,8 @@ namespace CoAPExplorer.ViewModels
 
         public IScreen HostScreen { get; private set; }
 
-        public INavigationViewModel Navigation { get; }
+        public DeviceNavigationViewModel Navigation { get; }
+        INavigationViewModel ISupportsNavigatation.Navigation => Navigation;
 
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
@@ -186,6 +187,19 @@ namespace CoAPExplorer.ViewModels
                 this.WhenAnyValue(vm => vm.Message)
                     .Select(message => new MessageViewModel(message))
                     .Subscribe(mvm => MessageViewModel = mvm)
+                    .DisposeWith(disposables);
+
+                this.WhenAnyValue(vm => vm.Navigation.SelectedResource)
+                    .Where(x => x != null)
+                    .Subscribe(resource =>
+                    {
+                        Message = new Message
+                        {
+                            Code = CoapMessageCode.Get,
+                            Url = resource.Url,
+                            ContentFormat = resource.ContentFormat,
+                        };
+                    })
                     .DisposeWith(disposables);
             });
 

@@ -55,6 +55,9 @@ namespace CoAPExplorer.WPF.Views
 
                 this.OneWayBind(ViewModel, vm => vm.Resources, v => v.ResourceList.ItemsSource)
                     .DisposeWith(disposables);
+
+                this.Bind(ViewModel, vm => vm.SelectedResource, v => v.ResourceList.SelectedItem)
+                    .DisposeWith(disposables);
             });
         }
     }

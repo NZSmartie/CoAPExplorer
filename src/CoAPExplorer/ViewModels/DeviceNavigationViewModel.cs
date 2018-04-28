@@ -21,14 +21,16 @@ namespace CoAPExplorer.ViewModels
         private DiscoveryService _discoveryService;
         private readonly CoapExplorerContext _context;
         private bool _pendingClearResources = false;
+        private DeviceViewModel _device;
+        public DeviceResource _selectedResource;
 
         public bool IsOpen { get => _isOpen; set => this.RaiseAndSetIfChanged(ref _isOpen, value); }
-
-        private DeviceViewModel _device;
 
         public Device Device => _device.Device;
 
         public IReactiveDerivedList<DeviceResource> Resources => _device.Resources;
+
+        public DeviceResource SelectedResource { get => _selectedResource; set => this.RaiseAndSetIfChanged(ref _selectedResource, value); }
 
         public string Name => _device.Name;
 
