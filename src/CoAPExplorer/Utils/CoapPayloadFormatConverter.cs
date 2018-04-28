@@ -15,6 +15,9 @@ namespace CoAPExplorer.Utils
             if (payload == null || contentFormat == null)
                 return string.Empty;
 
+            if(payload.Length == 0)
+                return string.Empty;
+
             try
             {
                 if (contentFormat.Value == ContentFormatType.ApplicationJson.Value)
