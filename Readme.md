@@ -6,6 +6,7 @@ Work in Progress App for interacting with CoAP devices. Soon to be cross platfor
 
 Thanks To:
  - [ReactiveUI](https://github.com/reactiveui/ReactiveUI/) - Reactive Style UI
+ - [ReactiveUI.Routing](https://github.com/KallynGowdy/ReactiveUI.Routing) - Better cross platform routing library for ReactiveUI
  - [Material Deisgn Toolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) Google's Material Design for WIndows Presentation Framework
  - [AvalonEdit](https://github.com/icsharpcode/AvalonEdit) - Text Highlighter for WPF
  - [CoAP.Net](https://github.com/NZSmartie/CoAP.Net/) - My very own CoAP library
