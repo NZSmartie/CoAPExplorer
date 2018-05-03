@@ -21,7 +21,7 @@ namespace CoAPExplorer.ViewModels
     {
         private string _searchUrl = "/.well-known/core";
         private ObservableAsPropertyHelper<bool> _isSearching;
-        private readonly DiscoveryService _discoveryService;
+        private readonly IDiscoveryService _discoveryService;
         private ObservableCollection<DeviceViewModel> _devices;
 
         public IReactiveRouter Router { get; }
@@ -56,7 +56,7 @@ namespace CoAPExplorer.ViewModels
         {
             Router = router ?? Locator.Current.GetService<IReactiveRouter>();
 
-            _discoveryService = Locator.Current.GetService<DiscoveryService>();
+            _discoveryService = Locator.Current.GetService<IDiscoveryService>();
 
             Filters = new List<RequestFilter>();
 

@@ -15,7 +15,7 @@ using CoAPNet.Options;
 
 namespace CoAPExplorer.Services
 {
-    public class DiscoveryService
+    public class DiscoveryService : IDiscoveryService
     {
         private readonly CoapClient _coapClient;
         private readonly CoapExplorerContext _dbContext;
@@ -51,7 +51,7 @@ namespace CoAPExplorer.Services
             _timeout = timeout;
         }
 
-        public IObservable<Device> Discover()
+        public IObservable<Device> DiscoverDevices()
         {
             return Observable.Create<Device>(observer =>
             {

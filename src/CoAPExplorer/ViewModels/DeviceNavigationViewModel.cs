@@ -18,7 +18,7 @@ namespace CoAPExplorer.ViewModels
     public class DeviceNavigationViewModel : ReactiveObject
     {
         private bool _isOpen = true;
-        private DiscoveryService _discoveryService;
+        private IDiscoveryService _discoveryService;
         private readonly CoapExplorerContext _context;
         private bool _pendingClearResources = false;
         private DeviceViewModel _device;
@@ -41,7 +41,7 @@ namespace CoAPExplorer.ViewModels
         public DeviceNavigationViewModel(DeviceViewModel device)
         {
             _device = device;
-            _discoveryService = Locator.Current.GetService<DiscoveryService>();
+            _discoveryService = Locator.Current.GetService<IDiscoveryService>();
             _context = Locator.Current.GetService<Database.CoapExplorerContext>();
 
             _device.PropertyChanged += DevicePropertyChanged;
