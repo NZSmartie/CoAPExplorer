@@ -13,26 +13,38 @@ using Splat;
 
 using CoAPExplorer.Models;
 using CoAPExplorer.Services;
+using ReactiveUI.Routing;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class SearchViewModel : ReactiveObject, IRoutableViewModel, ISupportsActivation
+    public class SearchViewModel : ReactiveObject, ISupportsActivation
     {
-        public string UrlPathSegment => "Device Search";
+        private string _searchUrl = "/.well-known/core";
+        private ObservableAsPropertyHelper<bool> _isSearching;
+        private readonly DiscoveryService _discoveryService;
+        private ObservableCollection<DeviceViewModel> _devices;
 
-        public IScreen HostScreen { get; }
-
-        public ObservableCollection<DeviceViewModel> Devices { get; }
+        public IReactiveRouter Router { get; }
 
         public List<RequestFilter> Filters { get; set; }
 
         public ReactiveCommand AddFilter { get; }
-        public ReactiveCommand<RequestFilter,Unit> RemoveFilter { get; }
 
-        public ReactiveCommand<Unit, Device> SearchCommand{ get; }
-        public ReactiveCommand<Unit,Unit> StopCommand { get; }
+        public ReactiveCommand<RequestFilter, Unit> RemoveFilter { get; }
 
-        private string _searchUrl = "/.well-known/core";
+        public ReactiveCommand<Unit, Device> SearchCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> StopCommand { get; }
+
+        public bool IsSearching => _isSearching.Value;
+
+        public ViewModelActivator Activator { get; } = new ViewModelActivator();
+
+        public ObservableCollection<DeviceViewModel> Devices
+        {
+            get => _devices ?? (_devices = new ObservableCollection<DeviceViewModel>());
+            set => _devices = value;
+        }
 
         public string SearchUrl
         {
@@ -40,21 +52,11 @@ namespace CoAPExplorer.ViewModels
             set { this.RaiseAndSetIfChanged(ref _searchUrl, value); }
         }
 
-        ObservableAsPropertyHelper<bool> _isSearching;
-        public bool IsSearching => _isSearching.Value;
-
-        protected readonly ViewModelActivator viewModelActivator = new ViewModelActivator();
-        public ViewModelActivator Activator => viewModelActivator; 
-
-        private readonly DiscoveryService _discoveryService;
-
-        public SearchViewModel(IScreen hostScreen)
+        public SearchViewModel(IReactiveRouter router = null)
         {
-            HostScreen = hostScreen ?? throw new ArgumentNullException(nameof(hostScreen));
+            Router = router ?? Locator.Current.GetService<IReactiveRouter>();
 
             _discoveryService = Locator.Current.GetService<DiscoveryService>();
-
-            Devices = new ObservableCollection<DeviceViewModel>();
 
             Filters = new List<RequestFilter>();
 
@@ -66,7 +68,7 @@ namespace CoAPExplorer.ViewModels
                     () => SearchDevices().TakeUntil(StopCommand));
 
             StopCommand = ReactiveCommand.Create(
-                () => { }, 
+                () => { },
                 SearchCommand.IsExecuting);
 
             this.WhenActivated(disposables =>
@@ -76,7 +78,7 @@ namespace CoAPExplorer.ViewModels
                                             .ToProperty(this, x => x.IsSearching, false)
                                             .DisposeWith(disposables);
 
-                SearchCommand.Select(d => new DeviceViewModel(d, hostScreen)).Subscribe(device => Devices.Add(device))
+                SearchCommand.Select(d => new DeviceViewModel(d, router)).Subscribe(device => Devices.Add(device))
                              .DisposeWith(disposables);
             });
         }
@@ -85,7 +87,7 @@ namespace CoAPExplorer.ViewModels
         {
             _discoveryService.SetRequstUrl(SearchUrl);
             _discoveryService.SetFilters(Filters);
-            return _discoveryService.Discover();
+            return _discoveryService.DiscoverDevices();
         }
     }
 }

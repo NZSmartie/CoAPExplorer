@@ -15,7 +15,7 @@ using CoAPExplorer.Services;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class DeviceNavigationViewModel : ReactiveObject, INavigationViewModel
+    public class DeviceNavigationViewModel : ReactiveObject
     {
         private bool _isOpen = true;
         private DiscoveryService _discoveryService;

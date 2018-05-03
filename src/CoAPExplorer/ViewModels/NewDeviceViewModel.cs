@@ -4,11 +4,13 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 
+using ReactiveUI;
+using ReactiveUI.Routing;
+using Splat;
+
 using CoAPExplorer.Models;
 using CoAPExplorer.Services;
 using CoAPExplorer.Extensions;
-using ReactiveUI;
-using Splat;
 using CoAPExplorer.Database;
 
 namespace CoAPExplorer.ViewModels
@@ -17,8 +19,8 @@ namespace CoAPExplorer.ViewModels
     {
         private string _name;
         private string _address;
-        private IScreen _hostScreen;
         private readonly CoapExplorerContext _dbContext;
+        private readonly IReactiveRouter _router;
         private EndpointType _selectedTransport;
 
         public string Name { get => _name; set => this.RaiseAndSetIfChanged(ref _name, value); }
@@ -31,11 +33,11 @@ namespace CoAPExplorer.ViewModels
 
         public ReactiveCommand<Unit, Unit> AddDeviceCommand { get; }
 
-        public NewDeviceViewModel(IScreen hostScreen)
+        public NewDeviceViewModel(IReactiveRouter router = null)
         {
-            _hostScreen = hostScreen;
-
             _dbContext = Locator.Current.GetService<CoapExplorerContext>();
+
+            _router = router ?? Locator.Current.GetService<IReactiveRouter>();
 
             Transports.AddRange(Enum.GetValues(typeof(EndpointType))
                                     .Cast<EndpointType>()
@@ -55,9 +57,8 @@ namespace CoAPExplorer.ViewModels
                     EndpointType = SelectedTransport
                 };
 
-                _hostScreen.Router.Navigate
-                                  .Execute(new DeviceViewModel(device))
-                                  .Subscribe();
+                _router.Navigate(NavigationRequest.Forward(new DeviceViewModel(device)))
+                          .Subscribe();
 
                 if (_dbContext != null)
                 {

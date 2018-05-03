@@ -12,21 +12,48 @@ using CoAPExplorer.Models;
 using CoAPExplorer.Services;
 using CoAPNet;
 using ReactiveUI;
+using ReactiveUI.Routing;
 using Splat;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class DeviceViewModel : ReactiveObject, IRoutableViewModel, ISupportsActivation, ISupportsNavigatation
+    public class DeviceViewModel : ReactiveObject, ISupportsActivation
     {
-        // CoAP Related Properties
+        private readonly CoapExplorerContext _dbContext;
+
+        private Message _message;
+        private MessageViewModel _messageViewModel;
+        private ObservableCollection<Message> _recentMessages;
+        private CoapService _coapService;
+        private ObservableAsPropertyHelper<bool> _isSending;
 
         public Device Device { get; }
 
         public IReactiveDerivedList<DeviceResource> Resources { get; }
 
-        private readonly CoapExplorerContext _dbContext;
-
         public ICoapEndpoint Endpoint => Device.Endpoint;
+
+        public string Address => Device.Address;
+
+        public MessageViewModel MessageViewModel { get => _messageViewModel; set => this.RaiseAndSetIfChanged(ref _messageViewModel, value); }
+
+        public ReactiveCommand OpenCommand { get; }
+
+        public bool IsSending => _isSending.Value;
+
+        public ReactiveCommand<Message, Message> SendCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> StopSendingCommand { get; }
+
+        public ReactiveCommand<Message, Message> DuplicateMessageCommand { get; }
+
+        public CoapService CoapService { get => _coapService ?? (_coapService = new CoapService(Device.EndpointType)); }
+
+        public IReactiveRouter Router { get; private set; }
+
+        public DeviceNavigationViewModel Navigation { get; }
+
+        public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
         public string Name
         {
@@ -39,8 +66,6 @@ namespace CoAPExplorer.ViewModels
                 this.RaisePropertyChanged(nameof(Name));
             }
         }
-
-        public string Address => Device.Address;
 
         public DateTime LastSeen
         {
@@ -66,7 +91,6 @@ namespace CoAPExplorer.ViewModels
             }
         }
 
-        private Message _message;
         public Message Message
         {
             get => _message ?? (_message = RecentMessages.FirstOrDefault() ?? new Message());
@@ -84,10 +108,6 @@ namespace CoAPExplorer.ViewModels
             }
         }
 
-        public MessageViewModel _messageViewModel;
-        public MessageViewModel MessageViewModel { get => _messageViewModel; set => this.RaiseAndSetIfChanged(ref _messageViewModel, value); }
-
-        private ObservableCollection<Message> _recentMessages;
         public ObservableCollection<Message> RecentMessages
         {
             get
@@ -102,53 +122,18 @@ namespace CoAPExplorer.ViewModels
             }
         }
 
-        public ReactiveCommand OpenCommand { get; }
-
-        ObservableAsPropertyHelper<bool> _isSending;
-        public bool IsSending => _isSending.Value;
-
-        public ReactiveCommand<Message, Message> SendCommand { get; }
-
-        public ReactiveCommand<Unit, Unit> StopSendingCommand { get; }
-
-        public ReactiveCommand<Message, Message> DuplicateMessageCommand { get; }
-
-
-        private CoapService _coapService;
-        public CoapService CoapService { get => _coapService ?? (_coapService = new CoapService(Device.EndpointType)); }
-
-        private string _someString;
-        public string SomeString { get => _someString; set => this.RaiseAndSetIfChanged(ref _someString, value); }
-
-        #region ViewModel Related Propertied
-
-
-        private string _urlPathSegment;
-
-        public string UrlPathSegment => _urlPathSegment ?? (_urlPathSegment = Endpoint.BaseUri.ToString());
-
-        public IScreen HostScreen { get; private set; }
-
-        public DeviceNavigationViewModel Navigation { get; }
-        INavigationViewModel ISupportsNavigatation.Navigation => Navigation;
-
-        public ViewModelActivator Activator { get; } = new ViewModelActivator();
-
-
-        #endregion
-
-        public DeviceViewModel(Device device = null, IScreen hostScreen = null)
+        public DeviceViewModel(Device device = null, IReactiveRouter router = null)
         {
             _dbContext = Locator.Current.GetService<CoapExplorerContext>();
 
-            HostScreen = hostScreen;
+            Router = router;
             Device = device ?? new Device();
 
             Resources = Device.KnownResources.CreateDerivedCollection(x => x);
 
             Navigation = new DeviceNavigationViewModel(this);
 
-            OpenCommand = ReactiveCommand.Create(() => hostScreen.Router.Navigate.Execute(this).Subscribe());
+            OpenCommand = ReactiveCommand.CreateFromObservable(() => router.Navigate(NavigationRequest.Forward(this)));
 
             SendCommand = ReactiveCommand.CreateFromObservable<Message, Message>(
                 message =>

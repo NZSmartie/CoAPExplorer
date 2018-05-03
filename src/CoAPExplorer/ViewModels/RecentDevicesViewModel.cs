@@ -2,6 +2,7 @@
 using CoAPExplorer.Models;
 using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
+using ReactiveUI.Routing;
 using Splat;
 using System;
 using System.Collections.Generic;
@@ -12,32 +13,31 @@ using System.Text;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class RecentDevicesViewModel : ReactiveObject, IRoutableViewModel
+    public class RecentDevicesViewModel : ReactiveObject
     {
         private readonly CoapExplorerContext _dbContext;
+        private readonly IReactiveRouter _router;
+        private ObservableCollection<DeviceViewModel> _devices;
 
         public ReactiveCommand<Unit, NewDeviceViewModel> AddDeviceCommand;
 
-        public ObservableCollection<DeviceViewModel> Devices { get; }
-
-        public string UrlPathSegment => "Recent Devices";
-
-        public IScreen HostScreen { get; }
-
-        public RecentDevicesViewModel(IScreen hostScreen = null)
+        public ObservableCollection<DeviceViewModel> Devices
         {
-            _dbContext = Locator.Current.GetService<CoapExplorerContext>();
+            get => _devices ?? (_devices = new ObservableCollection<DeviceViewModel>(_dbContext.Devices.Include(x => x.KnownResources).Select(d => new DeviceViewModel(d, _router))));
+            set => _devices = value;
+        }
 
-            HostScreen = hostScreen;
-            
+        public RecentDevicesViewModel(IReactiveRouter router = null, CoapExplorerContext context = null)
+        {
+            _router = router ?? Locator.Current.GetService<IReactiveRouter>();
+            _dbContext = context ?? Locator.Current.GetService<CoapExplorerContext>();
+
             AddDeviceCommand = ReactiveCommand.Create<Unit, NewDeviceViewModel>(_ =>
             {
                 System.Diagnostics.Debug.WriteLine("Creating new device dialog thingy");
-                return new NewDeviceViewModel(HostScreen);
+                return new NewDeviceViewModel(router);
             });
 
-            var devices = _dbContext.Devices.Include(x => x.KnownResources).ToList();
-            Devices = new ObservableCollection<DeviceViewModel>(devices.Select(d => new DeviceViewModel(d, HostScreen)));
         }
     }
 }

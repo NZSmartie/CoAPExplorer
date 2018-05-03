@@ -9,50 +9,32 @@ using CoAPExplorer.Services;
 using Splat;
 using System.Reactive;
 using CoAPExplorer.Models;
+using ReactiveUI.Routing;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class HomeViewModel : ReactiveObject, IScreen, IRoutableViewModel, ISupportsActivation, ISupportsNavigatation
+    public class HomeViewModel : ReactiveObject
     {
-        public RoutingState Router { get; } = new RoutingState();
+        private SearchViewModel _search;
+        private RecentDevicesViewModel _recentDevices;
 
-        private readonly Navigation _navigation;
-
-        public INavigationViewModel Navigation => _navigation.ViewModel;
-
-        public ViewModelActivator Activator { get; } = new ViewModelActivator();
-
-        public ObservableAsPropertyHelper<string> _urlPathSegment;
-        public string UrlPathSegment => _urlPathSegment.Value;
-
-        public IScreen HostScreen { get; } 
-
-        public HomeViewModel(IScreen hostScreen)
+        public RecentDevicesViewModel RecentDevices
         {
-            HostScreen = hostScreen;
+            get => _recentDevices ?? (_recentDevices = new RecentDevicesViewModel(Router));
+            set => _recentDevices = value;
+        }
 
-            _navigation = Locator.Current.GetService<Navigation>();
-            _navigation.HostScreen = HostScreen; // MasterDetail view
-            _navigation.HomeView = this; // Well, this
+        public SearchViewModel Search
+        {
+            get => _search ?? (_search = new SearchViewModel(Router));
+            set => _search = value;
+        }
 
-            _urlPathSegment = ObservableAsPropertyHelper<string>.Default();
+        public IReactiveRouter Router { get; }
 
-            // TODO: Set Favourites? or last viewed?
-            Router.NavigateAndReset
-                .Execute(new RecentDevicesViewModel(hostScreen))
-                .Subscribe();
-
-            this.WhenActivated((CompositeDisposable disposables) =>
-            {
-                _urlPathSegment = Router.CurrentViewModel
-                      .Select(rvm => rvm?.UrlPathSegment)
-                      .ToProperty(this, vm => vm.UrlPathSegment)
-                      .DisposeWith(disposables);
-
-                Router.CurrentViewModel
-                      .Subscribe(rvm => Navigation.IsOpen = rvm == null)
-                      .DisposeWith(disposables);
-            });
+        public HomeViewModel(IReactiveRouter router = null)
+        {
+            Router = router ?? Locator.Current.GetService<IReactiveRouter>();
         }
     }
 }

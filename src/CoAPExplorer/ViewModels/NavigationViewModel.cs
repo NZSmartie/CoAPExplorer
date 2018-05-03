@@ -8,7 +8,7 @@ using ReactiveUI;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class NavigationViewModel : ReactiveObject, INavigationViewModel
+    public class NavigationViewModel : ReactiveObject
     {
         private bool _isOpen = false;
         private NavigationItem _selectedNavigationItem;
