@@ -1,6 +1,7 @@
 ﻿#define DEBUG
 
 using Splat;
+using System.ComponentModel;
 
 namespace CoAPExplorer.Services
 {
