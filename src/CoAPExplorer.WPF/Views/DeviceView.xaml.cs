@@ -1,10 +1,4 @@
-﻿using CoAPExplorer.Models;
-using CoAPExplorer.ViewModels;
-using CoAPExplorer.WPF.Converters;
-using CoAPNet;
-using CoAPNet.Options;
-using ReactiveUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -22,6 +16,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using CoAPNet;
+using CoAPNet.Options;
+using ReactiveUI;
+
+using CoAPExplorer.Models;
+using CoAPExplorer.ViewModels;
+using CoAPExplorer.WPF.Converters;
+using ReactiveUI.Routing;
+using System.Reactive;
+
 namespace CoAPExplorer.WPF.Views
 {
     /// <summary>
@@ -31,9 +35,18 @@ namespace CoAPExplorer.WPF.Views
     {
         private static readonly BooleanToVisibilityConverter _visibilityConverter = new BooleanToVisibilityConverter();
 
+        private ReactiveCommand<NavigationRequest, Unit> NavigateCommand;
+
         public DeviceView()
         {
             InitializeComponent();
+
+            NavigateCommand = ReactiveCommand.CreateFromObservable<NavigationRequest, Unit>(
+                request => ViewModel.Router.Navigate(request), 
+                this.WhenAnyValue(x => x.ViewModel).Select(x => x != null && x.Router != null));
+
+            NavigateBackButton.Command = NavigateCommand;
+            NavigateBackButton.CommandParameter = NavigationRequest.Back();
 
             this.WhenActivated(disposables =>
             {
@@ -67,6 +80,14 @@ namespace CoAPExplorer.WPF.Views
                     .DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.MessageViewModel, v => v.MessageRequest.ViewModel)
+                    .DisposeWith(disposables);
+
+                this.OneWayBind(ViewModel,
+                          vm => vm.Router.NavigationStack,
+                          v => v.NavigateBackButton.Visibility,
+                          stack => stack.Any() ? Visibility.Visible : Visibility.Collapsed);
+
+                this.OneWayBind(ViewModel, vm => vm.Navigation, v => v.DeviceNavigation.ViewModel)
                     .DisposeWith(disposables);
 
                 ViewModel.SendCommand

@@ -19,6 +19,8 @@ using CoAPExplorer.Services;
 using CoAPExplorer.ViewModels;
 using CoAPExplorer.WPF.Views;
 using CoAPExplorer.WPF.Dialogs;
+using ReactiveUI.Routing;
+using ReactiveUI.Routing.Wpf;
 
 namespace CoAPExplorer.WPF
 {
@@ -41,10 +43,13 @@ namespace CoAPExplorer.WPF
             if (!applicationPath.Exists)
                 applicationPath.Create();
 
-
+            var baseReactiveApp = new ReactiveAppBuilder()
+                .AddReactiveRouting()
+                .ConfigureWpf(this)
+                .Build();
 
             // Shared application class that is used in other platforms.
-            _coapExplorer = new CoAPExplorer.App(applicationPath.FullName);
+            _coapExplorer = new CoAPExplorer.App(baseReactiveApp, applicationPath.FullName);
 
             // TODO: Make this configurable? as to make this application portable?
             var databasePath = Path.Combine(applicationPath.FullName, DatabaseName);
@@ -52,19 +57,18 @@ namespace CoAPExplorer.WPF
             _database.Database.Migrate();
 
             // Register Services
-            _coapExplorer.Services.RegisterConstant(_database);
+            _coapExplorer.Locator.RegisterConstant(_database);
 
             // Register Views
-            _coapExplorer.Services.Register<IViewFor<HomeViewModel>>(() => new HomeView());
-            _coapExplorer.Services.Register<IViewFor<RecentDevicesViewModel>>(() => new RecentDevicesView());
-            _coapExplorer.Services.Register<IViewFor<SearchViewModel>>(() => new SearchView());
-            _coapExplorer.Services.Register<IViewFor<DeviceViewModel>>(() => new DeviceView());
-            _coapExplorer.Services.Register<IViewFor<NavigationViewModel>>(() => new NavigationView());
-            _coapExplorer.Services.Register<IViewFor<DeviceNavigationViewModel>>(() => new DeviceNavigationView());
+            _coapExplorer.Locator.Register<IViewFor<HomeViewModel>>(() => new HomeView());
+            _coapExplorer.Locator.Register<IViewFor<RecentDevicesViewModel>>(() => new RecentDevicesView());
+            _coapExplorer.Locator.Register<IViewFor<SearchViewModel>>(() => new SearchView());
+            _coapExplorer.Locator.Register<IViewFor<DeviceViewModel>>(() => new DeviceView());
+            _coapExplorer.Locator.Register<IViewFor<NavigationViewModel>>(() => new NavigationView());
+            _coapExplorer.Locator.Register<IViewFor<DeviceNavigationViewModel>>(() => new DeviceNavigationView());
 
             // Dialogs
-            _coapExplorer.Services.Register<IViewFor<NewDeviceViewModel>>(() => new NewDeviceViewDialog());
-
+            _coapExplorer.Locator.Register<IViewFor<NewDeviceViewModel>>(() => new NewDeviceViewDialog());
 
             //_coapExplorer.Services
             //    .RegisterConstant(new CoapContext(databasePath));

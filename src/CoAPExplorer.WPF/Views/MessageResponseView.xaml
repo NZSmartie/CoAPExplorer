@@ -71,7 +71,7 @@
                         <ToolBar ToolBarTray.IsLocked="True" Style="{DynamicResource MaterialDesignToolBar}">
                             <ListBox SelectionMode="Multiple">
                                 <ListBoxItem x:Name="DisplayUnicode" ToolTip="Escape Unicode Characters" Padding="8" MinWidth="40">
-                                    <materialDesign:PackIcon Kind="FormatHeaderPound" />
+                                    <materialDesign:PackIcon Kind="Alpha" />
                                 </ListBoxItem>
                             </ListBox>
                         </ToolBar>

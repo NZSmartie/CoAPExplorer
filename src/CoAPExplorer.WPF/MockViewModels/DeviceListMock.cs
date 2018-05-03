@@ -7,11 +7,11 @@ namespace CoAPExplorer.WPF.MockViewModels
 {
     public class DeviceListMock
     {
-        public ObservableCollection<DeviceViewModel> Devices { get; }
+        public ObservableCollection<ViewModels.DeviceViewModel> Devices { get; }
 
         public DeviceListMock()
         {
-            Devices = new ObservableCollection<DeviceViewModel>
+            Devices = new ObservableCollection<ViewModels.DeviceViewModel>
             {
                 new DeviceViewModel(new Device
                 {

@@ -1,10 +1,13 @@
 ﻿using CoAPExplorer.Models;
 using CoAPExplorer.ViewModels;
 using ReactiveUI;
+using ReactiveUI.Routing;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,22 +25,24 @@ namespace CoAPExplorer.WPF.Views
     /// <summary>
     /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class HomeView : UserControl, IViewFor<HomeViewModel>, IScreen
+    public partial class HomeView : Page, IViewFor<HomeViewModel>
     {
-        public RoutingState Router { get; } = new RoutingState();
+        public IReactiveRouter Router { get; }
 
-        public HomeView()
+        public HomeViewModel ViewModel { get; set; }
+
+        public HomeView(IReactiveRouter router = null)
         {
             InitializeComponent();
 
             this.WhenActivated(disposables =>
             {
-                this.Bind(ViewModel, vm => vm.Router, v => v.ViewHost.Router)
+                this.WhenAnyValue(x => x.ViewModel)
+                    .Subscribe(vm => DataContext = vm)
                     .DisposeWith(disposables);
             });
         }
 
-        public HomeViewModel ViewModel { get; set; }
 
         object IViewFor.ViewModel { get => ViewModel; set => ViewModel = value as HomeViewModel; }
     }

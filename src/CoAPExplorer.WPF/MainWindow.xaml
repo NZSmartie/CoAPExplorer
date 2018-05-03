@@ -3,12 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CoAPExplorer.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:mockViewModels="clr-namespace:CoAPExplorer.WPF.MockViewModels"
-        xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
-        xmlns:rxui="clr-namespace:ReactiveUI;assembly=ReactiveUI.Wpf"
-        xmlns:views="clr-namespace:CoAPExplorer.WPF.Views"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="12"
@@ -17,75 +12,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        x:Name="This"
-        Title="MainWindow" Height="500.053" Width="851.838">
-    <Window.Resources>
-        <converters:CoapExplorerIconConverter x:Key="CoapExplorerIconConverter"/>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </Window.Resources>
+        Title="CoAP Explorer" Height="500" Width="800">
     <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <materialDesign:ColorZone Grid.Row="0" Grid.ColumnSpan="2"
-                                      Mode="PrimaryDark">
-                <StackPanel Orientation="Horizontal" Height="52">
-                    <Border Width="{Binding ElementName=NavigationPane, Path=ActualWidth}"/>
-                    <TextBlock Margin="16,0,0,0" VerticalAlignment="Center"
-                               Text="{Binding Path=PageTitle, ElementName=This, FallbackValue=MainWindow}"/>
-                </StackPanel>
-            </materialDesign:ColorZone>
-            <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
-                <ContentPresenter x:Name="NavigationPane" MaxWidth="250">
-                    <ContentPresenter.Style>
-                        <Style TargetType="ContentPresenter">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}" Value="False">
-                                    <Setter Property="Margin" Value="0 52 0 0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ContentPresenter.Style>
-                    <ContentPresenter.Content>
-                        <views:NavigationView d:DataContext="{d:DesignInstance Type=mockViewModels:NavigationViewModel, IsDesignTimeCreatable=True}"/>
-                    </ContentPresenter.Content>
-                </ContentPresenter>
-                <Button VerticalAlignment="Top" HorizontalAlignment="Right" Padding="16" Height="52"
-                        Style="{StaticResource MaterialDesignToolButton}"
-                        materialDesign:RippleAssist.ClipToBounds="True"
-                        Command="{Binding ElementName=This, Path=CollapseNavigation}"
-                        Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
-                        Visibility="{Binding ElementName=NavigationToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <materialDesign:PackIcon Kind="ChevronLeft" />
-                </Button>
-                <ToggleButton x:Name="NavigationToggle" HorizontalAlignment="Left" VerticalAlignment="Top"
-                              Margin="8" IsChecked="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}"
-                              Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                              Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"/>
-                <!--Do I really want an invisible button overlaying the Navigation Drawer's toggle button just to capture the navigate back command?-->
-                <Button x:Name="NavigationDrawerButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" 
-                        Background="Transparent" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" materialDesign:RippleAssist.ClipToBounds="False"
-                        Command="{Binding ElementName=This, Path=ToggleNavigationCommand}" CommandParameter="{Binding ElementName=NavigationToggle, Path=IsChecked}"
-                        Visibility="{Binding ElementName=NavigationToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            </Grid>
-            <rxui:RoutedViewHost x:Name="ViewHost" Grid.Column="1" Grid.Row="1" 
-                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
-                           Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
-            </rxui:RoutedViewHost>
-            <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" 
-                                     x:Name="MainSnackbar"
-                                     Grid.Column="0"
-                                     Grid.ColumnSpan="2"
-                                     Grid.Row="1"
-                                     Margin="114,0,115,0" />
-        </Grid>
+        <Frame x:Name="Frame" NavigationUIVisibility="Hidden"/>
     </materialDesign:DialogHost>
 </Window>

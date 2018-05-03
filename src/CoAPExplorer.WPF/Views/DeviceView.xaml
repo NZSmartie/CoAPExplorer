@@ -20,39 +20,75 @@
     </UserControl.Resources>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <materialDesign:ColorZone Padding="8" Grid.Row="0">
+        <local:DeviceNavigationView x:Name="DeviceNavigation" ViewModel="{Binding Navigation}"
+                                    Grid.RowSpan="2" Grid.Column="0"/>
+        <materialDesign:ColorZone Mode="PrimaryDark" Padding="8" Grid.Row="0" Grid.Column="1">
             <DockPanel>
-                <Button x:Name="DuplicateMessageButton" ToolTipService.ToolTip="Duplicate Message"
-                        Style="{StaticResource MaterialDesignToolButton}">
-                    <materialDesign:PackIcon Width="24" Height="24" Kind="ContentDuplicate" />
+                <Button x:Name="NavigateBackButton" ToolTipService.ToolTip="Navigate Back" Margin="0 0 8 0"
+                        Style="{StaticResource MaterialDesignToolForegroundButton}">
+                    <materialDesign:PackIcon Width="24" Height="24" Kind="ArrowLeft"/>
                 </Button>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 8 0">
-                    <Button x:Name="SendButton" Style="{DynamicResource MaterialDesignToolButton}">
-                        <materialDesign:PackIcon Width="24" Height="24" Kind="ArrowRight" />
-                    </Button>
-                    <Button x:Name="StopButton" Style="{StaticResource MaterialDesignToolButton}">
-                        <materialDesign:PackIcon Width="24" Height="24" Kind="CloseCircle" />
+                    <Button x:Name="DuplicateMessageButton" ToolTipService.ToolTip="Duplicate Message"
+                        Style="{StaticResource MaterialDesignToolForegroundButton}">
+                        <materialDesign:PackIcon Width="24" Height="24" Kind="ContentDuplicate"/>
                     </Button>
                 </StackPanel>
-                <ComboBox IsEditable="True" x:Name="Url" TextSearch.TextPath="Url"
+                <materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4" CornerRadius="2" Panel.ZIndex="1"
+                                          Margin="4 0 4 0" materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox IsEditable="True" x:Name="Url" TextSearch.TextPath="Url"
                           materialDesign:HintAssist.Hint="URL"
+                          BorderBrush="{DynamicResource PrimaryHueMidForegroundBrush}"
                           SelectedItem="{Binding Message}" ItemsSource="{Binding RecentMessages}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Padding="4" Content="{Binding Url}"/>
-                                <Label Padding="4" IsEnabled="False" Content="{Binding Code, Converter={StaticResource CoapMessageCodeToStringConverter}}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                            <ComboBox.Resources>
+                                <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="{x:Type ComboBox}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsKeyboardFocused" Value="true">
+                                            <Setter Property="Background" Value="#FFFFFFFF" />
+                                            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                        </Trigger>
+                                        <Trigger Property="IsKeyboardFocusWithin" Value="true">
+                                            <Setter Property="Background" Value="#FFFFFFFF" />
+                                            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ComboBox.Resources>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Padding="4" Content="{Binding Url}"/>
+                                        <Label Padding="4" IsEnabled="False" Content="{Binding Code, Converter={StaticResource CoapMessageCodeToStringConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <StackPanel Orientation="Horizontal" Grid.Column="1">
+                            <Button x:Name="SendButton" Style="{DynamicResource MaterialDesignToolButton}">
+                                <materialDesign:PackIcon Width="24" Height="24" Kind="ArrowRight" />
+                            </Button>
+                            <Button x:Name="StopButton" Style="{StaticResource MaterialDesignToolButton}">
+                                <materialDesign:PackIcon Width="24" Height="24" Kind="CloseCircle" />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:ColorZone>
             </DockPanel>
         </materialDesign:ColorZone>
-        <TabControl Grid.Row="1">
+        <TabControl Grid.Row="1" Grid.Column="1">
             <TabItem Header="REQUEST">
                 <local:MessageRequestView x:Name="MessageRequest" />
             </TabItem>
