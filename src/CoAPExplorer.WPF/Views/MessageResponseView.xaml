@@ -11,6 +11,8 @@
              xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
+             xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+             xmlns:dragablzTheme="clr-namespace:Dragablz.Themes;assembly=Dragablz"
              mc:Ignorable="d" 
              d:DesignHeight="391.525" d:DesignWidth="504.381">
     <UserControl.Resources>
@@ -61,7 +63,16 @@
                     <controls:CoapOptionsList x:Name="OptionsList" IsReadOnly="True"/>
                 </StackPanel>
             </materialDesign:DrawerHost.TopDrawerContent>
-            <TabControl>
+
+
+            <!--a large FixedHeaderCount is my quiet protest against needing another lirbary for what should already be part of meterial themes-->
+            <dragablz:TabablzControl FixedHeaderCount="999999999" 
+                                     BorderBrush="{DynamicResource MaterialDesignBackground}">
+                <dragablz:TabablzControl.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource MaterialDesignAlternateDragableTabItemStyle}" TargetType="{x:Type dragablz:DragablzItem}">
+                        <Setter Property="dragablzTheme:MaterialDesignAssist.IndicatorBrush" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    </Style>
+                </dragablz:TabablzControl.ItemContainerStyle>
                 <TabItem Header="TEXT">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -86,7 +97,7 @@
                 <TabItem Header="BINARY">
                     TODO: Hex View?
                 </TabItem>
-            </TabControl>
+            </dragablz:TabablzControl>
         </materialDesign:DrawerHost>
     </Grid>
 </UserControl>

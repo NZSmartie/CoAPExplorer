@@ -205,6 +205,9 @@
     <PackageReference Include="AvalonEdit">
       <Version>5.0.4</Version>
     </PackageReference>
+    <PackageReference Include="Dragablz">
+      <Version>0.0.3.203</Version>
+    </PackageReference>
     <PackageReference Include="MaterialDesignThemes">
       <Version>2.4.0.1044</Version>
     </PackageReference>

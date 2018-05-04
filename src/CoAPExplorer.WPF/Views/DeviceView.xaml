@@ -11,7 +11,8 @@
                           xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
                           xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
                           xmlns:converters="clr-namespace:CoAPExplorer.WPF.Converters"
-                          mc:Ignorable="d" 
+             xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+             mc:Ignorable="d" 
                           d:DesignHeight="441" d:DesignWidth="690"
                           d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceViewModel, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
@@ -30,7 +31,7 @@
         </Grid.RowDefinitions>
         <local:DeviceNavigationView x:Name="DeviceNavigation" ViewModel="{Binding Navigation}"
                                     Grid.RowSpan="2" Grid.Column="0"/>
-        <materialDesign:ColorZone Mode="PrimaryDark" Padding="8" Grid.Row="0" Grid.Column="1">
+        <materialDesign:ColorZone Mode="PrimaryMid" Padding="8" Grid.Row="0" Grid.Column="1">
             <DockPanel>
                 <Button x:Name="NavigateBackButton" ToolTipService.ToolTip="Navigate Back" Margin="0 0 8 0"
                         Style="{StaticResource MaterialDesignToolForegroundButton}">
@@ -88,13 +89,15 @@
                 </materialDesign:ColorZone>
             </DockPanel>
         </materialDesign:ColorZone>
-        <TabControl Grid.Row="1" Grid.Column="1">
+
+        <!--a large FixedHeaderCount is my quiet protest against needing another lirbary for what should already be part of meterial themes-->
+        <dragablz:TabablzControl FixedHeaderCount="999999999" Grid.Row="1" Grid.Column="1">
             <TabItem Header="REQUEST">
                 <local:MessageRequestView x:Name="MessageRequest" />
             </TabItem>
             <TabItem x:Name="ReponseTab" Header="RESPONSE">
                 <local:MessageResponseView x:Name="MessageResponse" />
             </TabItem>
-        </TabControl>
+        </dragablz:TabablzControl>
     </Grid>
 </UserControl>

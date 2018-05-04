@@ -8,16 +8,13 @@
       xmlns:rxui="clr-namespace:ReactiveUI;assembly=ReactiveUI.Wpf"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
+      xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
       mc:Ignorable="d" d:DataContext="{d:DesignInstance Type={x:Type mockViewModels:MockHomeView}, IsDesignTimeCreatable=True}"
       d:DesignHeight="310.526" d:DesignWidth="543.86">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <controls:Toolbar Grid.Row="0" />
-        <TabControl Grid.Row="1">
+        
+        <!--a large FixedHeaderCount is my quiet protest against needing another lirbary for what should already be part of meterial themes-->
+        <dragablz:TabablzControl FixedHeaderCount="999999999">
             <TabItem Header="RECENT">
                 <local:RecentDevicesView x:Name="RecentDevicesView" ViewModel="{Binding RecentDevices}"/>
             </TabItem>
@@ -28,7 +25,8 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
                            Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
             </TabItem>
-        </TabControl>
+        </dragablz:TabablzControl>
+        
         <!--<Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                 <ContentPresenter x:Name="NavigationPane" MaxWidth="250">
                     <ContentPresenter.Style>
