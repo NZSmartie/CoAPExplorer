@@ -33,17 +33,19 @@
                                     Grid.RowSpan="2" Grid.Column="0"/>
         <materialDesign:ColorZone Mode="PrimaryMid" Padding="8" Grid.Row="0" Grid.Column="1">
             <DockPanel>
-                <Button x:Name="NavigateBackButton" ToolTipService.ToolTip="Navigate Back" Margin="0 0 8 0"
+                <Button x:Name="NavigateBackButton" ToolTipService.ToolTip="Navigate Back" Margin="4 0 4 0"
+                        Padding="0"
                         Style="{StaticResource MaterialDesignToolForegroundButton}">
-                    <materialDesign:PackIcon Width="24" Height="24" Kind="ArrowLeft"/>
+                    <materialDesign:PackIcon Width="32" Height="32" Kind="ArrowLeft"/>
                 </Button>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 8 0">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="4 0 4 0">
                     <Button x:Name="DuplicateMessageButton" ToolTipService.ToolTip="Duplicate Message"
+                            Padding="0"
                         Style="{StaticResource MaterialDesignToolForegroundButton}">
-                        <materialDesign:PackIcon Width="24" Height="24" Kind="ContentDuplicate"/>
+                        <materialDesign:PackIcon Width="32" Height="32" Kind="ContentDuplicate"/>
                     </Button>
                 </StackPanel>
-                <materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4" CornerRadius="2" Panel.ZIndex="1"
+                <materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4" CornerRadius="2"
                                           Margin="4 0 4 0" materialDesign:ShadowAssist.ShadowDepth="Depth1">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -78,11 +80,11 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         <StackPanel Orientation="Horizontal" Grid.Column="1">
-                            <Button x:Name="SendButton" Style="{DynamicResource MaterialDesignToolButton}">
-                                <materialDesign:PackIcon Width="24" Height="24" Kind="ArrowRight" />
+                            <Button x:Name="SendButton" Style="{DynamicResource MaterialDesignToolButton}" Padding="0">
+                                <materialDesign:PackIcon Width="32" Height="32" Kind="ArrowRight" />
                             </Button>
-                            <Button x:Name="StopButton" Style="{StaticResource MaterialDesignToolButton}">
-                                <materialDesign:PackIcon Width="24" Height="24" Kind="CloseCircle" />
+                            <Button x:Name="StopButton" Style="{StaticResource MaterialDesignToolButton}" Padding="0">
+                                <materialDesign:PackIcon Width="32" Height="32" Kind="CloseCircle" />
                             </Button>
                         </StackPanel>
                     </Grid>

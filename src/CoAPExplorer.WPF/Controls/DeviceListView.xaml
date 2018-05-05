@@ -70,7 +70,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </ScrollViewer>
-        <StackPanel Orientation="Horizontal"
+        <!--<StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <ListBox
                 SelectedIndex="0"
@@ -92,6 +92,6 @@
                     <materialDesign:PackIcon  Kind="ViewList" />
                 </ListBoxItem>
             </ListBox>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </UserControl>

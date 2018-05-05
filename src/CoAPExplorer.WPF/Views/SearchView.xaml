@@ -18,33 +18,34 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <materialDesign:ColorZone Padding="8" Grid.Row="0" Mode="PrimaryMid">
+        <materialDesign:ColorZone Padding="4 8" Grid.Row="0" Mode="PrimaryMid">
             <DockPanel>
                 <ListBox SelectionMode="Multiple" DockPanel.Dock="Right" Margin="4 0 4 0" VerticalAlignment="Center">
-                    <ListBoxItem x:Name="FilterOptionsToggle" ToolTip="Show/Hide Filter Options" IsSelected="False">
-                        <materialDesign:PackIcon Kind="FilterVariant" Width="24" Height="24" 
+                    <ListBoxItem x:Name="FilterOptionsToggle" ToolTip="Show/Hide Filter Options" IsSelected="False" Padding="4">
+                        <materialDesign:PackIcon Kind="FilterVariant" Width="32" Height="32"
                                                  Foreground="{DynamicResource MaterialDesignPaper}" />
                     </ListBoxItem>
                 </ListBox>
-                <materialDesign:ColorZone Padding="4" Margin="4 0 4 0" Grid.Row="0" Mode="Standard" CornerRadius="2">
+                <materialDesign:ColorZone Padding="4" Margin="4 0 4 0" Grid.Row="0" Mode="Standard" 
+                                          CornerRadius="2" materialDesign:ShadowAssist.ShadowDepth="Depth1">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon Margin="4 0 4 0" Kind="Magnify" Grid.Column="0" VerticalAlignment="Center" Width="24" Height="24"
+                        <materialDesign:PackIcon Margin="4 0 4 0" Kind="Magnify" Grid.Column="0" VerticalAlignment="Center" Width="32" Height="32"
                                                  Foreground="{Binding ElementName=SearchUrl, Path=BorderBrush}"/>
                         <TextBox x:Name="SearchUrl" Margin="4 0 4 0" HorizontalAlignment="Stretch" Grid.Column="1"
                                  VerticalAlignment="Center"
                                  Style="{StaticResource MaterialDesignTextBox}">/.well-known/core</TextBox>
-                        <Button  x:Name="GoButton" Grid.Column="2" Margin="4 0 4 0"
+                        <Button  x:Name="GoButton" Grid.Column="2" Margin="4 0 4 0" Padding="0"
                                  Style="{DynamicResource MaterialDesignToolButton}">
-                            <materialDesign:PackIcon Margin="6,0,6,0" Kind="ArrowRight" />
+                            <materialDesign:PackIcon Height="32" Width="32" Kind="ArrowRight" />
                         </Button>
-                        <Button x:Name="StopButton" Grid.Column="2" Margin="4 0 4 0"
+                        <Button x:Name="StopButton" Grid.Column="2" Margin="4 0 4 0" Padding="0"
                                 Style="{StaticResource MaterialDesignToolButton}">
-                            <materialDesign:PackIcon Width="24" Height="24" Kind="CloseCircle" />
+                            <materialDesign:PackIcon Height="32" Width="32" Kind="CloseCircle" />
                         </Button>
                     </Grid>
                 </materialDesign:ColorZone>
