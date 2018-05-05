@@ -18,26 +18,36 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <materialDesign:ColorZone Padding="16" Grid.Row="0">
+        <materialDesign:ColorZone Padding="8" Grid.Row="0" Mode="PrimaryMid">
             <DockPanel>
-                <ListBox SelectionMode="Multiple" DockPanel.Dock="Right">
+                <ListBox SelectionMode="Multiple" DockPanel.Dock="Right" Margin="4 0 4 0" VerticalAlignment="Center">
                     <ListBoxItem x:Name="FilterOptionsToggle" ToolTip="Show/Hide Filter Options" IsSelected="False">
-                        <materialDesign:PackIcon Kind="FilterVariant" />
+                        <materialDesign:PackIcon Kind="FilterVariant" Width="24" Height="24" 
+                                                 Foreground="{DynamicResource MaterialDesignPaper}" />
                     </ListBoxItem>
                 </ListBox>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="8 0 8 0">
-                    <Button Style="{DynamicResource MaterialDesignToolButton}"
-                            x:Name="GoButton">
-                        <materialDesign:PackIcon Margin="6,0,6,0" Kind="ArrowRight" />
-                    </Button>
-                    <Button Style="{StaticResource MaterialDesignToolButton}" 
-                            x:Name="StopButton">
-                        <materialDesign:PackIcon Width="24" Height="24" Kind="CloseCircle" />
-                    </Button>
-                </StackPanel>
-                <materialDesign:PackIcon Margin="8 12 8 0" Kind="Magnify" />
-                <TextBox x:Name="SearchUrl" 
-                         Style="{StaticResource MaterialDesignTextBox}">/.well-known/core</TextBox>
+                <materialDesign:ColorZone Padding="4" Margin="4 0 4 0" Grid.Row="0" Mode="Standard" CornerRadius="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Margin="4 0 4 0" Kind="Magnify" Grid.Column="0" VerticalAlignment="Center" Width="24" Height="24"
+                                                 Foreground="{Binding ElementName=SearchUrl, Path=BorderBrush}"/>
+                        <TextBox x:Name="SearchUrl" Margin="4 0 4 0" HorizontalAlignment="Stretch" Grid.Column="1"
+                                 VerticalAlignment="Center"
+                                 Style="{StaticResource MaterialDesignTextBox}">/.well-known/core</TextBox>
+                        <Button  x:Name="GoButton" Grid.Column="2" Margin="4 0 4 0"
+                                 Style="{DynamicResource MaterialDesignToolButton}">
+                            <materialDesign:PackIcon Margin="6,0,6,0" Kind="ArrowRight" />
+                        </Button>
+                        <Button x:Name="StopButton" Grid.Column="2" Margin="4 0 4 0"
+                                Style="{StaticResource MaterialDesignToolButton}">
+                            <materialDesign:PackIcon Width="24" Height="24" Kind="CloseCircle" />
+                        </Button>
+                    </Grid>
+                </materialDesign:ColorZone>
             </DockPanel>
         </materialDesign:ColorZone>
         <materialDesign:DrawerHost Grid.Row="1" Grid.RowSpan="2" IsTopDrawerOpen="{Binding ElementName=FilterOptionsToggle, Path=IsSelected}">
