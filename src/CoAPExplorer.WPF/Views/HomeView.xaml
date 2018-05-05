@@ -9,12 +9,92 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
       xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       mc:Ignorable="d" d:DataContext="{d:DesignInstance Type={x:Type mockViewModels:MockHomeView}, IsDesignTimeCreatable=True}"
       d:DesignHeight="310.526" d:DesignWidth="543.86">
     <Grid>
-        
-        <!--a large FixedHeaderCount is my quiet protest against needing another lirbary for what should already be part of meterial themes-->
-        <dragablz:TabablzControl FixedHeaderCount="999999999">
+        <!--All this ListView styling and templating will eventually be turned into a self contained control and pushed to MatierlDesignToolKit-->
+        <ListView x:Name="NavigationList" Grid.Column="0" SelectedIndex="0">
+            <ListView.Style>
+                <Style TargetType="{x:Type ListView}">
+                    <Setter Property="SelectionMode" Value="Single"/>
+                </Style>
+            </ListView.Style>
+            <ListView.Template>
+                <ControlTemplate TargetType="ListView">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="NavigationDrawerWidth" Width="48" MaxWidth="320"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="56"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border x:Name="PART_NavigationDrawerButtonBorder"
+                                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                Background="{DynamicResource PrimaryHueMidBrush}"
+                                TextElement.Foreground="{DynamicResource MaterialDesignPaper}"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                            <ToggleButton x:Name="NavigationDrawerToggleButton"
+                                      HorizontalAlignment="Right" Margin="4"
+                                      Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
+                        </Border>
+                        <Border Grid.Column="0" Grid.Row="1"
+                                BorderThickness="0 0 1 0"
+                                Background="{DynamicResource MaterialDesignPaper}"
+                                BorderBrush="{DynamicResource MaterialDesignDivider}">
+                            <ItemsPresenter />
+                        </Border>
+                        <ContentPresenter Grid.Column="1" Grid.RowSpan="2"
+                                          Content="{Binding Path=SelectedItem.(controls:ContentItem.Content), RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="NavigationDrawerToggleButton" Property="IsChecked" Value="True">
+                            <Setter TargetName="NavigationDrawerWidth" Property="Width" Value="Auto"/>
+                            <Setter TargetName="PART_NavigationDrawerButtonBorder" Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
+                            <Setter TargetName="PART_NavigationDrawerButtonBorder" Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+                            <Setter TargetName="PART_NavigationDrawerButtonBorder" Property="BorderThickness" Value="0 0 0 1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ListView.Template>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition Width="*" MaxWidth="320"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0" Width="28" Height="28" Margin="4 0 0 0" VerticalAlignment="Center"
+                                                 Kind="{Binding Icon}" Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Header}"  VerticalAlignment="Center"
+                                   Style="{StaticResource MaterialDesignButtonTextBlock}"/>
+                    </Grid>
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Items>
+                <controls:ContentItem Header="Recent" Icon="History">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <controls:Toolbar/>
+                        <local:RecentDevicesView x:Name="RecentDevicesView" ViewModel="{Binding RecentDevices}" Grid.Row="1"/>
+                    </Grid>
+                </controls:ContentItem>
+                <controls:ContentItem  Header="Search" Icon="Magnify">
+                    <local:SearchView x:Name="SearchView" ViewModel="{Binding Search}"/>
+                </controls:ContentItem>
+                <controls:ContentItem Header="Settings" Icon="Settings">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
+                               Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
+                </controls:ContentItem>
+            </ListView.Items>
+        </ListView>
+        <!--<TabControl TabStripPlacement="Left">
             <TabItem Header="RECENT">
                 <local:RecentDevicesView x:Name="RecentDevicesView" ViewModel="{Binding RecentDevices}"/>
             </TabItem>
@@ -25,7 +105,7 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
                            Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
             </TabItem>
-        </dragablz:TabablzControl>
+        </TabControl>-->
         
         <!--<Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                 <ContentPresenter x:Name="NavigationPane" MaxWidth="250">
