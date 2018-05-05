@@ -94,59 +94,7 @@
                 </controls:ContentItem>
             </ListView.Items>
         </ListView>
-        <!--<TabControl TabStripPlacement="Left">
-            <TabItem Header="RECENT">
-                <local:RecentDevicesView x:Name="RecentDevicesView" ViewModel="{Binding RecentDevices}"/>
-            </TabItem>
-            <TabItem Header="SEARCH">
-                <local:SearchView x:Name="SearchView" ViewModel="{Binding Search}"/>
-            </TabItem>
-            <TabItem Header="SETTINGS">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
-                           Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
-            </TabItem>
-        </TabControl>-->
         
-        <!--<Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
-                <ContentPresenter x:Name="NavigationPane" MaxWidth="250">
-                    <ContentPresenter.Style>
-                        <Style TargetType="ContentPresenter">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}" Value="False">
-                                    <Setter Property="Margin" Value="0 52 0 0" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ContentPresenter.Style>
-                    <ContentPresenter.Content>
-                        <views:NavigationView d:DataContext="{d:DesignInstance Type=mockViewModels:NavigationViewModel, IsDesignTimeCreatable=True}"/>
-                    </ContentPresenter.Content>
-                </ContentPresenter>-->
-        <!--<Button VerticalAlignment="Top" HorizontalAlignment="Right" Padding="16" Height="52"
-                        Style="{StaticResource MaterialDesignToolButton}"
-                        materialDesign:RippleAssist.ClipToBounds="True"
-                        Command="{Binding ElementName=This, Path=CollapseNavigation}"
-                        Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
-                        Visibility="{Binding ElementName=NavigationToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <materialDesign:PackIcon Kind="ChevronLeft" />
-                </Button>
-                <ToggleButton x:Name="NavigationToggle" HorizontalAlignment="Left" VerticalAlignment="Top"
-                              Margin="8" IsChecked="{Binding ElementName=This, Path=IsNavigationFocused, FallbackValue=true}"
-                              Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                              Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"/>
-                -->
-        <!--Do I really want an invisible button overlaying the Navigation Drawer's toggle button just to capture the navigate back command?-->
-        <!--
-                <Button x:Name="NavigationDrawerButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" 
-                        Background="Transparent" BorderBrush="Transparent" materialDesign:ShadowAssist.ShadowDepth="Depth0" materialDesign:RippleAssist.ClipToBounds="False"
-                        Command="{Binding ElementName=This, Path=ToggleNavigationCommand}" CommandParameter="{Binding ElementName=NavigationToggle, Path=IsChecked}"
-                        Visibility="{Binding ElementName=NavigationToggle, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            </Grid>-->
-        <!--<rxui:RoutedViewHost x:Name="ViewHost" Grid.Column="1" Grid.Row="1" 
-                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
-                           Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
-            </rxui:RoutedViewHost>-->
         <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" 
                                      x:Name="MainSnackbar"
                                      Grid.Column="0"
