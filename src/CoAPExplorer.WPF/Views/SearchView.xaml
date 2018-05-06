@@ -18,7 +18,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <materialDesign:ColorZone Padding="4 8" Grid.Row="0" Mode="PrimaryMid">
+        <materialDesign:ColorZone Padding="4 8" Grid.Row="0" Mode="PrimaryMid" materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                  materialDesign:ShadowAssist.ShadowEdges="Bottom">
             <DockPanel>
                 <ListBox SelectionMode="Multiple" DockPanel.Dock="Right" Margin="4 0 4 0" VerticalAlignment="Center">
                     <ListBoxItem x:Name="FilterOptionsToggle" ToolTip="Show/Hide Filter Options" IsSelected="False" Padding="4">

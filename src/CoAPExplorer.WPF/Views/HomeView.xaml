@@ -22,7 +22,7 @@
             </ListView.Style>
             <ListView.Template>
                 <ControlTemplate TargetType="ListView">
-                    <Grid Grid.IsSharedSizeScope="True">
+                    <Grid Grid.IsSharedSizeScope="True" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="NavigationDrawerWidth" Width="48" MaxWidth="320"/>
                             <ColumnDefinition Width="*"/>
@@ -31,15 +31,20 @@
                             <RowDefinition Height="56"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Border x:Name="PART_NavigationDrawerButtonBorder"
-                                BorderBrush="{DynamicResource MaterialDesignDivider}"
-                                Background="{DynamicResource PrimaryHueMidBrush}"
-                                TextElement.Foreground="{DynamicResource MaterialDesignPaper}"
-                                materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                            <ToggleButton x:Name="NavigationDrawerToggleButton"
-                                      HorizontalAlignment="Right" Margin="4"
-                                      Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
-                        </Border>
+                        <materialDesign:Card x:Name="PART_NavigationDrawerButtonBorder"
+                                             VerticalAlignment="Stretch" Panel.ZIndex="1"
+                                             Background="{DynamicResource PrimaryHueMidBrush}"
+                                             TextElement.Foreground="{DynamicResource MaterialDesignPaper}"
+                                             UniformCornerRadius="0"
+                                             materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                             materialDesign:ShadowAssist.ShadowEdges="Bottom">
+                            <Border x:Name="PART_NavigationDrawerButtonInnerBorder"
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}">
+                                <ToggleButton x:Name="NavigationDrawerToggleButton"
+                                              HorizontalAlignment="Right" Margin="4"
+                                              Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
+                            </Border>
+                        </materialDesign:Card>
                         <Border Grid.Column="0" Grid.Row="1"
                                 BorderThickness="0 0 1 0"
                                 Background="{DynamicResource MaterialDesignPaper}"
@@ -51,10 +56,11 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger SourceName="NavigationDrawerToggleButton" Property="IsChecked" Value="True">
-                            <Setter TargetName="NavigationDrawerWidth" Property="Width" Value="Auto"/>
+                            <Setter TargetName="NavigationDrawerWidth" Property="Width" Value="*"/>
                             <Setter TargetName="PART_NavigationDrawerButtonBorder" Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
                             <Setter TargetName="PART_NavigationDrawerButtonBorder" Property="TextElement.Foreground" Value="{DynamicResource MaterialDesignBody}"/>
-                            <Setter TargetName="PART_NavigationDrawerButtonBorder" Property="BorderThickness" Value="0 0 0 1"/>
+                            <Setter TargetName="PART_NavigationDrawerButtonInnerBorder" Property="BorderThickness" Value="0 0 0 1"/>
+                            <Setter TargetName="PART_NavigationDrawerButtonBorder" Property="materialDesign:ShadowAssist.ShadowEdges" Value="None"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
