@@ -39,6 +39,9 @@ namespace CoAPExplorer
             //    .RegisterLogger<OICNet.OicClient>()
             //    .RegisterLogger<OICNet.OicResourceDiscoverClient>();
 
+            // Ensure coap related schemas are supported
+            CoapStyleUriParser.Register();
+
             // App-wide services
             Locator
                 .RegisterLogger<CoapUdpTransportFactory>();

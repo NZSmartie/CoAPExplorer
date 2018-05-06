@@ -18,14 +18,12 @@ namespace CoAPExplorer.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
+                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011");
 
             modelBuilder.Entity("CoAPExplorer.Models.Device", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Address");
 
                     b.Property<int>("EndpointType");
 
@@ -34,6 +32,9 @@ namespace CoAPExplorer.Database.Migrations
                     b.Property<DateTime>("LastSeen");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("_address")
+                        .HasColumnName("Address");
 
                     b.HasKey("Id");
 

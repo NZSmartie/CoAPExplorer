@@ -12,29 +12,26 @@ namespace CoAPExplorer.Services
 
     public class CoapEndpointFactory
     {
-        public static ICoapEndpoint GetLocalEndpoint(EndpointType type)
+        static CoapEndpointFactory()
         {
-            switch (type)
-            {
-                case EndpointType.Udp:
-                    return new CoapUdpEndPoint();
-            }
-
-            return new CoapEndpoint();
+            CoapStyleUriParser.Register();
         }
 
-        //public static ICoapEndpoint GetMulticastEndpoint()
-        //{
-        //    var endpoint = new IPEndPoint(Coap.MulticastIPv4)
-        //}
-
-        public static ICoapEndpoint GetEndpoint(string address, EndpointType type)
+        public static Uri CreateUriFromAddress(string address)
         {
-            switch (type)
-            {
-                case EndpointType.Udp:
-                    return new CoapUdpEndPoint(ParseIPEndpoint(address, Coap.Port));
-            }
+            if (!address.Contains("://"))
+                address = "coap://" + address;
+
+            return new Uri(address, UriKind.Absolute);
+        }
+
+        public static ICoapEndpoint GetEndpoint(Uri address)
+        {
+            if (address == null)
+                throw new ArgumentNullException(nameof(address));
+
+            if(address.Scheme == "coap")
+                return new CoapUdpEndPoint(ParseIPEndpoint(address.Host, address.Port));
 
             return new CoapEndpoint();
         }

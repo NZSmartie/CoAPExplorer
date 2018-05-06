@@ -19,9 +19,17 @@ namespace CoAPExplorer.Services
         private readonly CoapClient _coapClient;
         private readonly ICoapEndpoint _endpoint;
 
-        public CoapService(EndpointType type)
+        public CoapService(Device targetDevice)
+            : this(new UriBuilder { Scheme = targetDevice.Address.Scheme, Host = "0.0.0.0", Port = 0 }.Uri)
+        { }
+
+        public CoapService(string scheme)
+            :this(new UriBuilder { Scheme = scheme, Host = "0.0.0.0", Port = 0 }.Uri)
+        { }
+
+        public CoapService(Uri listenAddress)
         {
-            _endpoint = CoapEndpointFactory.GetLocalEndpoint(type);
+            _endpoint = CoapEndpointFactory.GetEndpoint(listenAddress);
             _coapClient = new CoapClient(_endpoint);
         }
 

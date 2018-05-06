@@ -16,18 +16,18 @@ namespace CoAPExplorer.WPF.MockViewModels
                 new DeviceViewModel(new Device
                 {
                     Name = "Garage Door",
-                    Address = "192.168.x.x",
+                    Address = new Uri("coap://192.168.x.x/"),
                     LastSeen = DateTime.Now.AddMinutes(-123456)
                 }),
                 new DeviceViewModel(new Device{
                     Name = "Weather Station",
-                    Address = "192.168.x.x",
+                    Address = new Uri("coap://192.168.x.x/"),
                     LastSeen = DateTime.Now.AddMinutes(-1),
                     IsFavourite = true,
                 }),
                 new DeviceViewModel(new Device{
                     Name = "Pet Food Station",
-                    Address = "192.168.x.x",
+                    Address = new Uri("coap://192.168.x.x"),
                     LastSeen = DateTime.Now.AddMinutes(-12)
                 })
             };

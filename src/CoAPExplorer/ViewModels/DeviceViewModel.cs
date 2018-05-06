@@ -33,7 +33,7 @@ namespace CoAPExplorer.ViewModels
 
         public ICoapEndpoint Endpoint => Device.Endpoint;
 
-        public string Address => Device.Address;
+        public string Address => Device.Address.ToString();
 
         public MessageViewModel MessageViewModel { get => _messageViewModel; set => this.RaiseAndSetIfChanged(ref _messageViewModel, value); }
 
@@ -47,7 +47,7 @@ namespace CoAPExplorer.ViewModels
 
         public ReactiveCommand<Message, Message> DuplicateMessageCommand { get; }
 
-        public CoapService CoapService { get => _coapService ?? (_coapService = new CoapService(Device.EndpointType)); }
+        public CoapService CoapService { get => _coapService ?? (_coapService = new CoapService(Device)); }
 
         public IReactiveRouter Router { get; private set; }
 

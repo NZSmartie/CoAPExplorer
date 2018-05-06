@@ -25,7 +25,7 @@ namespace CoAPExplorer.Services
 
         public DiscoveryService()
         {
-            _coapClient = new CoapClient(CoapEndpointFactory.GetLocalEndpoint(EndpointType.Udp));
+            _coapClient = new CoapClient(CoapEndpointFactory.GetEndpoint(new Uri("coap://0.0.0.0/")));
             _dbContext = Locator.Current.GetService<CoapExplorerContext>();
 
             _discoverRequest = new CoapMessage()
@@ -69,16 +69,15 @@ namespace CoAPExplorer.Services
                             if (recv.Endpoint == _coapClient.Endpoint)
                                 continue;
 
-                            var address = recv.Endpoint.ToString();
+                            var address = recv.Endpoint.BaseUri;
                             var device = _dbContext.Devices.SingleOrDefault(d => d.Address == address);
                             if (device == null)
                             {
                                 device = new Device
                                 {
                                     Endpoint = recv.Endpoint,
-                                    EndpointType = EndpointType.Udp,
                                     LastSeen = DateTime.Now,
-                                    Address = recv.Endpoint.ToString(),
+                                    Address = recv.Endpoint.BaseUri,
                                     Name = "(unnamed)"
                                 };
                                 await _dbContext.Devices.AddAsync(device);
@@ -129,7 +128,7 @@ namespace CoAPExplorer.Services
                 // Assign a random token
                 new Random().NextBytes(discoverRequest.Token);
 
-                var coapService = new CoapService(device.EndpointType);
+                var coapService = new CoapService(device);
 
                 coapService
                     .SendMessage(discoverRequest, device.Endpoint)

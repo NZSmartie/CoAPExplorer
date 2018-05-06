@@ -38,13 +38,6 @@ namespace CoAPExplorer.WPF.Dialogs
 
                 this.Bind(ViewModel, vm => vm.Address, v => v.AddressTextBox.Text)
                     .DisposeWith(disposables);
-
-                this.OneWayBind(ViewModel, vm => vm.Transports, v => v.TransportsComboBox.ItemsSource)
-                    .DisposeWith(disposables);
-
-                //this needs to be casted?
-                this.Bind(ViewModel, vm => vm.SelectedTransport, v => v.TransportsComboBox.SelectedValue,e => e, o => (EndpointType)(o ?? EndpointType.None))
-                    .DisposeWith(disposables);
             });
         }
 

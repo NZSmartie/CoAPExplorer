@@ -19,9 +19,8 @@ namespace CoAPExplorer.WPF.MockViewModels
             : base(device ?? new Device
             {
                 Name = "Some Device",
-                EndpointType = EndpointType.Udp,
-                Endpoint = CoapEndpointFactory.GetLocalEndpoint(EndpointType.Udp),
-                Address = "192.168.x.x",
+                Endpoint = CoapEndpointFactory.GetEndpoint(new Uri("coap://182.168.x.x/")),
+                Address = new Uri("coap://182.168.x.x/"),
                 LastSeen = DateTime.Now,
                 IsFavourite = false,
                 KnownResources = new System.Collections.ObjectModel.Collection<DeviceResource>

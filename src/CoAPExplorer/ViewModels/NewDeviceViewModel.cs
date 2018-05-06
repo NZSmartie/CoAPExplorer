@@ -21,15 +21,10 @@ namespace CoAPExplorer.ViewModels
         private string _address;
         private readonly CoapExplorerContext _dbContext;
         private readonly IReactiveRouter _router;
-        private EndpointType _selectedTransport;
 
         public string Name { get => _name; set => this.RaiseAndSetIfChanged(ref _name, value); }
 
         public string Address { get => _address; set => this.RaiseAndSetIfChanged(ref _address, value); }
-
-        public ReactiveList<Tuple<EndpointType, string>> Transports { get; } = new ReactiveList<Tuple<EndpointType, string>>();
-
-        public EndpointType SelectedTransport { get => _selectedTransport; set => this.RaiseAndSetIfChanged(ref _selectedTransport, value); }
 
         public ReactiveCommand<Unit, Unit> AddDeviceCommand { get; }
 
@@ -39,25 +34,19 @@ namespace CoAPExplorer.ViewModels
 
             _router = router ?? Locator.Current.GetService<IReactiveRouter>();
 
-            Transports.AddRange(Enum.GetValues(typeof(EndpointType))
-                                    .Cast<EndpointType>()
-                                    .Where(e => e != EndpointType.None)
-                                    .Select(e => Tuple.Create(e, e.GetDisplayValue())));
-
             AddDeviceCommand = ReactiveCommand.CreateFromTask(async () =>
             {
                 // TODO: User Input Validation
                 // TODO: Can re add another devie with the same Endpoint address?
-
+                var address = CoapEndpointFactory.CreateUriFromAddress(Address);
                 var device = new Device
                 {
                     Name = Name,
-                    Address = Address,
-                    Endpoint = CoapEndpointFactory.GetEndpoint(Address, SelectedTransport),
-                    EndpointType = SelectedTransport
+                    Address = address,
+                    Endpoint = CoapEndpointFactory.GetEndpoint(address),
                 };
 
-                _router.Navigate(NavigationRequest.Forward(new DeviceViewModel(device)))
+                _router.Navigate(NavigationRequest.Forward(new DeviceViewModel(device, _router)))
                           .Subscribe();
 
                 if (_dbContext != null)

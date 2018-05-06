@@ -19,7 +19,7 @@ namespace CoAPExplorer.Models
         [NotMapped]
         public ICoapEndpoint Endpoint
         {
-            get => _endpoint ?? (_endpoint = CoapEndpointFactory.GetEndpoint(Address, EndpointType));
+            get => _endpoint ?? (_endpoint = CoapEndpointFactory.GetEndpoint(Address));
             set => _endpoint = value;
         }
 
@@ -32,8 +32,25 @@ namespace CoAPExplorer.Models
 
         public string Name { get; set; } = string.Empty;
 
-        public string Address { get; set; } = string.Empty;
+        [NotMapped]
+        public Uri Address { get; set; } = null;
 
         public DateTime LastSeen { get; set; } = DateTime.MinValue;
+
+        [Column(nameof(Address))]
+        public string _address
+        {
+            get => Address?.ToString();
+            set
+            {
+                if (value == null)
+                {
+                    Address = null;
+                    return;
+                }
+
+                Address = new Uri(value, UriKind.Absolute);
+            }
+        }
     }
 }
