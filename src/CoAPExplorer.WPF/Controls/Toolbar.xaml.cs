@@ -20,9 +20,16 @@ namespace CoAPExplorer.WPF.Controls
     /// </summary>
     public partial class Toolbar : UserControl
     {
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
+            nameof(Title), typeof(string), typeof(Toolbar), new PropertyMetadata(string.Empty));
+
+        public string Title { get => GetValue(TitleProperty) as string; set => SetValue(TitleProperty, value); }
+
         public Toolbar()
         {
             InitializeComponent();
+
+            DataContext = this;
         }
     }
 }

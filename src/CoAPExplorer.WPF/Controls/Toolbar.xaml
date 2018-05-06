@@ -7,9 +7,11 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="130.42" d:DesignWidth="800">
-    <materialDesign:ColorZone Mode="PrimaryMid" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-        <StackPanel Orientation="Horizontal" Height="56">
-            <Border Width="{Binding ElementName=NavigationPane, Path=ActualWidth}"/>
+    <materialDesign:ColorZone Mode="PrimaryMid" materialDesign:ShadowAssist.ShadowDepth="Depth1" materialDesign:ShadowAssist.ShadowEdges="Bottom"
+                              HorizontalAlignment="Stretch" VerticalAlignment="Top" Padding="8" Height="56">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+            <TextBlock Text="{Binding Title}" VerticalAlignment="Bottom" Margin="8 0 8 8"
+                       Style="{DynamicResource MaterialDesignTitleTextBlock}"/>
         </StackPanel>
     </materialDesign:ColorZone>
 </UserControl>
