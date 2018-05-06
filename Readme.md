@@ -20,8 +20,11 @@ Latest nightly builds for Windows can be downloaded straight from AppVeyor - htt
  - Device Discovery
    - [X] UDP Multicast Discovery.
    - [ ] TODO: Suport more transports.
- - Send Messages
+ - Fully functioal message editor
+  - Support various content types
+  - Saving message requests or responses
+  - Easy UI 
 
 ## Screen Grabs
 
-![Device Discovery](Media/2018-03-15_11-37-33.gif)
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=hrzc8mYelaE" target="_blank"><img src="http://img.youtube.com/vi/hrzc8mYelaE/0.jpg" alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
