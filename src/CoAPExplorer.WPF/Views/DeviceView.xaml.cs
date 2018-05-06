@@ -94,7 +94,7 @@ namespace CoAPExplorer.WPF.Views
                          .Subscribe(response =>
                          {
                              MessageResponse.ViewModel = new MessageViewModel(response);
-                             ReponseTab.Focus();
+                             MessageTabControl.SelectedItem = ReponseTab;
                          })
                          .DisposeWith(disposables);
 

@@ -93,7 +93,7 @@
         </materialDesign:ColorZone>
 
         <!--a large FixedHeaderCount is my quiet protest against needing another lirbary for what should already be part of meterial themes-->
-        <dragablz:TabablzControl FixedHeaderCount="999999999" Grid.Row="1" Grid.Column="1">
+        <dragablz:TabablzControl x:Name="MessageTabControl" FixedHeaderCount="999999999" Grid.Row="1" Grid.Column="1">
             <TabItem Header="REQUEST">
                 <local:MessageRequestView x:Name="MessageRequest" />
             </TabItem>
