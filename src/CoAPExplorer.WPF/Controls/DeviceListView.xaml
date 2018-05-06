@@ -17,59 +17,62 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled">
-
-            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ItemsSource="{Binding Devices}">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True" />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type viewModels:DeviceViewModel}">
-                        <materialDesign:Card Width="200" Margin="2">
-                            <Grid >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="140" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <ToggleButton Grid.Row="0" Margin="0,0,16,-20"
+        <ListBox Grid.Row="0" ItemsSource="{Binding Devices}">
+            <ListBox.Template>
+                <ControlTemplate>
+                    <ScrollViewer>
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ListBox.Template>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type viewModels:DeviceViewModel}">
+                    <materialDesign:Card Width="200" Margin="2">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="140" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ToggleButton Grid.Row="0" Margin="0,0,16,-20"
                                               HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                               IsChecked="{Binding IsFavourite}"
                                               Style="{StaticResource MaterialDesignActionLightToggleButton}"
                                               Background="Transparent" Foreground="{DynamicResource SecondaryAccentBrush}">
-                                    <materialDesign:ToggleButtonAssist.OnContent>
-                                        <materialDesign:PackIcon Kind="Star" />
-                                    </materialDesign:ToggleButtonAssist.OnContent>
-                                    <materialDesign:PackIcon Kind="StarOutline" />
-                                </ToggleButton>
-                                <StackPanel Grid.Row="1" Margin="8,24,8,0">
-                                    <TextBlock FontWeight="Bold" Text="{Binding Name, Mode=OneWay}"/>
-                                    <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+                                <materialDesign:ToggleButtonAssist.OnContent>
+                                    <materialDesign:PackIcon Kind="Star" />
+                                </materialDesign:ToggleButtonAssist.OnContent>
+                                <materialDesign:PackIcon Kind="StarOutline" />
+                            </ToggleButton>
+                            <StackPanel Grid.Row="1" Margin="8,24,8,0">
+                                <TextBlock FontWeight="Bold" Text="{Binding Name, Mode=OneWay}"/>
+                                <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
                                 Address: <Run Text="{Binding Address, Mode=OneWay}"/><LineBreak/>
                                 Last Seen: <Run Text="{Binding LastSeen, Converter={StaticResource RelativeDateTimeConverter}, Mode=OneWay}"/>
-                                    </TextBlock>
-                                </StackPanel>
-                                <StackPanel Grid.Row="2" Margin="8" HorizontalAlignment="Right" Orientation="Horizontal">
-                                    <Button Width="30" Padding="2,0,2,0" materialDesign:RippleAssist.IsCentered="True"
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Margin="8" HorizontalAlignment="Right" Orientation="Horizontal">
+                                <Button Width="30" Padding="2,0,2,0" materialDesign:RippleAssist.IsCentered="True"
                                             Style="{StaticResource MaterialDesignToolButton}"
                                             Command="{Binding  OpenCommand}" Margin="0,8,0,8">
-                                        <materialDesign:PackIcon Kind="OpenInApp" Width="24" Height="24" />
-                                    </Button>
-                                    <materialDesign:PopupBox Padding="2,0,2,0" Style="{DynamicResource MaterialDesignToolPopupBox}">
-                                        <StackPanel>
-                                            <Button Content="Remove Device" IsEnabled="False" />
-                                        </StackPanel>
-                                    </materialDesign:PopupBox>
-                                </StackPanel>
-                            </Grid>
-                        </materialDesign:Card>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
+                                    <materialDesign:PackIcon Kind="OpenInApp" Width="24" Height="24" />
+                                </Button>
+                                <materialDesign:PopupBox Padding="2,0,2,0" Style="{DynamicResource MaterialDesignToolPopupBox}">
+                                    <StackPanel>
+                                        <Button Content="Remove Device" IsEnabled="False" />
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Card>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <!--<StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <ListBox
