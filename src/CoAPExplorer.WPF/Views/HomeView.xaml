@@ -76,14 +76,7 @@
             </ListView.ItemTemplate>
             <ListView.Items>
                 <controls:ContentItem Header="Recent" Icon="History">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <controls:Toolbar/>
-                        <local:RecentDevicesView x:Name="RecentDevicesView" ViewModel="{Binding RecentDevices}" Grid.Row="1"/>
-                    </Grid>
+                    <local:RecentDevicesView x:Name="RecentDevicesView" ViewModel="{Binding RecentDevices}" Grid.Row="1"/>
                 </controls:ContentItem>
                 <controls:ContentItem  Header="Search" Icon="Magnify">
                     <local:SearchView x:Name="SearchView" ViewModel="{Binding Search}"/>

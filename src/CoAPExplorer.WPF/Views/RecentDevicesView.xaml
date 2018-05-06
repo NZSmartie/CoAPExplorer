@@ -18,8 +18,14 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <controls:DeviceListView x:Name="DeviceListView" d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceListMock, IsDesignTimeCreatable=True}" />
-        <materialDesign:PopupBox x:Name="AddButton"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <controls:Toolbar/>
+        <controls:DeviceListView x:Name="DeviceListView" Grid.Row="1"
+                                 d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceListMock, IsDesignTimeCreatable=True}" />
+        <materialDesign:PopupBox x:Name="AddButton"  Grid.Row="1"
                                  PlacementMode="TopAndAlignCentres" UnfurlOrientation="Vertical"
                                  Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}"
                                  VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="16"
