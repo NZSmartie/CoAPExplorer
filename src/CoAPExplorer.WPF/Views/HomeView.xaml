@@ -16,15 +16,23 @@
         <!--All this ListView styling and templating will eventually be turned into a self contained control and pushed to MatierlDesignToolKit-->
         <ListView x:Name="NavigationList" Grid.Column="0" SelectedIndex="0">
             <ListView.Style>
-                <Style TargetType="{x:Type ListView}">
+                <Style BasedOn="{StaticResource MaterialDesignListView}" TargetType="{x:Type ListView}">
                     <Setter Property="SelectionMode" Value="Single"/>
+                    <Setter Property="materialDesign:ListViewAssist.ListViewItemPadding" Value="0"/>
+                    <Setter Property="ItemContainerStyle">
+                        <Setter.Value>
+                            <Style BasedOn="{StaticResource MaterialDesignListBoxItem}" TargetType="ListViewItem">
+                                <Setter Property="Padding" Value="4 "/>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </ListView.Style>
             <ListView.Template>
                 <ControlTemplate TargetType="ListView">
                     <Grid Grid.IsSharedSizeScope="True" >
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="NavigationDrawerWidth" Width="48" MaxWidth="320"/>
+                            <ColumnDefinition x:Name="NavigationDrawerWidth" Width="56" MaxWidth="320"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -32,7 +40,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <materialDesign:Card x:Name="PART_NavigationDrawerButtonBorder"
-                                             VerticalAlignment="Stretch" Panel.ZIndex="1"
+                                             VerticalAlignment="Stretch" Panel.ZIndex="10"
                                              Background="{DynamicResource PrimaryHueMidBrush}"
                                              TextElement.Foreground="{DynamicResource MaterialDesignPaper}"
                                              UniformCornerRadius="0"
@@ -41,18 +49,28 @@
                             <Border x:Name="PART_NavigationDrawerButtonInnerBorder"
                                     BorderBrush="{DynamicResource MaterialDesignDivider}">
                                 <ToggleButton x:Name="NavigationDrawerToggleButton"
-                                              HorizontalAlignment="Right" Margin="4"
-                                              Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
+                                              Width="48" Height="48" Margin="4"
+                                              HorizontalAlignment="Right" 
+                                              BorderBrush="Transparent"
+                                              Foreground="{Binding ElementName=PART_NavigationDrawerButtonInnerBorder, Path=(TextElement.Foreground)}"
+                                              Background="Transparent"
+                                              Style="{StaticResource MaterialDesignActionToggleButton}">
+                                    <materialDesign:ToggleButtonAssist.OnContent>
+                                        <materialDesign:PackIcon Kind="ChevronLeft" Width="24" Height="24"/>
+                                    </materialDesign:ToggleButtonAssist.OnContent>
+                                    <ToggleButton.Content>
+                                        <materialDesign:PackIcon Kind="Menu" Width="24" Height="24"/>
+                                    </ToggleButton.Content>
+                                </ToggleButton>
                             </Border>
                         </materialDesign:Card>
-                        <Border Grid.Column="0" Grid.Row="1"
-                                BorderThickness="0 0 1 0"
+                        <Border BorderThickness="0 0 1 0" Grid.Column="0" Grid.Row="1"
                                 Background="{DynamicResource MaterialDesignPaper}"
                                 BorderBrush="{DynamicResource MaterialDesignDivider}">
-                            <ItemsPresenter />
+                            <ItemsPresenter/>
                         </Border>
                         <ContentPresenter Grid.Column="1" Grid.RowSpan="2"
-                                          Content="{Binding Path=SelectedItem.(controls:ContentItem.Content), RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        Content="{Binding Path=SelectedItem.(controls:ContentItem.Content), RelativeSource={RelativeSource TemplatedParent}}"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger SourceName="NavigationDrawerToggleButton" Property="IsChecked" Value="True">
@@ -66,14 +84,14 @@
                 </ControlTemplate>
             </ListView.Template>
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type controls:ContentItem}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition Width="56"/>
                             <ColumnDefinition Width="*" MaxWidth="320"/>
                         </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon Grid.Column="0" Width="28" Height="28" Margin="4 0 0 0" VerticalAlignment="Center"
-                                                 Kind="{Binding Icon}" Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                        <ContentControl Grid.Column="0" Width="24" Height="24" Margin="12 12 12 12" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                        Content="{Binding Icon}" Foreground="{DynamicResource MaterialDesignBodyLight}"/>
                         <TextBlock Grid.Column="1" Text="{Binding Header}"  VerticalAlignment="Center"
                                    Style="{StaticResource MaterialDesignButtonTextBlock}"/>
                     </Grid>
@@ -81,13 +99,22 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Items>
-                <controls:ContentItem Header="Recent" Icon="History">
+                <controls:ContentItem Header="Recent">
+                    <controls:ContentItem.Icon>
+                        <materialDesign:PackIcon Kind="History" Width="24" Height="24"/>
+                    </controls:ContentItem.Icon>
                     <local:RecentDevicesView x:Name="RecentDevicesView" ViewModel="{Binding RecentDevices}" Grid.Row="1"/>
                 </controls:ContentItem>
-                <controls:ContentItem  Header="Search" Icon="Magnify">
+                <controls:ContentItem Header="Search">
+                    <controls:ContentItem.Icon>
+                        <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24"/>
+                    </controls:ContentItem.Icon>
                     <local:SearchView x:Name="SearchView" ViewModel="{Binding Search}"/>
                 </controls:ContentItem>
-                <controls:ContentItem Header="Settings" Icon="Settings">
+                <controls:ContentItem Header="Settings">
+                    <controls:ContentItem.Icon>
+                        <materialDesign:PackIcon Kind="Settings" Width="24" Height="24"/>
+                    </controls:ContentItem.Icon>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Opacity=".1"
                                Style="{StaticResource MaterialDesignDisplay4TextBlock}">🤷‍</TextBlock>
                 </controls:ContentItem>

@@ -12,8 +12,8 @@ namespace CoAPExplorer.WPF.Controls
     public class ContentItem : HeaderedContentControl
     {
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
-            nameof(Icon), typeof(PackIconKind), typeof(ContentItem));
+            nameof(Icon), typeof(object), typeof(ContentItem));
 
-        public PackIconKind Icon { get => (PackIconKind)GetValue(IconProperty); set => SetValue(IconProperty, value); }
+        public object Icon { get => GetValue(IconProperty); set => SetValue(IconProperty, value); }
     }
 }
