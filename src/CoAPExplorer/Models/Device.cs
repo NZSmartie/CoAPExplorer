@@ -12,6 +12,7 @@ namespace CoAPExplorer.Models
     public class Device
     {
         private ICoapEndpoint _endpoint;
+        private Uri _address = null;
 
         [Key]
         public int Id { get; set; }
@@ -23,7 +24,7 @@ namespace CoAPExplorer.Models
             set => _endpoint = value;
         }
 
-        public ICollection<DeviceResource> KnownResources { get; set; } 
+        public ICollection<DeviceResource> KnownResources { get; set; }
             = new ObservableCollection<DeviceResource>();
 
         public EndpointType EndpointType { get; set; }
@@ -33,12 +34,11 @@ namespace CoAPExplorer.Models
         public string Name { get; set; } = string.Empty;
 
         [NotMapped]
-        public Uri Address { get; set; } = null;
-
+        public Uri Address { get => _address ?? (_address = Endpoint.BaseUri); set => _address = value; }
         public DateTime LastSeen { get; set; } = DateTime.MinValue;
 
         [Column(nameof(Address))]
-        public string _address
+        public string _dbAddress
         {
             get => Address?.ToString();
             set

@@ -12,21 +12,19 @@ using System;
 namespace CoAPExplorer.Database.Migrations
 {
     [DbContext(typeof(CoapExplorerContext))]
-    [Migration("20180312024644_DeviceResources")]
-    partial class DeviceResources
+    [Migration("20180515230229_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
+                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011");
 
             modelBuilder.Entity("CoAPExplorer.Models.Device", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Address");
 
                     b.Property<int>("EndpointType");
 
@@ -35,6 +33,9 @@ namespace CoAPExplorer.Database.Migrations
                     b.Property<DateTime>("LastSeen");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("_dbAddress")
+                        .HasColumnName("Address");
 
                     b.HasKey("Id");
 

@@ -33,7 +33,7 @@ namespace CoAPExplorer.Database.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("_address")
+                    b.Property<string>("_dbAddress")
                         .HasColumnName("Address");
 
                     b.HasKey("Id");
