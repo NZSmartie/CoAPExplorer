@@ -43,7 +43,8 @@ namespace CoAPExplorer.Models
         [NotMapped]
         public CoapMessageCode Code { get; set; } = CoapMessageCode.None;
 
-        public string Url { get; set; } = string.Empty;
+        [NotMapped]
+        public Uri Url { get; set; } = new Uri(string.Empty, UriKind.RelativeOrAbsolute);
 
         [NotMapped]
         public IList<CoapOption> Options { get; set; } = new List<CoapOption>();
@@ -102,6 +103,22 @@ namespace CoAPExplorer.Models
             }
         }
 
+        [Column(nameof(Url))]
+        public string _dbUrl
+        {
+            get => Url?.ToString();
+            set
+            {
+                if (value == null)
+                {
+                    Url = null;
+                    return;
+                }
+
+                Url = new Uri(value, UriKind.RelativeOrAbsolute);
+            }
+        }
+
         [Column(nameof(Options))]
         public string _dbOptions
         {
@@ -147,7 +164,7 @@ namespace CoAPExplorer.Models
             {
                 MessageId = MessageId,
                 Token = Token?.Clone() as byte[],
-                Url = Url?.Clone() as string,
+                Url = Url,
                 Code = Code,
                 ContentFormat = ContentFormat,
                 Options = new List<CoapOption>(Options),

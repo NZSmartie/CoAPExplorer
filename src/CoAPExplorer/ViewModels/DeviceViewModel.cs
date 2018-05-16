@@ -199,7 +199,7 @@ namespace CoAPExplorer.ViewModels
             await Task.Yield();
 
             if (e.NewItems != null)
-                await _dbContext.RecentMessages.AddRangeAsync(e.NewItems.Cast<Message>().Where(m => m.Id == 0 && !string.IsNullOrWhiteSpace(m.Url)));
+                await _dbContext.RecentMessages.AddRangeAsync(e.NewItems.Cast<Message>().Where(m => m.Id == 0 && m.Url != null));
             
             await _dbContext.SaveChangesAsync();
         }

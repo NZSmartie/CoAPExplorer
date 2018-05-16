@@ -47,7 +47,7 @@ namespace CoAPExplorer.Extensions
 
                 ContentFormat = contentTypeOption?.MediaType,
 
-                Url = coapMessage.GetUri().GetComponents(UriComponents.PathAndQuery, UriFormat.UriEscaped),
+                Url = coapMessage.GetUri(),
                 Payload = coapMessage.Payload,
             };
 

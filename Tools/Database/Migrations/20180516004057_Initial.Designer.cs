@@ -12,7 +12,7 @@ using System;
 namespace CoAPExplorer.Database.Migrations
 {
     [DbContext(typeof(CoapExplorerContext))]
-    [Migration("20180515230229_Initial")]
+    [Migration("20180516004057_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,10 +51,11 @@ namespace CoAPExplorer.Database.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Url");
-
                     b.Property<string>("_dbContentFormat")
                         .HasColumnName("ContentFormat");
+
+                    b.Property<string>("_dbUrl")
+                        .HasColumnName("Url");
 
                     b.HasKey("Id");
 
@@ -70,8 +71,6 @@ namespace CoAPExplorer.Database.Migrations
 
                     b.Property<byte[]>("Payload");
 
-                    b.Property<string>("Url");
-
                     b.Property<string>("_dbCode")
                         .HasColumnName("Code");
 
@@ -80,6 +79,9 @@ namespace CoAPExplorer.Database.Migrations
 
                     b.Property<string>("_dbOptions")
                         .HasColumnName("Options");
+
+                    b.Property<string>("_dbUrl")
+                        .HasColumnName("Url");
 
                     b.HasKey("Id");
 

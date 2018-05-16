@@ -25,17 +25,17 @@ namespace CoAPExplorer.WPF.MockViewModels
                 IsFavourite = false,
                 KnownResources = new System.Collections.ObjectModel.Collection<DeviceResource>
                 {
-                    new DeviceResource {Url = "/.well-known/core"},
-                    new DeviceResource {Url = "/doors"},
-                    new DeviceResource {Url = "/doors/garage"},
-                    new DeviceResource {Url = "/doors/entrance"},
-                    new DeviceResource {Url = "/lights"},
-                    new DeviceResource {Url = "/lights/desklamp"},
-                    new DeviceResource {Url = "/lights/lounge1"},
-                    new DeviceResource {Url = "/lights/lounge2"},
-                    new DeviceResource {Url = "/lights/lounge3"},
-                    new DeviceResource {Url = "/lights/lounge4"},
-                    new DeviceResource {Url = "/lights/lounge4"},
+                    new DeviceResource {Url = new Uri("/.well-known/core", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/doors", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/doors/garage", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/doors/entrance", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/lights", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/lights/desklamp", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/lights/lounge1", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/lights/lounge2", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/lights/lounge3", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/lights/lounge4", UriKind.RelativeOrAbsolute)},
+                    new DeviceResource {Url = new Uri("/lights/lounge4", UriKind.RelativeOrAbsolute)},
                 },
             })
         {
@@ -44,7 +44,7 @@ namespace CoAPExplorer.WPF.MockViewModels
                 MessageId = 1234,
                 Token = new byte[] { 0x01, 0x02, 0x03, 0x04 },
 
-                Url = "/some/resource",
+                Url = new Uri("/some/resource", UriKind.RelativeOrAbsolute),
                 Code = CoapMessageCode.Get,
                 //Type = CoapMessageType.Confirmable,
 

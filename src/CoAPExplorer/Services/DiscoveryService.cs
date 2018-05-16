@@ -120,7 +120,7 @@ namespace CoAPExplorer.Services
                 var cts = new CancellationTokenSource();
                 var discoverRequest = new Message
                 {
-                    Url = "/.well-known/core",
+                    Url = new Uri("/.well-known/core", UriKind.RelativeOrAbsolute),
                     Code = CoapMessageCode.Get,
                     Token = new byte[8],
                 };
@@ -166,7 +166,7 @@ namespace CoAPExplorer.Services
                 var resource = new DeviceResource
                 {
                     Device = device,
-                    Url = coreResource.UriReference.OriginalString,
+                    Url = coreResource.UriReference,
                 };
 
                 if (!string.IsNullOrEmpty(coreResource.Title))

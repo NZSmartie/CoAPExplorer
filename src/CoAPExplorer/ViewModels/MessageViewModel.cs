@@ -77,9 +77,10 @@ namespace CoAPExplorer.ViewModels
             }
         }
 
-        public string Url
+        public Uri Url
         {
-            get => _message.Url; set
+            get => _message.Url;
+            set
             {
                 if (_message.Url == value)
                     return;

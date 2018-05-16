@@ -32,10 +32,10 @@ namespace CoAPExplorer.Database.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Payload = table.Column<byte[]>(nullable: true),
-                    Url = table.Column<string>(nullable: true),
                     Code = table.Column<string>(nullable: true),
                     ContentFormat = table.Column<string>(nullable: true),
-                    Options = table.Column<string>(nullable: true)
+                    Options = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,8 +50,8 @@ namespace CoAPExplorer.Database.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     DeviceId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    Url = table.Column<string>(nullable: true),
-                    ContentFormat = table.Column<string>(nullable: true)
+                    ContentFormat = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

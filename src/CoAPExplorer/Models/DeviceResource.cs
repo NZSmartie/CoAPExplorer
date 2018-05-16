@@ -12,12 +12,29 @@ namespace CoAPExplorer.Models
 
         public Device Device { get; set; }
 
-        public string Url { get; set; }
+        [NotMapped]
+        public Uri Url { get; set; }
 
         public string Name { get; set; }
 
         [NotMapped]
         public ContentFormatType ContentFormat { get; set; } = null;
+
+        [Column(nameof(Url))]
+        public string _dbUrl
+        {
+            get => Url?.ToString();
+            set
+            {
+                if (value == null)
+                {
+                    Url = null;
+                    return;
+                }
+
+                Url = new Uri(value, UriKind.RelativeOrAbsolute);
+            }
+        }
 
         [Column(nameof(ContentFormat))]
         public string _dbContentFormat

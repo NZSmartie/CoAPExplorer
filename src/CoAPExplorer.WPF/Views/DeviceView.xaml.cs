@@ -113,7 +113,9 @@ namespace CoAPExplorer.WPF.Views
             if (Url.SelectedItem == null)
             {
                 var message = ViewModel.Message.Clone();
-                message.Url = Url.Text;
+
+                if(Uri.TryCreate(Url.Text, UriKind.RelativeOrAbsolute, out var url))
+                    message.Url = url;
 
                 ViewModel.Message = message;
             }
