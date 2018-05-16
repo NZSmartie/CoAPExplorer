@@ -26,11 +26,11 @@ namespace CoAPExplorer.WPF.Controls
     public partial class DeviceListView : UserControl
     {
         public static readonly DependencyProperty DevicesProperty = DependencyProperty.Register(
-            "Devices", typeof(ObservableCollection<DeviceViewModel>), typeof(DeviceListView), new PropertyMetadata(default(List<DeviceViewModel>)));
+            "Devices", typeof(IReactiveCollection<DeviceViewModel>), typeof(DeviceListView), new PropertyMetadata(default(List<DeviceViewModel>)));
 
-        public ObservableCollection<DeviceViewModel> Devices
+        public IReactiveCollection<DeviceViewModel> Devices
         {
-            get => (ObservableCollection<DeviceViewModel>)GetValue(DevicesProperty);
+            get => (IReactiveCollection<DeviceViewModel>)GetValue(DevicesProperty);
             set => SetValue(DevicesProperty, value);
         }
 

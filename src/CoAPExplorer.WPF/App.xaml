@@ -2,22 +2,31 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CoAPExplorer.WPF"
+             xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
              xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!--MaterialDesignToolKit-->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Purple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Pink.xaml" />
 
+                <!--Dragablz-->
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml"/>
 
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <!--CoAp Explorer Controls-->
+                <ResourceDictionary Source="pack://application:,,,/Themes/AppBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <!--Dragablz Styling-->
             <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
+             
+             <!--CoAp Explorer Controls-->
+            <Style TargetType="{x:Type controls:AppBar}" BasedOn="{StaticResource CoAPExplorerAppBarStyle}"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

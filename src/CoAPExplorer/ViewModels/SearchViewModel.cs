@@ -22,7 +22,7 @@ namespace CoAPExplorer.ViewModels
         private string _searchUrl = "/.well-known/core";
         private ObservableAsPropertyHelper<bool> _isSearching;
         private readonly IDiscoveryService _discoveryService;
-        private ObservableCollection<DeviceViewModel> _devices;
+        private ReactiveList<DeviceViewModel> _devices;
 
         public IReactiveRouter Router { get; }
 
@@ -40,9 +40,9 @@ namespace CoAPExplorer.ViewModels
 
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
-        public ObservableCollection<DeviceViewModel> Devices
+        public ReactiveList<DeviceViewModel> Devices
         {
-            get => _devices ?? (_devices = new ObservableCollection<DeviceViewModel>());
+            get => _devices ?? (_devices = new ReactiveList<DeviceViewModel>());
             set => _devices = value;
         }
 

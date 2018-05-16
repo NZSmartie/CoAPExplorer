@@ -55,16 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\AppBar.cs" />
     <Compile Include="Controls\CoapOptionsList.xaml.cs">
       <DependentUpon>CoapOptionsList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FilterOption.xaml.cs">
       <DependentUpon>FilterOption.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ContentItem.cs" />
-    <Compile Include="Controls\Toolbar.xaml.cs">
-      <DependentUpon>Toolbar.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\NavigationItem.cs" />
     <Compile Include="Converters\InvertBooleanConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\CoapMessageCodeToStringConverter.cs" />
@@ -117,10 +115,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Toolbar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Dialogs\NewDeviceViewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -139,6 +133,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Controls\DeviceListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\AppBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

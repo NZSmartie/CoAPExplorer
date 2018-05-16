@@ -17,7 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ListBox Grid.Row="0" ItemsSource="{Binding Devices}">
+        <ListBox Grid.Row="0" ItemsSource="{Binding Devices, Mode=OneWay}">
             <ListBox.Template>
                 <ControlTemplate>
                     <ScrollViewer>

@@ -1,10 +1,12 @@
-﻿using CoAPExplorer.ViewModels;
-using ReactiveUI.Routing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using ReactiveUI;
+
+using CoAPExplorer.ViewModels;
 
 namespace CoAPExplorer.WPF.MockViewModels
 {
@@ -19,7 +21,7 @@ namespace CoAPExplorer.WPF.MockViewModels
 
             Search = new SearchViewModel()
             {
-                Devices = RecentDevices.Devices
+                Devices = new ReactiveList<ViewModels.DeviceViewModel>(RecentDevices.Devices)
             };
         }
     }
