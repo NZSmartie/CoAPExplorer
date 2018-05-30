@@ -12,7 +12,8 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="CoAP Explorer" Height="500" Width="800">
+        Title="CoAP Explorer" Height="500" Width="800"
+        WindowStartupLocation="CenterScreen">
     <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
         <Frame x:Name="Frame" NavigationUIVisibility="Hidden"/>
     </materialDesign:DialogHost>
