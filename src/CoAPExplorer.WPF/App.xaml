@@ -20,6 +20,7 @@
 
                 <!--CoAp Explorer Controls-->
                 <ResourceDictionary Source="pack://application:,,,/Themes/AppBar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Themes/NavigationDrawer.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <!--Dragablz Styling-->
