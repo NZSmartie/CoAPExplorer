@@ -186,6 +186,12 @@ namespace CoAPExplorer.ViewModels
                         };
                     })
                     .DisposeWith(disposables);
+
+                // Catch and handle all exceptions produced by observables.
+                Observable.Merge(SendCommand.ThrownExceptions, OpenCommand.ThrownExceptions, 
+                                 StopSendingCommand.ThrownExceptions, DuplicateMessageCommand.ThrownExceptions)
+                          .Subscribe(ex => App.LogException(ex))
+                          .DisposeWith(disposables);
             });
 
         }

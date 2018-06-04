@@ -80,6 +80,12 @@ namespace CoAPExplorer.ViewModels
 
                 SearchCommand.Select(d => new DeviceViewModel(d, router)).Subscribe(device => Devices.Add(device))
                              .DisposeWith(disposables);
+
+                // Catch and handle all exceptions produced by observables.
+                Observable.Merge(StopCommand.ThrownExceptions, SearchCommand.ThrownExceptions, 
+                                 AddFilter.ThrownExceptions, RemoveFilter.ThrownExceptions)
+                          .Subscribe(ex => App.LogException(ex))
+                          .DisposeWith(disposables);
             });
         }
 

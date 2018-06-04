@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reactive;
 using System.Text;
 using CoAPExplorer.Extensions;
@@ -19,6 +20,38 @@ namespace CoAPExplorer
         private readonly IReactiveApp _reactiveApplication;
 
         public string DataPath { get; }
+
+        /// <summary>
+        /// Logs the exception to the applications log directory and invokes the exception event for displaying to the user.
+        /// </summary>
+        /// <param name="exception"></param>
+        public static void LogException(Exception exception)
+        {
+            if (exception == null)
+                return;
+
+            var app = Splat.Locator.Current.GetService<App>();
+
+            // TODO: Fire an event which will display a toast of the recently received exception.
+            // TODO: Create a view (seperate window?) for viewing all exceptions
+
+            var logPath = new DirectoryInfo(Path.Combine(app.DataPath, "logs"));
+
+            if (!logPath.Exists)
+                logPath.Create();
+
+            var timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH-mm-ss", System.Globalization.CultureInfo.InvariantCulture);
+            var baseFileName = $"{timestamp}-Error-{exception.GetType().Name}";
+            
+            var attempt = 1;
+            var filename = Path.Combine(app.DataPath, "logs", $"{baseFileName}.log");
+            while(File.Exists(filename))
+                filename = Path.Combine(app.DataPath, "logs", $"{baseFileName}{attempt++}.log");
+
+            using (var log = new StreamWriter(filename, false, Encoding.UTF8))
+                log.Write(exception.ToString());
+            
+        }
 
         public App(IReactiveApp reactiveApplication, string dataPath)
         {
@@ -48,7 +81,8 @@ namespace CoAPExplorer
 
             Locator.Register<IDiscoveryService>(() => new DiscoveryService());
 
-
+            Locator.RegisterConstant(this);
+            Locator.RegisterConstant<IReactiveApp>(this);
         }
 
         #region IReactiveApp Proxy Members
