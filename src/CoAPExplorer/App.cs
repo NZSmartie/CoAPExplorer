@@ -55,7 +55,7 @@ namespace CoAPExplorer
             var attempt = 1;
             var filename = Path.Combine(app.DataPath, "logs", $"{baseFileName}.log");
             while(File.Exists(filename))
-                filename = Path.Combine(app.DataPath, "logs", $"{baseFileName}{attempt++}.log");
+                filename = Path.Combine(app.DataPath, "logs", $"{baseFileName}.{attempt++}.log");
 
             using (var log = new StreamWriter(filename, false, Encoding.UTF8))
                 log.Write(exception.ToString());
