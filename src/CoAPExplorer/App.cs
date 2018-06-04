@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using CoAPExplorer.Extensions;
+using CoAPExplorer.Models;
 using CoAPExplorer.Services;
 using CoAPExplorer.ViewModels;
 using CoAPNet;
@@ -20,6 +24,11 @@ namespace CoAPExplorer
         private readonly IReactiveApp _reactiveApplication;
 
         public string DataPath { get; }
+
+        private ISubject<ToastNotification> _toastNotifications
+            = new Subject<ToastNotification>();
+
+        public IObservable<ToastNotification> ToastNotifications => _toastNotifications;
 
         /// <summary>
         /// Logs the exception to the applications log directory and invokes the exception event for displaying to the user.
@@ -50,7 +59,17 @@ namespace CoAPExplorer
 
             using (var log = new StreamWriter(filename, false, Encoding.UTF8))
                 log.Write(exception.ToString());
-            
+
+            app._toastNotifications.OnNext(new ToastNotification($"{exception.GetType().Name}: {exception.Message}.", ToastNotificationType.Information,
+                                                                 ("Show", OpenLogFile(filename))));
+        }
+
+        private static ReactiveCommand OpenLogFile(string filename)
+        {
+            return ReactiveCommand.Create(() =>
+            {
+                var process = Process.Start(filename);
+            });
         }
 
         public App(IReactiveApp reactiveApplication, string dataPath)

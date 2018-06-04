@@ -11,10 +11,13 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        mc:Ignorable="d"
+        mc:Ignorable="d" x:Name="This"
         Title="CoAP Explorer" Height="500" Width="800"
         WindowStartupLocation="CenterScreen">
-    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <Frame x:Name="Frame" NavigationUIVisibility="Hidden"/>
-    </materialDesign:DialogHost>
+    <Grid>
+        <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+            <Frame x:Name="Frame" NavigationUIVisibility="Hidden"/>
+        </materialDesign:DialogHost>
+        <materialDesign:Snackbar x:Name="AppSnackbar" MessageQueue="{Binding ElementName=This, Path=ToastMessageQueue}" />
+    </Grid>
 </Window>
