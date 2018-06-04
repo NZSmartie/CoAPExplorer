@@ -60,8 +60,12 @@ namespace CoAPExplorer
             using (var log = new StreamWriter(filename, false, Encoding.UTF8))
                 log.Write(exception.ToString());
 
-            app._toastNotifications.OnNext(new ToastNotification($"{exception.GetType().Name}: {exception.Message}.", ToastNotificationType.Information,
-                                                                 ("Show", OpenLogFile(filename))));
+            var message = "An error has occured.";
+#if DEBUG
+            // Only display exception details in the UI for debug builds
+            message = $"{exception.GetType().Name}: {exception.Message}.";
+#endif
+            app._toastNotifications.OnNext(new ToastNotification(message, ToastNotificationType.Error, ("Show", OpenLogFile(filename))));
         }
 
         private static ReactiveCommand OpenLogFile(string filename)

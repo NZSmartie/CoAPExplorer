@@ -41,7 +41,11 @@ namespace CoAPExplorer.WPF
                 if(toast.Actions.Count == 0)
                     ToastMessageQueue.Enqueue(toastMessage, true);
                 else
-                    ToastMessageQueue.Enqueue(toastMessage, toast.Actions[0].Label, _ => ((ICommand)toast.Actions[0].Command).Execute(null), null, false, true);
+                    ToastMessageQueue.Enqueue(
+                        toastMessage, 
+                        toast.Actions[0].Label.ToUpper(), p => ((ICommand)toast.Actions[0].Command).Execute(p),
+                        null, 
+                        false, true);
 
             });
         }
