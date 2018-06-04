@@ -15,7 +15,7 @@ using CoAPExplorer.Services;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class DeviceNavigationViewModel : ReactiveObject
+    public class DeviceNavigationViewModel : ReactiveObject, ISupportsActivation
     {
         private bool _isOpen = true;
         private IDiscoveryService _discoveryService;
@@ -35,6 +35,8 @@ namespace CoAPExplorer.ViewModels
         public string Name => _device.Name;
 
         public string Address => _device.Address;
+
+        public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
         public ReactiveCommand<Device, DeviceResource> RefreshResourcesCommand;
 
@@ -59,6 +61,14 @@ namespace CoAPExplorer.ViewModels
 
                 _pendingClearResources = false;
                 _device.Device.KnownResources.Add(resource);
+            });
+
+            this.WhenActivated(disposables =>
+            {
+                RefreshResourcesCommand
+                    .ThrownExceptions
+                    .Subscribe(ex => App.LogException(ex))
+                    .DisposeWith(disposables);
             });
         }
 
