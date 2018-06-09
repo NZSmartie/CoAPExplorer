@@ -6,16 +6,19 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
-using CoAPExplorer.Extensions;
-using CoAPExplorer.Models;
-using CoAPExplorer.Services;
-using CoAPExplorer.ViewModels;
+
 using CoAPNet;
 using CoAPNet.Udp;
 using ReactiveUI;
 using ReactiveUI.Routing;
 using ReactiveUI.Routing.Presentation;
 using Splat;
+
+using CoAPExplorer.Extensions;
+using CoAPExplorer.Models;
+using CoAPExplorer.Services;
+using CoAPExplorer.ViewModels;
+
 
 namespace CoAPExplorer
 {
