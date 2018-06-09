@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoAPExplorer", "src\CoAPExp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F2D4903E-1237-405F-B41A-C94931BAECEE}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
 		Notes.md = Notes.md
 		nuget.config = nuget.config
@@ -26,9 +27,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoAPExplorer.WPF.Tests", "Tests\CoAPExplorer.WPF.Tests\CoAPExplorer.WPF.Tests.csproj", "{A6D994B5-DC66-466D-A460-F5042EDA4D5F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Media", "Media", "{C3297368-6E89-4E86-8386-79807CC31156}"
-	ProjectSection(SolutionItems) = preProject
-		Media\2018-03-15_11-37-33.gif = Media\2018-03-15_11-37-33.gif
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
