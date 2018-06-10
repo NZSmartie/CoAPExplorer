@@ -25,7 +25,7 @@ using ReactiveUI.Routing.Android;
 
 namespace CoAPExplorer.Droid
 {
-    [Application(AllowBackup = true, Theme = "@style/AppTheme", Label = "@string/app_name")]
+    [Application(AllowBackup = true, Theme = "@style/AppTheme", Label = "@string/app_name", Icon = "@mipmap/ic_launcher", RoundIcon = "@mipmap/ic_launcher_round")]
     public class Application : Android.App.Application
     {
         private App _coapExplorer;
