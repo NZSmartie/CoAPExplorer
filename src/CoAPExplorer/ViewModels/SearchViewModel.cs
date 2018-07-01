@@ -13,7 +13,6 @@ using Splat;
 
 using CoAPExplorer.Models;
 using CoAPExplorer.Services;
-using ReactiveUI.Routing;
 
 namespace CoAPExplorer.ViewModels
 {
@@ -24,7 +23,7 @@ namespace CoAPExplorer.ViewModels
         private readonly IDiscoveryService _discoveryService;
         private ReactiveList<DeviceViewModel> _devices;
 
-        public IReactiveRouter Router { get; }
+        public IScreen Router { get; }
 
         public List<RequestFilter> Filters { get; set; }
 
@@ -52,9 +51,9 @@ namespace CoAPExplorer.ViewModels
             set { this.RaiseAndSetIfChanged(ref _searchUrl, value); }
         }
 
-        public SearchViewModel(IReactiveRouter router = null)
+        public SearchViewModel(IScreen router = null)
         {
-            Router = router ?? Locator.Current.GetService<IReactiveRouter>();
+            Router = router ?? Locator.Current.GetService<IScreen>();
 
             _discoveryService = Locator.Current.GetService<IDiscoveryService>();
 

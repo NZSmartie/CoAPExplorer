@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using CoAPNet;
 using CoAPNet.Options;
@@ -23,8 +19,6 @@ using ReactiveUI;
 using CoAPExplorer.Models;
 using CoAPExplorer.ViewModels;
 using CoAPExplorer.WPF.Converters;
-using ReactiveUI.Routing;
-using System.Reactive;
 
 namespace CoAPExplorer.WPF.Views
 {
@@ -35,18 +29,17 @@ namespace CoAPExplorer.WPF.Views
     {
         private static readonly BooleanToVisibilityConverter _visibilityConverter = new BooleanToVisibilityConverter();
 
-        private ReactiveCommand<NavigationRequest, Unit> NavigateCommand;
+        private ReactiveCommand NavigateCommand;
 
         public DeviceView()
         {
             InitializeComponent();
 
-            NavigateCommand = ReactiveCommand.CreateFromObservable<NavigationRequest, Unit>(
-                request => ViewModel.Router.Navigate(request), 
-                this.WhenAnyValue(x => x.ViewModel).Select(x => x != null && x.Router != null));
+            NavigateCommand = ReactiveCommand.CreateFromObservable(
+                () => ViewModel.HostScreen.Router.NavigateBack.Execute(), 
+                this.WhenAnyValue(x => x.ViewModel).Select(x => x != null && x.HostScreen != null));
 
             NavigateBackButton.Command = NavigateCommand;
-            NavigateBackButton.CommandParameter = NavigationRequest.Back();
 
             this.WhenActivated(disposables =>
             {
@@ -83,7 +76,7 @@ namespace CoAPExplorer.WPF.Views
                     .DisposeWith(disposables);
 
                 this.OneWayBind(ViewModel,
-                          vm => vm.Router.NavigationStack,
+                          vm => vm.HostScreen.Router.NavigationStack,
                           v => v.NavigateBackButton.Visibility,
                           stack => stack.Any() ? Visibility.Visible : Visibility.Collapsed);
 

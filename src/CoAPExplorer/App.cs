@@ -10,8 +10,6 @@ using System.Text;
 using CoAPNet;
 using CoAPNet.Udp;
 using ReactiveUI;
-using ReactiveUI.Routing;
-using ReactiveUI.Routing.Presentation;
 using Splat;
 
 using CoAPExplorer.Extensions;
@@ -22,16 +20,16 @@ using CoAPExplorer.ViewModels;
 
 namespace CoAPExplorer
 {
-    public class App : IReactiveApp
+    public class App
     {
-        private readonly IReactiveApp _reactiveApplication;
-
         public string DataPath { get; }
 
         private ISubject<ToastNotification> _toastNotifications
             = new Subject<ToastNotification>();
 
         public IObservable<ToastNotification> ToastNotifications => _toastNotifications;
+
+        public IMutableDependencyResolver Locator => global::Splat.Locator.CurrentMutable;
 
         /// <summary>
         /// Logs the exception to the applications log directory and invokes the exception event for displaying to the user.
@@ -79,13 +77,8 @@ namespace CoAPExplorer
             });
         }
 
-        public App(IReactiveApp reactiveApplication, string dataPath)
+        public App(string dataPath)
         {
-            _reactiveApplication = reactiveApplication;
-
-            // TODO: Make use of this later, for now disable it
-            _reactiveApplication.SuspensionDriver.InvalidateState();
-
             DataPath = dataPath;
 
 #if DEBUG
@@ -106,43 +99,6 @@ namespace CoAPExplorer
                 .RegisterLogger<CoapUdpTransportFactory>();
 
             Locator.Register<IDiscoveryService>(() => new DiscoveryService());
-
-            Locator.RegisterConstant(this);
-            Locator.RegisterConstant<IReactiveApp>(this);
         }
-
-        #region IReactiveApp Proxy Members
-
-        public IReactiveRouter Router => _reactiveApplication.Router;
-
-        public IAppPresenter Presenter => _reactiveApplication.Presenter;
-
-        public ISuspensionHost SuspensionHost => _reactiveApplication.SuspensionHost;
-
-        public ISuspensionDriver SuspensionDriver => _reactiveApplication.SuspensionDriver;
-
-        public IMutableDependencyResolver Locator => _reactiveApplication.Locator;
-
-        public ReactiveAppState BuildAppState()
-        {
-            return _reactiveApplication.BuildAppState();
-        }
-
-        public IObservable<Unit> LoadState(ReactiveAppState state)
-        {
-            return _reactiveApplication.LoadState(state);
-        }
-
-        public void RegisterDisposable(IDisposable disposable)
-        {
-            _reactiveApplication.RegisterDisposable(disposable);
-        }
-
-        public void Dispose()
-        {
-            _reactiveApplication.Dispose();
-        }
-
-        #endregion
     }
 }

@@ -1,40 +1,35 @@
 ﻿using System;
-using System.Reactive.Linq;
-using System.Reactive.Disposables;
-using System.Collections.Generic;
 using System.Text;
 
 using ReactiveUI;
-using CoAPExplorer.Services;
 using Splat;
-using System.Reactive;
-using CoAPExplorer.Models;
-using ReactiveUI.Routing;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class HomeViewModel : ReactiveObject
+    public class HomeViewModel : ReactiveObject, IRoutableViewModel
     {
         private SearchViewModel _search;
         private RecentDevicesViewModel _recentDevices;
 
         public RecentDevicesViewModel RecentDevices
         {
-            get => _recentDevices ?? (_recentDevices = new RecentDevicesViewModel(Router));
+            get => _recentDevices ?? (_recentDevices = new RecentDevicesViewModel(HostScreen));
             set => _recentDevices = value;
         }
 
         public SearchViewModel Search
         {
-            get => _search ?? (_search = new SearchViewModel(Router));
+            get => _search ?? (_search = new SearchViewModel(HostScreen));
             set => _search = value;
         }
 
-        public IReactiveRouter Router { get; }
+        public IScreen HostScreen { get; }
 
-        public HomeViewModel(IReactiveRouter router = null)
+        public string UrlPathSegment => "";
+
+        public HomeViewModel(IScreen screen = null)
         {
-            Router = router ?? Locator.Current.GetService<IReactiveRouter>();
+            HostScreen = screen ?? Locator.Current.GetService<IScreen>();
         }
     }
 }

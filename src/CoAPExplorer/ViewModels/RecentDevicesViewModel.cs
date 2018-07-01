@@ -10,7 +10,6 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Splat;
 using ReactiveUI;
-using ReactiveUI.Routing;
 
 using CoAPExplorer.Database;
 using CoAPExplorer.Models;
@@ -21,7 +20,7 @@ namespace CoAPExplorer.ViewModels
     public class RecentDevicesViewModel : ReactiveObject, ISupportsActivation
     {
         private readonly CoapExplorerContext _dbContext;
-        private readonly IReactiveRouter _router;
+        private readonly IScreen _screen;
         private ObservableAsPropertyHelper<bool> _isSearchValidUri = ObservableAsPropertyHelper<bool>.Default();
         private string _searchTerms;
         private ObservableCollection<DeviceViewModel> _devices;
@@ -39,7 +38,7 @@ namespace CoAPExplorer.ViewModels
 
         public ObservableCollection<DeviceViewModel> Devices
         {
-            get => _devices ?? (_devices = new ObservableCollection<DeviceViewModel>(_dbContext.Devices.Include(x => x.KnownResources).Select(d => new DeviceViewModel(d, _router))));
+            get => _devices ?? (_devices = new ObservableCollection<DeviceViewModel>(_dbContext.Devices.Include(x => x.KnownResources).Select(d => new DeviceViewModel(d, _screen))));
             set => _devices = value;
         }
 
@@ -47,15 +46,15 @@ namespace CoAPExplorer.ViewModels
 
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
-        public RecentDevicesViewModel(IReactiveRouter router = null, CoapExplorerContext context = null)
+        public RecentDevicesViewModel(IScreen screen = null, CoapExplorerContext context = null)
         {
-            _router = router ?? Locator.Current.GetService<IReactiveRouter>();
+            _screen = screen ?? Locator.Current.GetService<IScreen>();
             _dbContext = context ?? Locator.Current.GetService<CoapExplorerContext>();
 
             AddDeviceCommand = ReactiveCommand.Create<Unit, NewDeviceViewModel>(_ =>
             {
                 System.Diagnostics.Debug.WriteLine("Creating new device dialog thingy");
-                return new NewDeviceViewModel(router);
+                return new NewDeviceViewModel(screen);
             });
 
             RemoveDeviceCommand = ReactiveCommand.CreateFromTask<Device>(async device =>
@@ -68,11 +67,11 @@ namespace CoAPExplorer.ViewModels
             NavigateToUriCommand = ReactiveCommand.CreateFromObservable(() =>
             {
                 if (!Uri.TryCreate(SearchTerms, UriKind.Absolute, out var uri))
-                    return Observable.Empty<Unit>();
+                    return Observable.Empty<IRoutableViewModel>();
 
-                var deviceViewModel = new DeviceViewModel(new Device { Address = uri }, router);
+                var deviceViewModel = new DeviceViewModel(new Device { Address = uri }, screen);
 
-                return router.Navigate(NavigationRequest.Forward(deviceViewModel));
+                return screen.Router.Navigate.Execute(deviceViewModel);
             }, this.WhenAnyValue(vm => vm.IsSearchValidUri));
 
             this.WhenActivated(disposables =>

@@ -5,7 +5,6 @@ using System.Reactive;
 using System.Text;
 
 using ReactiveUI;
-using ReactiveUI.Routing;
 using Splat;
 
 using CoAPExplorer.Models;
@@ -20,7 +19,7 @@ namespace CoAPExplorer.ViewModels
         private string _name;
         private string _address;
         private readonly CoapExplorerContext _dbContext;
-        private readonly IReactiveRouter _router;
+        private readonly IScreen _screen;
 
         public string Name { get => _name; set => this.RaiseAndSetIfChanged(ref _name, value); }
 
@@ -28,11 +27,11 @@ namespace CoAPExplorer.ViewModels
 
         public ReactiveCommand<Unit, Unit> AddDeviceCommand { get; }
 
-        public NewDeviceViewModel(IReactiveRouter router = null)
+        public NewDeviceViewModel(IScreen screen = null)
         {
             _dbContext = Locator.Current.GetService<CoapExplorerContext>();
 
-            _router = router ?? Locator.Current.GetService<IReactiveRouter>();
+            _screen = screen ?? Locator.Current.GetService<IScreen>();
 
             AddDeviceCommand = ReactiveCommand.CreateFromTask(async () =>
             {
@@ -46,7 +45,7 @@ namespace CoAPExplorer.ViewModels
                     Endpoint = CoapEndpointFactory.GetEndpoint(address),
                 };
 
-                _router.Navigate(NavigationRequest.Forward(new DeviceViewModel(device, _router)))
+                _screen.Router.Navigate.Execute(new DeviceViewModel(device, _screen))
                           .Subscribe();
 
                 if (_dbContext != null)

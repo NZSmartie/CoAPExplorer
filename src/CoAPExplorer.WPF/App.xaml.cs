@@ -19,8 +19,6 @@ using CoAPExplorer.Services;
 using CoAPExplorer.ViewModels;
 using CoAPExplorer.WPF.Views;
 using CoAPExplorer.WPF.Dialogs;
-using ReactiveUI.Routing;
-using ReactiveUI.Routing.Wpf;
 
 namespace CoAPExplorer.WPF
 {
@@ -43,13 +41,8 @@ namespace CoAPExplorer.WPF
             if (!applicationPath.Exists)
                 applicationPath.Create();
 
-            var baseReactiveApp = new ReactiveAppBuilder()
-                .AddReactiveRouting()
-                .ConfigureWpf(this)
-                .Build();
-
             // Shared application class that is used in other platforms.
-            _coapExplorer = new CoAPExplorer.App(baseReactiveApp, applicationPath.FullName);
+            _coapExplorer = new CoAPExplorer.App(applicationPath.FullName);
 
             // TODO: Make this configurable? as to make this application portable?
             var databasePath = Path.Combine(applicationPath.FullName, DatabaseName);

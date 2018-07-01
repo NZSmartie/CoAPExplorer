@@ -1,24 +1,13 @@
-﻿using CoAPExplorer.Models;
-using CoAPExplorer.ViewModels;
-using ReactiveUI;
-using ReactiveUI.Routing;
-using Splat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
+using ReactiveUI;
+using Splat;
+
+using CoAPExplorer.Models;
+using CoAPExplorer.ViewModels;
 
 namespace CoAPExplorer.WPF.Views
 {
@@ -27,11 +16,11 @@ namespace CoAPExplorer.WPF.Views
     /// </summary>
     public partial class HomeView : Page, IViewFor<HomeViewModel>
     {
-        public IReactiveRouter Router { get; }
+        public IScreen Router { get; }
 
         public HomeViewModel ViewModel { get; set; }
 
-        public HomeView(IReactiveRouter router = null)
+        public HomeView(IScreen router = null)
         {
             InitializeComponent();
 

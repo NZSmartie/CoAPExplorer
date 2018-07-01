@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 using MaterialDesignThemes.Wpf;
-using ReactiveUI.Routing;
-using ReactiveUI.Routing.WPF;
+using ReactiveUI;
+using Splat;
 
 using CoAPExplorer.ViewModels;
-using ReactiveUI;
-using System.Windows.Input;
 
 namespace CoAPExplorer.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IScreen
     {
-        public IReactiveRouter Router { get; }
+        public RoutingState Router { get; }
 
         public SnackbarMessageQueue ToastMessageQueue { get; }
 
@@ -28,10 +27,23 @@ namespace CoAPExplorer.WPF
             InitializeComponent();
 
             // reactiveUI.Router stuff
-            Router = App.CoapExplorer.Router;
-            PagePresenter.RegisterHost(Frame);
+            Router = new RoutingState();
 
-            Router.Navigate(NavigationRequest.Reset() + NavigationRequest.Forward(new HomeViewModel(Router)))
+            Router.CurrentViewModel.Subscribe(viewModel =>
+            {
+                if (viewModel == null)
+                {
+                    Frame.Content = null;
+                    return;
+                }
+
+                var viewLocator = App.CoapExplorer.Locator.GetService<IViewLocator>();
+                var view = viewLocator.ResolveView(viewModel);
+                view.ViewModel = viewModel;
+                Frame.Navigate(view);
+            });
+
+            Router.NavigateAndReset.Execute(new HomeViewModel(this))
                   .Subscribe();
 
             App.CoapExplorer.ToastNotifications.Subscribe(toast =>

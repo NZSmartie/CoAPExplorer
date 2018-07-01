@@ -7,17 +7,18 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using CoAPNet;
+using ReactiveUI;
+using Splat;
+
 using CoAPExplorer.Database;
 using CoAPExplorer.Models;
 using CoAPExplorer.Services;
-using CoAPNet;
-using ReactiveUI;
-using ReactiveUI.Routing;
-using Splat;
 
 namespace CoAPExplorer.ViewModels
 {
-    public class DeviceViewModel : ReactiveObject, ISupportsActivation
+    public class DeviceViewModel : ReactiveObject, ISupportsActivation, IRoutableViewModel
     {
         private readonly CoapExplorerContext _dbContext;
 
@@ -49,7 +50,7 @@ namespace CoAPExplorer.ViewModels
 
         public CoapService CoapService { get => _coapService ?? (_coapService = new CoapService(Device)); }
 
-        public IReactiveRouter Router { get; private set; }
+        public IScreen HostScreen { get; private set; }
 
         public DeviceNavigationViewModel Navigation { get; }
 
@@ -122,18 +123,20 @@ namespace CoAPExplorer.ViewModels
             }
         }
 
-        public DeviceViewModel(Device device = null, IReactiveRouter router = null)
+        public string UrlPathSegment => Device.Name;
+
+        public DeviceViewModel(Device device = null, IScreen screen = null)
         {
             _dbContext = Locator.Current.GetService<CoapExplorerContext>();
 
-            Router = router;
+            HostScreen = screen;
             Device = device ?? new Device();
 
             Resources = Device.KnownResources.CreateDerivedCollection(x => x);
 
             Navigation = new DeviceNavigationViewModel(this);
 
-            OpenCommand = ReactiveCommand.CreateFromObservable(() => router.Navigate(NavigationRequest.Forward(this)));
+            OpenCommand = ReactiveCommand.CreateFromObservable(() => screen.Router.Navigate.Execute(this));
 
             SendCommand = ReactiveCommand.CreateFromObservable<Message, Message>(
                 message =>
