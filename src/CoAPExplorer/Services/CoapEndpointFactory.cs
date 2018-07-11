@@ -25,13 +25,16 @@ namespace CoAPExplorer.Services
             return new Uri(address, UriKind.Absolute);
         }
 
-        public static ICoapEndpoint GetEndpoint(Uri address)
+        public static ICoapEndpoint GetEndpoint(Uri address, bool defaultEndpoint = true)
         {
             if (address == null)
                 throw new ArgumentNullException(nameof(address));
 
             if(address.Scheme == "coap")
-                return new CoapUdpEndPoint(ParseIPEndpoint(address.Host, address.Port));
+            {
+                int port = address.IsDefaultPort && defaultEndpoint ? Coap.Port : 0;
+                return new CoapUdpEndPoint(ParseIPEndpoint(address.Host, port));
+            }
 
             return new CoapEndpoint();
         }
