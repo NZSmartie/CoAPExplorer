@@ -47,7 +47,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0" Style="{StaticResource MaterialDesignToolButton}" Padding="8" Height="40"
-                                Command="{x:Static materialDesign:Transitioner.MoveFirstCommand}">
+                                Command="{Binding CloseSearchCommand, ElementName=This}">
                             <materialDesign:PackIcon Width="24" Height="24" Kind="Close"/>
                         </Button>
                         <TextBox x:Name="SearchTextBox" Grid.Column="1" Padding="0 0 0 4" VerticalAlignment="Stretch" BorderThickness="0"

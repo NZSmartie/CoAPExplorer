@@ -21,8 +21,13 @@ namespace CoAPExplorer.WPF.Views
     {
         private static readonly DependencyProperty SearchCommandProperty = DependencyProperty.Register(
             nameof(SearchCommand), typeof(ReactiveCommand), typeof(RecentDevicesView), new PropertyMetadata(default(ReactiveCommand)));
-
+            
         private ReactiveCommand SearchCommand { get => GetValue(SearchCommandProperty) as ReactiveCommand; set => SetValue(SearchCommandProperty, value); }
+
+        private static readonly DependencyProperty CloseSearchCommandProperty = DependencyProperty.Register(
+            nameof(CloseSearchCommand), typeof(ReactiveCommand), typeof(RecentDevicesView), new PropertyMetadata(default(ReactiveCommand)));
+
+        private ReactiveCommand CloseSearchCommand { get => GetValue(CloseSearchCommandProperty) as ReactiveCommand; set => SetValue(CloseSearchCommandProperty, value); }
 
         public RecentDevicesView()
         {
@@ -32,6 +37,14 @@ namespace CoAPExplorer.WPF.Views
             {
                 AppBarTransistioner.SelectedItem = SearchTransistionState;
                 SearchTextBox.Focus();
+            });
+
+            CloseSearchCommand = ReactiveCommand.Create(() =>
+            {
+                if (ViewModel != null)
+                    ViewModel.SearchTerms = string.Empty;
+
+                MaterialDesignThemes.Wpf.Transitions.Transitioner.MoveFirstCommand.Execute(Unit.Default, SearchTextBox);
             });
 
             this.WhenActivated(disposables =>
@@ -55,8 +68,13 @@ namespace CoAPExplorer.WPF.Views
                     .DisposeWith(disposables);
 
                 this.SearchTextBox.Events()
-                    .KeyDown.Where(k => k.Key == Key.Enter && ViewModel?.NavigateToUriCommand != null)
+                    .KeyUp.Where(k => k.Key == Key.Enter)
                     .Select(_ => Unit.Default).InvokeCommand(this, v => v.ViewModel.NavigateToUriCommand)
+                    .DisposeWith(disposables);
+
+                this.SearchTextBox.Events()
+                    .KeyUp.Where(k => k.Key == Key.Escape)
+                    .Select(_ => Unit.Default).InvokeCommand(this, v => v.CloseSearchCommand)
                     .DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.NavigateToUriCommand, v => v.NavigateToButton)
