@@ -6,6 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:CoAPExplorer.WPF.Views"
              xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
+             xmlns:behaviors="clr-namespace:CoAPExplorer.WPF.Controls.Behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mockViewModels="clr-namespace:CoAPExplorer.WPF.MockViewModels"
              mc:Ignorable="d mockViewModels" x:Name="This"
@@ -50,6 +51,7 @@
                             <materialDesign:PackIcon Width="24" Height="24" Kind="Close"/>
                         </Button>
                         <TextBox x:Name="SearchTextBox" Grid.Column="1" Padding="0 0 0 4" VerticalAlignment="Stretch" BorderThickness="0"
+                                 behaviors:TextFieldBehavior.TripleClickBehavior="SelectAll"
                                  materialDesign:HintAssist.Hint="Search for Keywords or enter URL" materialDesign:TextFieldAssist.DecorationVisibility="Hidden" />
                         <Button x:Name="NavigateToButton" Grid.Column="2" Style="{StaticResource MaterialDesignToolButton}" Padding="8" Height="40"
                                 materialDesign:RippleAssist.IsDisabled="True" Visibility="Collapsed">

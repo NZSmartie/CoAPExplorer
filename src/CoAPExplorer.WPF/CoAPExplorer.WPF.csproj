@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Controls\NavigationDrawer.cs" />
     <Compile Include="Controls\NavigationItem.cs" />
+    <Compile Include="Controls\Behaviors\TextFieldBehavior.cs" />
     <Compile Include="Converters\InvertBooleanConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\CoapMessageCodeToStringConverter.cs" />

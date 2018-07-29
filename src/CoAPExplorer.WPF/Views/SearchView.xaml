@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoAPExplorer.WPF.Views"
              xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
+             xmlns:behaviors="clr-namespace:CoAPExplorer.WPF.Controls.Behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900"
@@ -38,7 +39,7 @@
                         <materialDesign:PackIcon Margin="4 0 4 0" Kind="Magnify" Grid.Column="0" VerticalAlignment="Center" Width="32" Height="32"
                                                  Foreground="{Binding ElementName=SearchUrl, Path=BorderBrush}"/>
                         <TextBox x:Name="SearchUrl" Margin="4 0 4 0" HorizontalAlignment="Stretch" Grid.Column="1"
-                                 VerticalAlignment="Center"
+                                 VerticalAlignment="Center" behaviors:TextFieldBehavior.TripleClickBehavior="SelectAll"
                                  Style="{StaticResource MaterialDesignTextBox}">/.well-known/core</TextBox>
                         <Button  x:Name="GoButton" Grid.Column="2" Margin="4 0 4 0" Padding="0"
                                  Style="{DynamicResource MaterialDesignToolButton}">
