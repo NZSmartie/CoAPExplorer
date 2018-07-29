@@ -45,8 +45,8 @@
                         <materialDesign:PackIcon Width="24" Height="24" Kind="ContentDuplicate"/>
                     </Button>
                 </StackPanel>
-                <materialDesign:ColorZone Mode="Standard" CornerRadius="2" Height="48" Padding="16 0 0 0"
-                                          Margin="0 -4" materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                <materialDesign:ColorZone Mode="Standard" CornerRadius="2" Padding="16 0 0 0"
+                                          materialDesign:ShadowAssist.ShadowDepth="Depth1">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
