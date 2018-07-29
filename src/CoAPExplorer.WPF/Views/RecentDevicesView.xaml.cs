@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Linq;
 using System.Windows.Controls;
@@ -51,6 +52,11 @@ namespace CoAPExplorer.WPF.Views
                     .DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.SearchTerms, v => v.SearchTextBox.Text)
+                    .DisposeWith(disposables);
+
+                this.SearchTextBox.Events()
+                    .KeyDown.Where(k => k.Key == Key.Enter && ViewModel?.NavigateToUriCommand != null)
+                    .Select(_ => Unit.Default).InvokeCommand(this, v => v.ViewModel.NavigateToUriCommand)
                     .DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.NavigateToUriCommand, v => v.NavigateToButton)
