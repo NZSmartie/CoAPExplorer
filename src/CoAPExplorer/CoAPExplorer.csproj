@@ -9,8 +9,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NZSmartie.CoAPNet" Version="0.7.2" />
-    <PackageReference Include="NZSmartie.CoAPNet.Udp" Version="0.7.2" />
+    <PackageReference Include="NZSmartie.CoAPNet" Version="0.8.8" />
+    <PackageReference Include="NZSmartie.CoAPNet.Udp" Version="0.8.8" />
     <PackageReference Include="ReactiveUI" Version="8.3.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>

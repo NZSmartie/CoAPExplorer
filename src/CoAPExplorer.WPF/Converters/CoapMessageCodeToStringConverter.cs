@@ -12,11 +12,11 @@ namespace CoAPExplorer.WPF.Converters
     public class CoapMessageCodeToStringConverter : IValueConverter
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
-         => Convert(value as CoapMessageCode);
+         => value is CoapMessageCode ? Convert((CoapMessageCode)value) : string.Empty;
 
         public string Convert(CoapMessageCode value)
         {
-            return Consts.MessageCodes.SingleOrDefault(c => c.Item2 == value)?.Item1 ?? "";
+            return Consts.MessageCodes.SingleOrDefault(c => c.Item2 == value)?.Item1 ?? string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

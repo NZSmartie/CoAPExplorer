@@ -21,7 +21,7 @@ namespace CoAPExplorer.Extensions
             };
             coapMessage.SetUri(message.Url, UriComponents.PathAndQuery);
 
-            if ((message.Code?.IsRequest() ?? false) && message.ContentFormat != null)
+            if ((message.Code.IsRequest()) && message.ContentFormat != null)
             {
                 coapMessage.Options.Add(new CoAPNet.Options.ContentFormat(message.ContentFormat));
                 coapMessage.Payload = message.Payload;

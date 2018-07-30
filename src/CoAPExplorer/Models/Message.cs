@@ -78,7 +78,7 @@ namespace CoAPExplorer.Models
         [Column(nameof(Code))]
         public string _dbCode
         {
-            get => Code?.ToString() ?? "0.00";
+            get => Code.ToString() ?? "0.00";
             set
             {
                 var p = value.Split('.');
