@@ -50,6 +50,7 @@ namespace CoAPExplorer.WPF
             _database.Database.Migrate();
 
             // Register Services
+            _coapExplorer.Locator.RegisterConstant(_coapExplorer);
             _coapExplorer.Locator.RegisterConstant(_database);
 
             // Register Views
