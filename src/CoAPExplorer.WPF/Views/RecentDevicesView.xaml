@@ -61,7 +61,8 @@
                 </materialDesign:ColorZone>
             </materialDesign:Transitioner>
         </materialDesign:ColorZone>
-        <controls:DeviceListView x:Name="DeviceListView" Grid.Row="1"
+        <controls:DeviceListView x:Name="DeviceListView" Grid.Row="1" ItemsSource="{Binding Devices, Mode=OneWay}"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                  d:DataContext="{d:DesignInstance Type=mockViewModels:DeviceListMock, IsDesignTimeCreatable=True}" />
         <materialDesign:PopupBox x:Name="AddButton"  Grid.Row="1"
                                  PlacementMode="TopAndAlignCentres" UnfurlOrientation="Vertical"

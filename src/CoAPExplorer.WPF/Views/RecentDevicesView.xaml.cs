@@ -49,7 +49,7 @@ namespace CoAPExplorer.WPF.Views
 
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(ViewModel, vm => vm.FilteredDevices, v => v.DeviceListView.Devices)
+                this.OneWayBind(ViewModel, vm => vm.FilteredDevices, v => v.DeviceListView.ItemsSource)
                     .DisposeWith(disposables);
 
                 this.WhenAnyValue(x => x.ViewModel)

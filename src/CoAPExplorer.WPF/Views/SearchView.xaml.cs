@@ -34,7 +34,7 @@ namespace CoAPExplorer.WPF.Views
             {
                 var visibilityConverter = new BooleanToVisibilityConverter();
 
-                this.OneWayBind(ViewModel, vm => vm.Devices, v => v.DeviceList.Devices)
+                this.OneWayBind(ViewModel, vm => vm.Devices, v => v.DeviceList.ItemsSource)
                     .DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.SearchUrl, v => v.SearchUrl.Text)
