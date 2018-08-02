@@ -26,6 +26,8 @@ namespace CoAPExplorer.ViewModels
         private ObservableCollection<DeviceViewModel> _devices;
         private IReactiveDerivedList<DeviceViewModel> _filteredDevices;
 
+        public ReactiveCommand<DeviceViewModel, Unit> OpenDeviceCommand { get; }
+
         public ReactiveCommand<Device, Unit> RemoveDeviceCommand { get; }
 
         public ReactiveCommand NavigateToUriCommand { get; }
@@ -63,6 +65,8 @@ namespace CoAPExplorer.ViewModels
                 _devices.Remove(_devices.Single(dvm => dvm.Device.Id == device.Id));
                 await _dbContext.SaveChangesAsync();
             });
+
+            OpenDeviceCommand = ReactiveCommand.Create<DeviceViewModel>(device => Observable.Return(Unit.Default).InvokeCommand(device.OpenCommand));
 
             NavigateToUriCommand = ReactiveCommand.CreateFromObservable(() =>
             {

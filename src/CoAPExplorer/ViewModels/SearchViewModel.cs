@@ -35,6 +35,8 @@ namespace CoAPExplorer.ViewModels
 
         public ReactiveCommand<Unit, Unit> StopCommand { get; }
 
+        public ReactiveCommand<DeviceViewModel, Unit> OpenDeviceCommand { get; }
+
         public bool IsSearching => _isSearching.Value;
 
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
@@ -69,6 +71,10 @@ namespace CoAPExplorer.ViewModels
             StopCommand = ReactiveCommand.Create(
                 () => { },
                 SearchCommand.IsExecuting);
+
+            //OpenDeviceCommand = ReactiveCommand.CreateFromObservable<DeviceViewModel, Unit>(device => device.OpenCommand);
+            OpenDeviceCommand = ReactiveCommand.Create<DeviceViewModel>(device => System.Diagnostics.Debug.WriteLine($"we got a device {device.Name}"));
+
 
             this.WhenActivated(disposables =>
             {

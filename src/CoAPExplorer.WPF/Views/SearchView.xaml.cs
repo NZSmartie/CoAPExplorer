@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -35,6 +37,12 @@ namespace CoAPExplorer.WPF.Views
                 var visibilityConverter = new BooleanToVisibilityConverter();
 
                 this.OneWayBind(ViewModel, vm => vm.Devices, v => v.DeviceList.ItemsSource)
+                    .DisposeWith(disposables);
+
+                this.WhenAnyValue(v => v.DeviceList.SelectedItem)
+                    .Select(x => x as DeviceViewModel)
+                    .Where(x => x != null)
+                    .InvokeCommand(this, v => v.ViewModel.OpenDeviceCommand)
                     .DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.SearchUrl, v => v.SearchUrl.Text)

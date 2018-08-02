@@ -52,6 +52,12 @@ namespace CoAPExplorer.WPF.Views
                 this.OneWayBind(ViewModel, vm => vm.FilteredDevices, v => v.DeviceListView.ItemsSource)
                     .DisposeWith(disposables);
 
+                this.WhenAnyValue(v => v.DeviceListView.SelectedItem)
+                    .Select(x => x as DeviceViewModel)
+                    .Where(x => x != null)
+                    .InvokeCommand(this, v => v.ViewModel.OpenDeviceCommand)
+                    .DisposeWith(disposables);
+
                 this.WhenAnyValue(x => x.ViewModel)
                     .Where(x => x != null)
                     .Subscribe(vm => vm.AddDeviceCommand.Subscribe(ndvm =>

@@ -38,7 +38,7 @@ namespace CoAPExplorer.ViewModels
 
         public MessageViewModel MessageViewModel { get => _messageViewModel; set => this.RaiseAndSetIfChanged(ref _messageViewModel, value); }
 
-        public ReactiveCommand OpenCommand { get; }
+        public ReactiveCommand<Unit,Unit> OpenCommand { get; }
 
         public bool IsSending => _isSending.Value;
 
@@ -136,7 +136,7 @@ namespace CoAPExplorer.ViewModels
 
             Navigation = new DeviceNavigationViewModel(this);
 
-            OpenCommand = ReactiveCommand.CreateFromObservable(() => screen.Router.Navigate.Execute(this));
+            OpenCommand = ReactiveCommand.CreateFromObservable(() => screen.Router.Navigate.Execute(this).Select(_ => Unit.Default));
 
             SendCommand = ReactiveCommand.CreateFromObservable<Message, Message>(
                 message =>
