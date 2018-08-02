@@ -28,7 +28,8 @@ namespace CoAPExplorer.ViewModels
 
         public Device Device => _device.Device;
 
-        public IReactiveDerivedList<DeviceResource> Resources => _device.Resources;
+        public IReactiveDerivedList<DeviceResource> Resources => 
+            _device.Resources.CreateDerivedCollection(x => x, orderer: (a, b) => Uri.Compare(a.Url, b.Url, UriComponents.Path, UriFormat.Unescaped, StringComparison.InvariantCultureIgnoreCase));
 
         public DeviceResource SelectedResource { get => _selectedResource; set => this.RaiseAndSetIfChanged(ref _selectedResource, value); }
 
