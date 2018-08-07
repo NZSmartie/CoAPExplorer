@@ -26,7 +26,7 @@
                                                Style="{DynamicResource MaterialDesignTitleTextBlock}"/>
                                 </ContentPresenter.Content>
                             </ContentPresenter>
-                            <ToolBar DockPanel.Dock="Right" ItemsSource="{TemplateBinding Items}"/>
+                            <ToolBar DockPanel.Dock="Right" ItemsSource="{TemplateBinding ItemsSource}"/>
                         </DockPanel>
                     </materialDesign:ColorZone>
                 </ControlTemplate>
