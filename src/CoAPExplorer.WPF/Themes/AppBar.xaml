@@ -3,16 +3,31 @@
                     xmlns:local="clr-namespace:CoAPExplorer.WPF.Themes"
                     xmlns:controls="clr-namespace:CoAPExplorer.WPF.Controls"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
     <Style x:Key="CoAPExplorerAppBarStyle" TargetType="{x:Type controls:AppBar}">
         <Setter Property="TextElement.Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:AppBar">
-                    <materialDesign:ColorZone x:Name="PART_ColorZone" Mode="PrimaryMid" Padding="8" Height="56"
+                    <materialDesign:ColorZone x:Name="PART_ColorZone" Padding="4" Height="56"
+                                              Mode="{TemplateBinding ColorZoneMode}" 
                                               materialDesign:ShadowAssist.ShadowDepth="Depth1" 
                                               materialDesign:ShadowAssist.ShadowEdges="Bottom"
                                               HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                        <ContentPresenter/>
+                        <DockPanel>
+                            <ContentPresenter ContentSource="PrimaryAction" DockPanel.Dock="Left"/>
+                            <ContentPresenter Margin="8 0 8 0">
+                                <ContentPresenter.Content>
+                                    <TextBlock Text="{TemplateBinding Title}" VerticalAlignment="Bottom" Margin="8 0 8 12"
+                                               Style="{DynamicResource MaterialDesignTitleTextBlock}"/>
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                            <ToolBar DockPanel.Dock="Right" ItemsSource="{TemplateBinding Items}"/>
+                        </DockPanel>
                     </materialDesign:ColorZone>
                 </ControlTemplate>
             </Setter.Value>

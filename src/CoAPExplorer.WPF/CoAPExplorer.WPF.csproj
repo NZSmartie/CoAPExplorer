@@ -64,6 +64,7 @@
     <Compile Include="Controls\CoapOptionsList.xaml.cs">
       <DependentUpon>CoapOptionsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\UIElementVisibilityToUnsetValueConverter.cs" />
     <Compile Include="Controls\FilterOption.xaml.cs">
       <DependentUpon>FilterOption.xaml</DependentUpon>
     </Compile>
@@ -79,6 +80,7 @@
     <Compile Include="Dialogs\NewDeviceViewDialog.xaml.cs">
       <DependentUpon>NewDeviceViewDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="MockViewModels\DeviceListMock.cs" />
     <Compile Include="MockViewModels\DeviceNavigationViewModel.cs" />
     <Compile Include="MockViewModels\DeviceViewModel.cs" />
